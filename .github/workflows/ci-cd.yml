@@ -1,0 +1,88 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+      - 'beta-*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy-demo:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write # Required to push to gh-pages branch
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Library
+        run: npm run build:lib
+
+      - name: Build Demo
+        # NOTE: Change --base-href to your GitHub repository name if needed
+        run: npm run build:demo -- --base-href /ng-laydate/
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/laydate-demo/browser # Angular 18+ output structure
+          branch: gh-pages
+
+  publish-to-npm:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    outputs:
+      release_tag: ${{ steps.determine-tag.outputs.tag }}
+      is_prerelease: ${{ steps.determine-tag.outputs.is_prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Library
+        run: npm run build:lib
+
+      - name: Determine Release Tag
+        id: determine-tag
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          else
+            echo "tag=beta" >> $GITHUB_OUTPUT
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ steps.determine-tag.outputs.is_prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        # Using --provenance for Trusted Publishing (OIDC)
+        run: npm publish dist/ng-laydate --tag ${{ steps.determine-tag.outputs.tag }} --provenance --access public

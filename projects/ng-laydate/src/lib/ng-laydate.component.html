@@ -1,0 +1,241 @@
+@if (finalConfig().shortcuts) {
+<ul class="layui-laydate-shortcut">
+    @for (item of finalConfig().shortcuts; track item.text) {
+    <li (click)="handleShortcut(item)" [innerHTML]="item.text | safeHtml"></li>
+    }
+</ul>
+}
+
+<div class="layui-laydate-content-wrapper">
+    <!-- Range Mode: Two Panels -->
+    @if (finalConfig().range) {
+    <div class="layui-laydate-main laydate-main-list-0"
+        [class.laydate-ym-show]="leftView() === 'year' || leftView() === 'month'"
+        [class.laydate-time-show]="leftView() === 'time'">
+        <ng-container
+            *ngTemplateOutlet="calendarPanel; context: { data: leftCalendar(), date: leftDate(), isRight: false, currView: leftView(), yearList: leftYearList() }"></ng-container>
+    </div>
+    <div class="layui-laydate-main laydate-main-list-1"
+        [class.laydate-ym-show]="rightView() === 'year' || rightView() === 'month'"
+        [class.laydate-time-show]="rightView() === 'time'">
+        <ng-container
+            *ngTemplateOutlet="calendarPanel; context: { data: rightCalendar(), date: rightDate(), isRight: true, currView: rightView(), yearList: rightYearList() }"></ng-container>
+    </div>
+    }
+
+    <!-- Single Mode: One Panel (or Full Panel) -->
+    @if (!finalConfig().range) {
+    <div class="layui-laydate-main" [class.laydate-theme-fullpanel]="finalConfig().theme === 'fullpanel'">
+        <ng-container
+            *ngTemplateOutlet="calendarPanel; context: { data: calendarData(), date: currentDate(), isRight: false, currView: view(), yearList: yearList() }"></ng-container>
+    </div>
+    }
+</div>
+
+<!-- Footer (Shared) -->
+@if (finalConfig().showBottom) {
+<div class="layui-laydate-footer">
+    @if (finalConfig().type === 'datetime' && finalConfig().theme !== 'fullpanel') {
+    <span class="laydate-btns-time" (click)="toggleTime()">{{ (finalConfig().range ? leftView() : view()) === 'time'
+        ?
+        i18n().backToDate : i18n().timeTips }}</span>
+    }
+
+    @if (showPreview()) {
+    <span class="layui-laydate-preview" [title]="i18n().hint">{{ getPreview() }}</span>
+    }
+
+    <div class="laydate-footer-btns">
+        @for (btn of footerBtns(); track btn.type) {
+        <span [attr.lay-type]="btn.type" (click)="handleBtnClick(btn.type)"
+            [class.laydate-disabled]="btn.type === 'confirm' && isConfirmDisabled()">{{ btn.label }}</span>
+        }
+    </div>
+</div>
+}
+
+@if (hintState().visible) {
+<div class="layui-laydate-hint" [innerHTML]="hintState().content | safeHtml"></div>
+}
+
+<!-- Reusable Calendar Panel Template -->
+<ng-template #calendarPanel let-data="data" let-date="date" let-isRight="isRight" let-currView="currView"
+    let-yearList="yearList">
+    <div class="layui-laydate-header">
+        @if (!isLinked() || !isRight) {
+        <i class="layui-icon laydate-icon laydate-prev-y" (click)="prevYear(isRight)">&#xe65a;</i>
+        }
+        @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || !isRight)) {
+        <i class="layui-icon laydate-icon laydate-prev-m" (click)="prevMonth(isRight)">&#xe603;</i>
+        }
+        <div class="laydate-set-ym">
+            @if (currView === 'time' && finalConfig().theme !== 'fullpanel') {
+            <span>{{ i18n().timeTips }}</span>
+            } @else {
+            <span lay-type="year" (click)="switchView('year', isRight)">
+                {{ (currView === 'year' || (finalConfig().theme === 'fullpanel' && currView === 'year')) ?
+                getYearRangeLabel(isRight) : i18n().formatYear(date.year) }}
+            </span>
+            @if (currView !== 'year' && currView !== 'month') {
+            <span lay-type="month" (click)="switchView('month', isRight)">{{ i18n().formatMonth(date.month)
+                }}</span>
+            }
+            }
+        </div>
+        @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || isRight)) {
+        <i class="layui-icon laydate-icon laydate-next-m" (click)="nextMonth(isRight)">&#xe602;</i>
+        }
+        @if (!isLinked() || isRight) {
+        <i class="layui-icon laydate-icon laydate-next-y" (click)="nextYear(isRight)">&#xe65b;</i>
+        }
+    </div>
+
+    <div class="layui-laydate-content-container">
+        <!-- Always Date Table for FullPanel Left side -->
+        @if (finalConfig().theme === 'fullpanel') {
+        <div class="layui-laydate-content-main">
+            <ng-container *ngTemplateOutlet="dateGrid; context: { data: data, isRight: isRight }"></ng-container>
+        </div>
+        <div class="layui-laydate-content-side">
+            @if (currView === 'year') {
+            <ng-container
+                *ngTemplateOutlet="yearGrid; context: { yearList: yearList, isRight: isRight }"></ng-container>
+            } @else if (currView === 'month') {
+            <ng-container *ngTemplateOutlet="monthGrid; context: { date: date, isRight: isRight }"></ng-container>
+            } @else {
+            <ng-container *ngTemplateOutlet="timePanel; context: { date: date, isRight: isRight }"></ng-container>
+            }
+        </div>
+        } @else {
+        <!-- Standard Logic -->
+        @if (currView === 'date') {
+        <ng-container *ngTemplateOutlet="dateGrid; context: { data: data, isRight: isRight }"></ng-container>
+        }
+        @if (currView === 'year') {
+        <ng-container *ngTemplateOutlet="yearGrid; context: { yearList: yearList, isRight: isRight }"></ng-container>
+        }
+        @if (currView === 'month') {
+        <ng-container *ngTemplateOutlet="monthGrid; context: { date: date, isRight: isRight }"></ng-container>
+        }
+        @if (currView === 'time') {
+        <ng-container *ngTemplateOutlet="timePanel; context: { date: date, isRight: isRight }"></ng-container>
+        }
+        }
+    </div>
+</ng-template>
+
+<!-- Sub-templates for grid content -->
+<ng-template #dateGrid let-data="data" let-isRight="isRight">
+    <div class="layui-laydate-content">
+        <table>
+            <thead>
+                <tr>
+                    @for (w of weekHeaders(); track w) {
+                    <th>{{ w }}</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (row of getRows(data); track $index) {
+                <tr>
+                    @for (day of row; track day.day) {
+                    <td (mouseenter)="hoverValue({year: day.year, month: day.month, date: day.day})"
+                        (click)="selectDay(day, isRight)" [attr.lay-ymd]="day.year + '-' + day.month + '-' + day.day"
+                        [class.laydate-day-prev]="day.type === 'prev'" [class.laydate-day-next]="day.type === 'next'"
+                        [class.layui-this]="!day.disabled && isThisDay(day.year, day.month, day.day, isRight)"
+                        [class.laydate-disabled]="day.disabled" [class.laydate-day-mark-wrap]="day.mark"
+                        [class.laydate-day-range]="finalConfig().rangeLinked && isInRange(day.year, day.month, day.day)"
+                        [class.laydate-selected]="finalConfig().rangeLinked && isInRange(day.year, day.month, day.day)">
+                        <div>
+                            @if (day.holiday) {
+                            <span class="laydate-holiday-badge" [class.laydate-holiday-work]="day.holiday === '班'">{{
+                                day.holiday }}</span>
+                            }
+                            @if (day.customContent) {
+                            <div class="laydate-custom-cell" [innerHTML]="day.customContent | safeHtml"></div>
+                            } @else if (day.mark) {
+                            <span class="laydate-day-mark">{{ day.mark }}</span>
+                            } @else {
+                            {{ day.day }}
+                            }
+                        </div>
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+
+<ng-template #yearGrid let-yearList="yearList" let-isRight="isRight">
+    <ul class="layui-laydate-list laydate-year-list">
+        @for (y of yearList; track y) {
+        <li (click)="selectYear(y, isRight)" (mouseenter)="hoverValue({year: y, month: 0, date: 1})"
+            [class.laydate-selected]="finalConfig().rangeLinked && isInRange(y, 0, 1)"
+            [class.layui-this]="isThisYear(y, isRight)">
+            {{ i18n().formatYear(y) }}</li>
+        }
+    </ul>
+</ng-template>
+
+<ng-template #monthGrid let-date="date" let-isRight="isRight">
+    <ul class="layui-laydate-list laydate-month-list">
+        @for (m of i18n().months; track m; let i = $index) {
+        <li (click)="selectMonth(i, isRight)" (mouseenter)="hoverValue({year: date.year, month: i, date: 1})"
+            [class.laydate-selected]="finalConfig().rangeLinked && isInRange(date.year, i, 1)"
+            [class.layui-this]="isThisMonth(i, date.year, isRight)">
+            {{ m }}</li>
+        }
+    </ul>
+</ng-template>
+
+<ng-template #timePanel let-date="date" let-isRight="isRight">
+    @if (finalConfig().theme !== 'fullpanel') {
+    <div class="laydate-time-header">
+        {{ (isRight ? i18n().endTime : i18n().startTime) }} [ {{ digit(date.hours) }}:{{ digit(date.minutes)
+        }}:{{
+        digit(date.seconds) }} ]
+    </div>
+    }
+    <ul class="layui-laydate-list laydate-time-list">
+        @if (timeColumnVisibility().h) {
+        <li>
+            <p>{{ i18n().time[0] }}</p>
+            <ol #timeOl_hours>
+                @for (h of timeList.hours; track h) {
+                <li (click)="selectTime('hours', h, isRight)" [class.layui-this]="date.hours === h"
+                    [class.laydate-disabled]="isDisabledTime('hours', h, isRight)">{{ digit(h) }}
+                </li>
+                }
+            </ol>
+        </li>
+        }
+        @if (timeColumnVisibility().m) {
+        <li>
+            <p>{{ i18n().time[1] }}</p>
+            <ol #timeOl_minutes>
+                @for (m of timeList.minutes; track m) {
+                <li (click)="selectTime('minutes', m, isRight)" [class.layui-this]="date.minutes === m"
+                    [class.laydate-disabled]="isDisabledTime('minutes', m, isRight)">{{ digit(m)
+                    }}
+                </li>
+                }
+            </ol>
+        </li>
+        }
+        @if (timeColumnVisibility().s) {
+        <li>
+            <p>{{ i18n().time[2] }}</p>
+            <ol #timeOl_seconds>
+                @for (s of timeList.seconds; track s) {
+                <li (click)="selectTime('seconds', s, isRight)" [class.layui-this]="date.seconds === s"
+                    [class.laydate-disabled]="isDisabledTime('seconds', s, isRight)">{{ digit(s)
+                    }}
+                </li>
+                }
+            </ol>
+        </li>
+        }
+    </ul>
+</ng-template>

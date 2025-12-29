@@ -1,0 +1,9 @@
+{
+    "name": "ng-laydate",
+    "version": "0.0.0",
+    "description": "Premium Angular Datepicker Workspace",
+    "language": "typescript",
+    "framework": "angular",
+    "versioning": "semver",
+    "main_branch": "main"
+}

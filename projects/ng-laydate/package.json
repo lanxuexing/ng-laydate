@@ -1,0 +1,35 @@
+{
+    "name": "ng-laydate",
+    "version": "1.0.0",
+    "description": "A minimalist, powerful, and beautifully designed Date & Time Picker for Angular 18+, built with Signals.",
+    "keywords": [
+        "angular",
+        "signals",
+        "datepicker",
+        "timepicker",
+        "laydate",
+        "calendar",
+        "range-picker",
+        "modern-ui",
+        "ngx",
+        "component-library"
+    ],
+    "author": "layui",
+    "license": "MIT",
+    "homepage": "https://github.com/lanxuexing/ng-laydate",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lanxuexing/ng-laydate.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lanxuexing/ng-laydate/issues"
+    },
+    "peerDependencies": {
+        "@angular/common": ">=17.3.0",
+        "@angular/core": ">=17.3.0",
+        "@angular/forms": ">=17.3.0"
+    },
+    "dependencies": {
+        "tslib": "^2.3.0"
+    }
+}

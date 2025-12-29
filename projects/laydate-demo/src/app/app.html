@@ -1,0 +1,282 @@
+<div class="laydate-demo-container">
+  <header>
+    <h1>Laydate Angular</h1>
+    <p>极简 · 强大 · 高颜值的 Angular 日期时间选择器</p>
+    <p style="font-size: 1rem; opacity: 0.6; margin-top: -20px; font-weight: 400; margin-bottom: 24px;">Minimalist ·
+      Powerful · Elegant Date & Time Picker for Angular</p>
+
+    <div class="header-actions">
+      <a href="https://github.com/lanxuexing/ng-laydate" target="_blank" class="github-star-button">
+        <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+          </path>
+        </svg>
+        <span>Star on GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 1. The Essentials -->
+  <div class="demo-section">
+    <h2>1. The Essentials (核心基础)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline">
+        <label>Pick a Date</label>
+        <input type="text" class="layui-input" laydate (change)="onDateChange($event)" placeholder="Standard Date">
+      </div>
+      <div class="layui-inline">
+        <label>Molv Theme</label>
+        <input type="text" class="layui-input" [laydate]="{value: '2023-10-01', theme: 'molv'}"
+          (change)="onDateChange($event)">
+      </div>
+      <div class="layui-inline">
+        <label>DateTime Mode</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss'}"
+          (change)="onDateChange($event)" placeholder="YMD HMS">
+      </div>
+      <div class="layui-inline">
+        <label>English Version</label>
+        <input type="text" class="layui-input" [laydate]="{lang: 'en'}" placeholder="Language: EN">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Range & Selection -->
+  <div class="demo-section">
+    <h2>2. Selection Range (选择范围)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline">
+        <label>Date Range (-)</label>
+        <input type="text" class="layui-input" [laydate]="{range: true}" (change)="onDateChange($event)"
+          placeholder="Start - End">
+      </div>
+      <div class="layui-inline">
+        <label>DateTime Range</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', range: true}"
+          (change)="onDateChange($event)" placeholder="Time Range">
+      </div>
+      <div class="layui-inline">
+        <label>Month Range (~)</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'month', range: '~', format: 'yyyy-MM'}"
+          placeholder="Custom separator">
+      </div>
+      <div class="layui-inline">
+        <label>Linked Panels</label>
+        <input type="text" class="layui-input" [laydate]="{range: true, rangeLinked: true}"
+          (change)="onDateChange($event)" placeholder="Synchronized panels">
+      </div>
+      <div class="layui-inline">
+        <label>Manual Confirm</label>
+        <input type="text" class="layui-input" [laydate]="{autoConfirm: false}" (change)="onDateChange($event)"
+          placeholder="autoConfirm: false">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Constraints & Logic -->
+  <div class="demo-section">
+    <h2>3. Constraints & Logic (约束与逻辑)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline">
+        <label>Date Range (2016-2080)</label>
+        <input type="text" class="layui-input"
+          [laydate]="{id: 'ins22', min: '2016-10-14', max: '2080-10-14', ready: onLimitReady}"
+          placeholder="Min/Max with Ready Hint">
+      </div>
+      <div class="layui-inline">
+        <label>Relative (-7 to +7 days)</label>
+        <input type="text" class="layui-input" [laydate]="{min: -7, max: 7}" placeholder="Dynamic boundary">
+      </div>
+      <div class="layui-inline">
+        <label>Time (09:30 - 17:30)</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'time', min: '09:30:00', max: '17:30:00'}"
+          placeholder="Restricted time">
+      </div>
+      <div class="layui-inline">
+        <label>Custom Disabling</label>
+        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDate, value: '2024-03-01'}"
+          placeholder="Logic-based disabling">
+      </div>
+      <div class="layui-inline">
+        <label>Disable Future</label>
+        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDateFuture}"
+          placeholder="Past dates only">
+      </div>
+      <div class="layui-inline">
+        <label>Complex Time Rules</label>
+        <input type="text" class="layui-input"
+          [laydate]="{type: 'time', range: true, disabledTime: disabledTimeComplex}" placeholder="Hierarchical rules">
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Premium & Aesthetics -->
+  <div class="demo-section">
+    <h2>4. Aesthetics (视觉与感官)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline">
+        <label>FullPanel (Side-by-Side)</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', theme: 'fullpanel'}"
+          placeholder="Simultaneous view">
+      </div>
+      <div class="layui-inline">
+        <label>Dark Theme</label>
+        <input type="text" class="layui-input" [laydate]="{darkMode: true}" placeholder="Pure dark">
+      </div>
+      <div class="layui-inline">
+        <label>Dark + Custom Color</label>
+        <input type="text" class="layui-input" [laydate]="{darkMode: true, theme: '#FF5722'}"
+          placeholder="Orange dark theme">
+      </div>
+      <div class="layui-inline">
+        <label>Grid + Purple</label>
+        <input type="text" class="layui-input" [laydate]="{theme: ['grid', '#9C27B0']}" placeholder="Combined styles">
+      </div>
+      <div class="layui-inline">
+        <label>Circle + Blue</label>
+        <input type="text" class="layui-input" [laydate]="{theme: ['circle', '#2196F3']}"
+          placeholder="Modern round style">
+      </div>
+      <div class="layui-inline">
+        <label>Preview Hidden</label>
+        <input type="text" class="layui-input" [laydate]="{isPreview: false, value: '2024-04-01'}"
+          placeholder="Minimal footer">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Smart Features -->
+  <div class="demo-section">
+    <h2>5. Smart Features (智慧特性)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline">
+        <label>Custom Mark Function</label>
+        <input type="text" class="layui-input" [laydate]="{mark: markFunction, value: '2024-03-20'}"
+          placeholder="Dynamic annotations">
+      </div>
+      <div class="layui-inline">
+        <label>Cell Render (8th Circle)</label>
+        <input type="text" class="layui-input" [laydate]="{cellRender: cellRenderDemo}"
+          placeholder="Inject HTML to cells">
+      </div>
+      <div class="layui-inline">
+        <label>Built-in Festivals</label>
+        <input type="text" class="layui-input" [laydate]="{calendar: true}" placeholder="Greogrian info">
+      </div>
+      <div class="layui-inline">
+        <label>Holidays/Workdays</label>
+        <input type="text" class="layui-input" [laydate]="{holidays: [['2025-1-1','2025-1-2'],['2025-1-4']]}"
+          placeholder="Holiday markers">
+      </div>
+      <div class="layui-inline">
+        <label>Shade Overlay</label>
+        <input type="text" class="layui-input" [laydate]="{shade: 0.8}" placeholder="Dark overlay (0.8)">
+      </div>
+      <div class="layui-inline">
+        <label>Programmatic Hint</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="layui-input" [laydate]="{id: 'test-hint'}" placeholder="ID: test-hint">
+          <button type="button" class="layui-btn-hint" (click)="showHint()"
+            (mousedown)="$event.stopPropagation()">Hint</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Shortcuts Gallery -->
+  <div class="demo-section">
+    <h2>6. Shortcuts Gallery (横向快捷键展示区)</h2>
+    <p style="margin-top: -20px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted);">Swipe horizontally to
+      explore various shortcut presets.</p>
+    <div class="demo-grid scroll-x">
+      <div class="layui-inline">
+        <label>Preset Dates</label>
+        <input type="text" class="layui-input" [laydate]="{shortcuts: shortcutsDate}"
+          placeholder="Yesterday/Today/Next">
+      </div>
+      <div class="layui-inline">
+        <label>Year Select</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'year', shortcuts: shortcutsYear}"
+          placeholder="Last/Next Year">
+      </div>
+      <div class="layui-inline">
+        <label>Time Intervals</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'time', shortcuts: shortcutsTime}"
+          placeholder="30 min steps">
+      </div>
+      <div class="layui-inline">
+        <label>Advanced mixed</label>
+        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: advancedShortcuts}"
+          placeholder="String/Date/Tpl">
+      </div>
+      <div class="layui-inline">
+        <label>Range presets</label>
+        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: shortcutsRange}"
+          placeholder="This/Last Month">
+      </div>
+      <div class="layui-inline">
+        <label>DateTime Suite</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', shortcuts: shortcutsDateTime}"
+          placeholder="Complex datetime">
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Integration & Dev API -->
+  <div class="demo-section">
+    <h2>7. Integration & Developer API (集成与开发)</h2>
+    <div class="demo-grid">
+      <div class="layui-inline" [formGroup]="myForm">
+        <label>Reactive Form</label>
+        <input type="text" class="layui-input" formControlName="date" [laydate] placeholder="ControlValueAccessor">
+        <div class="value-chip">Value: {{ myForm.value.date }}</div>
+      </div>
+      <div class="layui-inline">
+        <label>Template-driven</label>
+        <input type="text" class="layui-input" [(ngModel)]="templateModel" [laydate] placeholder="ngModel">
+        <div class="value-chip">Value: {{ templateModel }}</div>
+      </div>
+      <div class="layui-inline">
+        <label>Custom Display Filter</label>
+        <input type="text" class="layui-input" [laydate]="displayFormatConfig" placeholder="Value vs. Display">
+      </div>
+      <div class="layui-inline">
+        <label>Service-base Render</label>
+        <input type="text" class="layui-input" id="ID-laydate-type-datetime" placeholder="Attached via Service">
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Static Gallery (Inline) -->
+  <div class="demo-section">
+    <h2>8. Static Gallery (内嵌/面板展示)</h2>
+    <div class="demo-grid">
+      <div>
+        <label>Default Panel</label>
+        <ng-laydate [config]="{position: 'static'}"></ng-laydate>
+      </div>
+      <div>
+        <label>FullPanel Mode</label>
+        <ng-laydate [config]="{position: 'static', type: 'datetime', theme: 'fullpanel'}"></ng-laydate>
+      </div>
+      <div>
+        <label>Grid Theme</label>
+        <ng-laydate [config]="{position: 'static', theme: 'grid'}"></ng-laydate>
+      </div>
+      <div>
+        <label>Year Range</label>
+        <ng-laydate [config]="{position: 'static', type: 'year', range: true}"></ng-laydate>
+      </div>
+      <div>
+        <label>Time Range</label>
+        <ng-laydate [config]="{position: 'static', type: 'time', range: true}"></ng-laydate>
+      </div>
+      <div>
+        <label>Custom Annotations</label>
+        <ng-laydate
+          [config]="{position: 'static', mark: {'2023-01-01': 'New Year', '2023-06-01': 'Children'}}"></ng-laydate>
+      </div>
+    </div>
+  </div>
+</div>

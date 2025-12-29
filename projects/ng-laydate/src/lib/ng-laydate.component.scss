@@ -1,0 +1,948 @@
+/** 图标字体 (Base64 Inline) **/
+@font-face {
+    font-family: 'laydate-icon';
+    src: url('data:font/woff;base64,d09GRgABAAAAAAXUAAsAAAAACOAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFZW7khJY21hcAAAAYAAAAB0AAABuM8eA5hnbHlmAAAB9AAAAb8AAAI4BkbVmGhlYWQAAAO0AAAALwAAADYOn32WaGhlYQAAA+QAAAAcAAAAJAfeA4dobXR4AAAEAAAAABMAAAAYF+kAAGxvY2EAAAQUAAAADgAAAA4CMAFmbWF4cAAABCQAAAAfAAAAIAEVAF1uYW1lAAAERAAAAVQAAAKdV9IFUHBvc3QAAAWYAAAAOQAAAFI1Vl2SeJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2Bk/sM4gYGVgYOpk+kMAwNDP4RmfM1gxMjBwMDEwMrMgBUEpLmmMDgwVDyLZm7438AQw9zA0AAUZgTJAQAraQzLeJzFkdsNgCAMRW95GEMcxQmcwQng3y8HYOKugX3w4wRccqC9gZS0ADKAKJxCAugFQfWIS+ZHFPMTLsl3WUHOzpHbGBYFrhapyG4Ui4K8TVqBNiwTrSv912H7PTPte5/IFzk42luOjs6Fq6Oz4eYgfxDcFXd4nGWPMW/TQBiGv9eHnbgkd63tOIljJ7FDfUGBoBiTKIpoFhYQQ1WmwIQURpCqDmFAECGBQEIqO2JBoHZkgK0DIzPiDyDKL2A/uGzQnr7h3ud7pE8vmUR/frAjViOXujSga7RNBKuHhBsRYpn3jR4qsVmpepzJjowLnaTPrqKaWJ6fDfO0ahUsAY4mLsfZUPYNiSv5ljFB5kdAvRHccjZDh73GWk02n6kbxjtUWp1QbF1U1y9MvaztFhclx6k7zquiZZpFwzgjOO5Xfdu01yz13hRB5ah13mihVJfBzVm53XDuvsgfRJtVG1gu4Tba/GC6EWzoeRT4rlMvrJeLtaDcOedhcXy25pai9CfpB931t/GLlUm3xsiGBMIx9tXuGNvGt4naU3sT7JzwpI0RjOOx2sX+WH38x2Pa+8q+sBEJalGbyMUw872CDd+zkksYnMyY4kDIiKu3mItmKroMhzoLne/xSPKueowlDvVXI/VmpXbx9BRYdVnd/s4+sx6tU0wJkQ0rSXNdKs2HWUvfiv8HHQzYJzXnacRxW33gYcolFuq5mos05JhpFK0QHuKJ1sJUYIY7q51UL0+Bv937cGcAeJxjYGRgYABi1R8rHsXz23xl4GZhAIGrB2TOIuj/J1gYmM2BXA4GJpAoAFITC2MAeJxjYGRgYG7438AQw8IAAkCSkQEVsAEARwwCb3icY2FgYGB+ycDAwoCKARKfAQEAAAAAAAB2AIoAngDcARwAAHicY2BkYGBgYwhkYGUAASYg5gJCBob/YD4DABFIAXMAeJx1j7tKA0EYhc/kJm7EQomkHBsRQzYXrFIJgaSwSxHrzWY2F/YSZieBbX0HC5/Gx7Cz8zEET3ZHCYHsMD/fOXP+mX8BXOELAsXX4C5Y4IKq4BLOcGu5TP/ecoX8aLmKOp4s1+g/W3bQwovlOq7xyhtE5ZzqAW+WBZr4sFzCJT4tl+l/W66QfyxXcSMalmtoipZlB1MxtFzHnXh3hlp5Rs3lLJMrP4mDJDZO6GVzmu29MVGLbejpQ+uQp0qnqySWPbd7aI9VrPTfvelu0TcmkIFOIjniAyoME7nRyVr5xl0asxl0OoH1XT+JOOYQGgoeDOscEjNkrCv4SBAjyKthLmQmY6JItv8TE6oFtvm5Ppk65U+pNFLqvZLowUX3ZHpMFecdx/Om2HGKPl3DmSW3ZkdEGtk/ULw1JEts8rM1HZ++i2XetcEAHa7gKO/mb0e/IEZ6MXicY2BigAAuBuyAjZGJkZmRhZGVkY2RnYGxgq0yvxSI2KpK84GIvSIzsTKzMpUDShsyMAAA7YcMcwAAAA==') format('woff');
+}
+
+.laydate-icon {
+    font-family: "laydate-icon" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ng-laydate.layui-laydate {
+
+    /* CSS Variable for custom theme color */
+    --laydate-theme-color: #16b777;
+
+    /* 严格还原：样式重置 */
+    &,
+    & * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        list-style: none;
+    }
+
+    /* 主体结构 */
+    position: absolute;
+    z-index: 99999999;
+    margin: 5px 0;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: normal;
+    -webkit-animation-duration: 0.2s;
+    animation-duration: 0.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    animation-name: laydate-downbit;
+    background-color: #fff;
+    color: #777;
+    border: 1px solid #d2d2d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+
+    &.layui-laydate-static {
+        position: relative;
+        z-index: 0;
+        display: inline-block;
+        margin: 0;
+        -webkit-animation: none;
+        animation: none;
+    }
+
+    &.layui-laydate-range {
+        width: 546px;
+
+        &.laydate-has-shortcut {
+            width: 636px;
+        }
+
+        .layui-laydate-footer span.layui-laydate-preview {
+            max-width: 440px;
+        }
+    }
+
+    /* host widths for single mode */
+    &:not(.layui-laydate-range) {
+        width: 274px; // 272 + 2px border
+
+        &.laydate-has-shortcut {
+            width: 364px; // 274 + 90
+        }
+
+        &.laydate-theme-fullpanel {
+            width: 546px; // 544 + 2px border
+
+            &.laydate-has-shortcut {
+                width: 636px; // 546 + 90
+            }
+        }
+    }
+
+    &.laydate-has-shortcut {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    /* 全面板 */
+    &.laydate-theme-fullpanel {
+        .layui-laydate-main {
+            width: 544px; // 272 * 2
+            display: flex;
+            flex-direction: column;
+        }
+
+        .layui-laydate-header {
+            width: 100%;
+            border-bottom: 1px solid #f2f2f2;
+            padding: 10px 0 5px;
+            box-sizing: border-box;
+            text-align: center;
+
+            .laydate-set-ym {
+                width: 100%;
+                text-align: center;
+                padding: 0;
+                margin: 0;
+                left: 0;
+
+                span {
+                    display: inline-block !important;
+                    margin: 0 10px;
+                }
+            }
+        }
+
+        .layui-laydate-content-container {
+            display: flex;
+            width: 100%;
+            height: 231px;
+            box-sizing: border-box;
+        }
+
+        .layui-laydate-content-main {
+            width: 272px;
+            flex: 1;
+            box-sizing: border-box;
+            border-right: 1px solid #f2f2f2;
+        }
+
+        .layui-laydate-content-side {
+            width: 272px;
+            flex: 1;
+            position: relative;
+            background-color: #fff;
+            box-sizing: border-box;
+            overflow: hidden;
+
+            .layui-laydate-list {
+                position: static;
+                display: block;
+                height: 100%;
+                border-left: none;
+                padding: 5px 10px;
+
+                li {
+                    width: 33.33%;
+                    height: 42px;
+                    line-height: 42px;
+                    text-align: center;
+                    margin: 0;
+                }
+
+                &.laydate-month-list li {
+                    width: calc(25% - 10px);
+                    margin: 5px;
+                    height: 42px;
+                    line-height: 42px;
+                    border-radius: 2px;
+                }
+            }
+
+            .laydate-time-list {
+                display: flex;
+                padding: 0;
+
+                li {
+                    flex: 1;
+                    height: 100%;
+                    border-left: 1px solid #f2f2f2;
+                    display: flex;
+                    flex-direction: column;
+                    width: auto;
+
+                    &:first-child {
+                        border-left: none;
+                    }
+
+                    p {
+                        height: 38px;
+                        line-height: 38px;
+                        border-bottom: 1px solid #f2f2f2;
+                        margin: 0;
+                        background: #fff;
+                        text-align: center;
+                        font-weight: 400;
+                        color: #666;
+                    }
+
+                    ol {
+                        flex: 1;
+                        overflow-y: auto;
+                        border: none; // Remove base ol borders to avoid overlap with li border
+
+                        li {
+                            width: 100%;
+                            height: 30px;
+                            line-height: 30px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+
+        .laydate-btns-time {
+            display: none;
+        }
+
+        .layui-laydate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .layui-laydate-preview {
+                flex: 1;
+                text-align: left;
+                padding-left: 5px;
+                max-width: none;
+                font-size: 14px;
+            }
+
+            .laydate-footer-btns {
+                flex: 0 0 auto;
+                position: static;
+
+                span {
+                    margin: 0 0 0 -1px;
+                    border: 1px solid #d2d2d2;
+                    background-color: #fff;
+                    color: #666;
+                    padding: 0 10px;
+                    height: 26px;
+                    line-height: 24px;
+                    border-radius: 0;
+
+                    &:first-child {
+                        border-radius: 2px 0 0 2px;
+                    }
+
+                    &:last-child {
+                        border-radius: 0 2px 2px 0;
+                    }
+
+                    &:hover {
+                        border-color: #c2c2c2;
+                        color: #333;
+                    }
+
+                    &.laydate-btns-confirm {
+                        background-color: #fff;
+                        color: #666;
+
+                        &:hover {
+                            color: #16b777;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* 内部组件 */
+    .layui-laydate-main {
+        width: 272px;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        min-height: 276px;
+        /* 保证列表高度不塌陷，且不覆盖页脚 (Header 45 + Content 231) */
+        background-color: #fff;
+    }
+
+    .layui-laydate-header *,
+    .layui-laydate-content td,
+    .layui-laydate-list li {
+        transition-duration: .3s;
+        -webkit-transition-duration: .3s;
+    }
+
+    .layui-laydate-header {
+        position: relative;
+        z-index: 11;
+        /* 确保在列表之上 */
+        line-height: 30px;
+        padding: 10px 70px 5px;
+        border-bottom: 1px solid #e2e2e2;
+    }
+
+    .layui-laydate-header * {
+        display: inline-block;
+        vertical-align: bottom;
+    }
+
+    .layui-laydate-header i {
+        position: absolute;
+        top: 10px;
+        padding: 0 3px;
+        color: #999;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .layui-laydate-header i:hover,
+    .layui-laydate-header span:hover {
+        color: #16b777;
+    }
+
+    .layui-laydate-header i.laydate-prev-y {
+        left: 15px;
+    }
+
+    .layui-laydate-header i.laydate-prev-m {
+        left: 45px;
+    }
+
+    .layui-laydate-header i.laydate-next-y {
+        right: 15px;
+    }
+
+    .layui-laydate-header i.laydate-next-m {
+        right: 45px;
+    }
+
+    .laydate-set-ym {
+        width: 100%;
+        text-align: center;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .laydate-set-ym span {
+        padding: 0 10px;
+        cursor: pointer;
+    }
+
+    .layui-laydate-content {
+        position: relative;
+        padding: 10px;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .layui-laydate-content table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .layui-laydate-content th,
+    .layui-laydate-content td {
+        width: 36px;
+        height: 30px;
+        padding: 0;
+        text-align: center;
+    }
+
+    .layui-laydate-content th {
+        font-weight: 400;
+        color: #333;
+    }
+
+    .layui-laydate-content td {
+        position: relative;
+        cursor: pointer;
+        color: #777;
+    }
+
+    .layui-laydate-content td div {
+        position: relative;
+        padding: 5px 0;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .laydate-day-mark {
+        display: block;
+        font-size: 11px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 20px;
+    }
+
+    .laydate-day-mark-wrap::after {
+        position: absolute;
+        content: '';
+        right: 2px;
+        top: 2px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: var(--laydate-theme-color);
+        z-index: 2;
+    }
+
+    .laydate-holiday-badge {
+        position: absolute;
+        right: 1px;
+        top: 1px;
+        font-size: 10px;
+        line-height: 1;
+        color: #ff5722;
+
+        &.laydate-holiday-work {
+            color: #999;
+        }
+    }
+
+    .laydate-day-prev,
+    .laydate-day-next {
+        color: #d2d2d2 !important;
+    }
+
+    .laydate-day-now {
+        color: #16b777;
+    }
+
+    .laydate-day-now:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        left: 0;
+        top: 0;
+        border: 1px solid var(--laydate-theme-color);
+        box-sizing: border-box;
+    }
+
+    .laydate-selected,
+    .laydate-day-range {
+        background-color: var(--laydate-theme-color-light) !important;
+    }
+
+    .layui-this,
+    .layui-this>div {
+        background-color: var(--laydate-theme-color) !important;
+        color: #fff !important;
+    }
+
+    .layui-laydate-footer {
+        position: relative;
+        z-index: 11;
+        /* 确保在列表之上 */
+        height: 46px;
+        line-height: 26px;
+        padding: 10px;
+        border-top: 1px solid #e2e2e2;
+        background-color: #fff;
+    }
+
+    .layui-laydate-footer span {
+        display: inline-block;
+        vertical-align: top;
+        height: 26px;
+        line-height: 24px;
+        padding: 0 10px;
+        border: 1px solid #C9C9C9;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all .3s;
+    }
+
+    .layui-laydate-footer span:hover,
+    .layui-laydate-footer span.laydate-btns-time:hover {
+        color: #16b777;
+    }
+
+    .layui-laydate-footer span.layui-laydate-preview {
+        cursor: default;
+        border-color: transparent !important;
+        max-width: 170px;
+        /* 增加宽度以容纳 datetime */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .layui-laydate-footer span.layui-laydate-preview:hover {
+        color: #777;
+    }
+
+    .layui-laydate-footer span:first-child.layui-laydate-preview {
+        padding-left: 0;
+    }
+
+    .laydate-footer-btns {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    .laydate-footer-btns span {
+        margin: 0 0 0 -1px;
+        border-radius: 0px;
+    }
+
+    .laydate-footer-btns span:first-child {
+        border-radius: 2px 0px 0px 2px;
+    }
+
+    .laydate-footer-btns span:last-child {
+        border-radius: 0px 2px 2px 0px;
+    }
+
+    /* 列表选择器 */
+    .layui-laydate-list {
+        position: absolute;
+        left: 0;
+        top: 45px;
+        width: 100%;
+        height: 231px;
+        /* 固定高度，防止塌陷 */
+        padding: 10px;
+        background-color: #fff;
+        z-index: 10;
+        overflow-y: auto; // Support scrolling for long lists
+
+        &::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+    }
+
+    .layui-laydate-list>li {
+        float: left;
+        position: relative;
+        width: 33.33%;
+        height: 36px;
+        line-height: 36px;
+        margin: 3px 0;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .layui-laydate-list>li:not(.laydate-time-list li):hover {
+        background-color: #eee;
+        color: #333;
+    }
+
+    .laydate-month-list>li {
+        width: 25%;
+        margin: 15px 0;
+    }
+
+    .laydate-time-list {
+        display: flex;
+        padding-bottom: 0;
+        overflow: hidden;
+    }
+
+    .laydate-time-list>li {
+        flex: 1;
+        width: 0;
+        /* Important for flex distribution */
+        float: none;
+        height: 100%;
+        margin: 0;
+        line-height: normal;
+        cursor: default;
+    }
+
+    .laydate-time-list p {
+        position: relative;
+        top: -4px;
+        margin: 0;
+        line-height: 29px;
+        text-align: center;
+    }
+
+    .laydate-time-list ol {
+        height: 181px;
+        overflow: hidden;
+        border: 1px solid #e2e2e2;
+        border-left-width: 0;
+    }
+
+    .laydate-time-list>li:first-child ol {
+        border-left-width: 1px;
+    }
+
+    /* Handle dynamic border based on visibility */
+    /* If first child is hidden, next visible one needs border - but simple :first-child works on DOM order */
+
+    .laydate-time-list>li:hover ol {
+        overflow-y: auto;
+    }
+
+    .laydate-time-list ol li {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .laydate-time-list ol li:hover {
+        background-color: #eee;
+        color: #333;
+    }
+
+    /* 快捷栏 */
+    .layui-laydate-shortcut {
+        flex: 0 0 90px;
+        height: 276px;
+        padding: 5px 0;
+        border-right: 1px solid #e2e2e2;
+        background-color: #fff;
+        overflow-y: auto;
+        box-sizing: border-box;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #eee;
+        }
+    }
+
+    .layui-laydate-content-wrapper {
+        flex: 1;
+        display: block;
+    }
+
+    .layui-laydate-shortcut>li {
+        padding: 0 10px;
+        line-height: 28px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #666;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .layui-laydate-shortcut>li:hover {
+        background-color: #f2f2f2;
+        color: #16b777;
+    }
+
+    .layui-laydate-footer {
+        flex: 0 0 100%;
+        width: 100%;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 11;
+        height: 46px;
+        line-height: 26px;
+        padding: 10px;
+        border-top: 1px solid #e2e2e2;
+        background-color: #fff;
+    }
+
+    &.laydate-theme-molv {
+        --laydate-theme-color: #16baaa;
+        /* Override CSS var */
+
+        .layui-laydate-header {
+            background-color: #16baaa;
+            border: none;
+
+            i,
+            span {
+                color: #fff;
+            }
+
+            i:hover,
+            span:hover {
+                color: #fff;
+                opacity: 0.8;
+            }
+        }
+
+        .layui-laydate-footer {
+            border-top: 1px solid #eee;
+
+            span:hover {
+                color: #16baaa;
+            }
+        }
+    }
+
+    &.laydate-theme-grid {
+
+        .layui-laydate-content td,
+        .layui-laydate-content thead,
+        .laydate-year-list>li,
+        .laydate-month-list>li {
+            border: 1px solid #e2e2e2;
+        }
+    }
+
+    &.laydate-theme-circle {
+
+        .layui-laydate-content td>div,
+        .layui-laydate-content td.layui-this>div {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 14px;
+            margin: 0 4px;
+            padding: 0;
+        }
+
+        .layui-laydate-content table td.layui-this {
+            background-color: transparent !important;
+        }
+    }
+
+    /* 辅助样式 */
+    &.laydate-ym-show .laydate-prev-m,
+    &.laydate-ym-show .laydate-next-m {
+        display: none !important;
+    }
+
+    &.laydate-time-show .layui-laydate-header .layui-icon,
+    &.laydate-time-show .laydate-set-ym span[lay-type="year"],
+    &.laydate-time-show .laydate-set-ym span[lay-type="month"] {
+        display: none !important;
+    }
+
+    .laydate-disabled,
+    .laydate-disabled:hover {
+        background: none !important;
+        color: #d2d2d2 !important;
+        cursor: not-allowed !important;
+    }
+}
+
+// Hint
+.layui-laydate-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    margin-left: 0;
+    transform: translate(-50%, -50%);
+    line-height: 20px;
+    padding: 15px;
+    text-align: center;
+    font-size: 12px;
+    color: #FF5722;
+    background-color: #fff;
+    // border: 1px solid #FF5722; // Removed border
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: laydate-hint-downbit .3s;
+}
+
+@keyframes laydate-downbit {
+    0% {
+        opacity: 0.3;
+        transform: translate3d(0, -5px, 0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes laydate-hint-downbit {
+    0% {
+        opacity: 0.3;
+        transform: translate3d(-50%, calc(-50% - 5px), 0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(-50%, -50%, 0);
+    }
+}
+
+
+/* Dark Theme (Variable Aware) */
+ng-laydate.layui-laydate.laydate-theme-dark {
+    border-color: #555;
+    background-color: #333;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    .layui-laydate-header {
+        border-bottom-color: #555;
+
+        i,
+        span {
+            color: #fff;
+
+            &:hover {
+                color: var(--laydate-theme-color, #16b777);
+            }
+        }
+    }
+
+    .layui-laydate-content {
+        th {
+            color: #ccc;
+        }
+
+        td {
+            color: #fff;
+
+            &:hover {
+                background-color: #555 !important;
+            }
+
+            &.laydate-disabled {
+                color: #777 !important;
+                background-color: transparent !important;
+            }
+
+            &.laydate-day-next,
+            &.laydate-day-prev {
+                color: #777;
+            }
+
+            &.layui-this {
+                background-color: var(--laydate-theme-color, #16b777) !important;
+                color: #fff !important;
+            }
+
+            /* Dark Theme Hover Refinement */
+            &:not(.layui-this):hover {
+                background-color: rgba(255, 255, 255, 0.08) !important;
+                color: rgba(255, 255, 255, 0.7) !important;
+            }
+        }
+    }
+
+    .layui-laydate-footer {
+        border-top-color: #555;
+        background-color: #333;
+
+        span {
+            color: #eee;
+            background-color: transparent;
+            border-color: #555;
+
+            &:hover {
+                color: var(--laydate-theme-color, #16b777);
+                border-color: var(--laydate-theme-color, #16b777);
+            }
+
+            /* Confirm button style */
+            &[lay-type="confirm"] {
+                background-color: var(--laydate-theme-color, #16b777);
+                color: #fff;
+                border-color: var(--laydate-theme-color, #16b777);
+
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+
+    .layui-laydate-shortcut {
+        border-right-color: #555;
+        background-color: #333;
+
+        li {
+            color: #eee;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.08);
+                /* Shortcut hover */
+            }
+
+            &.layui-this {
+                background-color: var(--laydate-theme-color, #16b777);
+                color: #fff;
+            }
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #666;
+        }
+    }
+
+    /* Range input background fix */
+    .laydate-set-ym span {
+        color: #fff !important;
+    }
+
+    .layui-laydate-hint {
+        background-color: #333 !important;
+        color: #FF5722 !important;
+        border: 1px solid #555;
+    }
+
+    /* List Panel (Year/Month/Time) */
+    .layui-laydate-list {
+        background-color: #333;
+        border: 1px solid #555;
+
+        li {
+            color: #ccc;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.08);
+                /* List hover */
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            &.layui-this {
+                background-color: var(--laydate-theme-color, #16b777);
+                color: #fff;
+            }
+        }
+    }
+
+    /* Dark Theme Fixes for Internal Containers */
+    .layui-laydate-main {
+        background-color: #333;
+    }
+
+    .layui-laydate-content-side {
+        background-color: #333;
+    }
+
+    /* Time list header fix */
+    .laydate-time-list li p {
+        background-color: #333;
+        color: #eee;
+        border-bottom-color: #555;
+    }
+
+    .laydate-time-list li {
+        border-right-color: #555;
+    }
+
+    .laydate-time-list ol li:not(.layui-this):hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+}

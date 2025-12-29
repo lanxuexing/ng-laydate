@@ -1,0 +1,15 @@
+/* Array of configurations for the TypeScript compiler. */
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../../out-tsc/lib",
+        "declaration": true,
+        "declarationMap": true,
+        "inlineSources": true,
+        "types": []
+    },
+    "exclude": [
+        "src/test.ts",
+        "**/*.spec.ts"
+    ]
+}
