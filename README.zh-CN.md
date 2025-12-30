@@ -51,14 +51,14 @@ npm install ng-laydate
 
 ### 1. 引入指令
 
-在您的独立组件（Standalone Component）或模块中引入 `LaydateDirective`。
+在您的独立组件（Standalone Component）或模块中引入 `NgLaydateDirective`。
 
 ```typescript
-import { LaydateDirective } from 'ng-laydate';
+import { NgLaydateDirective } from 'ng-laydate';
 
 @Component({
   standalone: true,
-  imports: [LaydateDirective, ...]
+  imports: [NgLaydateDirective, ...]
 })
 export class MyComponent {}
 ```
@@ -69,13 +69,12 @@ export class MyComponent {}
 
 ```html
 <!-- 基础日期选择 -->
-<input type="text" [laydate] placeholder="请选择日期">
+<input type="text" laydate placeholder="请选择日期">
 
-<!-- 日期时间范围选择 + 全面板主题 -->
+<!-- 日期时间范围选择 -->
 <input type="text" [laydate]="{
-  type: 'datetime', 
-  range: true, 
-  theme: 'fullpanel'
+  type: 'datetime',
+  range: true,
 }" placeholder="请选择时间范围">
 ```
 
@@ -85,13 +84,13 @@ export class MyComponent {}
 
 #### 模板驱动表单 (Template-driven)
 ```html
-<input type="text" [laydate] [(ngModel)]="dateValue">
+<input type="text" laydate [(ngModel)]="dateValue">
 ```
 
 #### 响应式表单 (Reactive)
 ```html
 <form [formGroup]="myForm">
-  <input type="text" [laydate] formControlName="date">
+  <input type="text" laydate formControlName="date">
 </form>
 ```
 
@@ -100,10 +99,10 @@ export class MyComponent {}
 如果您需要静态展示或嵌入式选择器，可以直接使用组件。
 
 ```html
-<ng-laydate 
+<ng-laydate
   [config]="{position: 'static', theme: 'molv'}"
-  (done)="onDateSelected($event)">
-</ng-laydate>
+  (done)="onDateSelected($event)"
+/>
 ```
 
 ## ⚙️ 配置参数 (LaydateConfig)

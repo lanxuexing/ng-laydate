@@ -51,14 +51,14 @@ npm install ng-laydate
 
 ### 1. Import Directive
 
-Register `LaydateDirective` in your standalone component or module.
+Register `NgLaydateDirective` in your standalone component or module.
 
 ```typescript
-import { LaydateDirective } from 'ng-laydate';
+import { NgLaydateDirective } from 'ng-laydate';
 
 @Component({
   standalone: true,
-  imports: [LaydateDirective, ...]
+  imports: [NgLaydateDirective, ...]
 })
 export class MyComponent {}
 ```
@@ -69,13 +69,12 @@ Just add the `[laydate]` directive to any input element.
 
 ```html
 <!-- Simple Date Picker -->
-<input type="text" [laydate] placeholder="Select Date">
+<input type="text" laydate placeholder="Select Date">
 
 <!-- Datetime Range with FullPanel Theme -->
 <input type="text" [laydate]="{
-  type: 'datetime', 
-  range: true, 
-  theme: 'fullpanel'
+  type: 'datetime',
+  range: true,
 }" placeholder="Select DateTime Range">
 ```
 
@@ -85,13 +84,13 @@ The component fully implements `ControlValueAccessor`, allowing you to use `ngMo
 
 #### Template-driven Form
 ```html
-<input type="text" [laydate] [(ngModel)]="dateValue">
+<input type="text" laydate [(ngModel)]="dateValue">
 ```
 
 #### Reactive Form
 ```html
 <form [formGroup]="myForm">
-  <input type="text" [laydate] formControlName="date">
+  <input type="text" laydate formControlName="date">
 </form>
 ```
 
@@ -100,10 +99,10 @@ The component fully implements `ControlValueAccessor`, allowing you to use `ngMo
 Use the component directly for static or embedded pickers.
 
 ```html
-<ng-laydate 
+<ng-laydate
   [config]="{position: 'static', theme: 'molv'}"
-  (done)="onDateSelected($event)">
-</ng-laydate>
+  (done)="onDateSelected($event)"
+/>
 ```
 
 ## ⚙️ Configuration (LaydateConfig)
