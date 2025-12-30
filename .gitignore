@@ -59,3 +59,5 @@ Icon?
 .antigravity/
 .gemini/
 # .agent/ is allowed for collaboration
+# Temporary README copies for build
+projects/ng-laydate/README*

@@ -6,7 +6,7 @@
     "start": "ng serve laydate-demo",
     "demo": "ng serve laydate-demo",
     "build:all": "npm run build:lib && npm run build:demo",
-    "build:lib": "ng build ng-laydate",
+    "build:lib": "cp README* projects/ng-laydate/ && ng build ng-laydate && rm projects/ng-laydate/README*",
     "build:demo": "ng build laydate-demo --configuration production",
     "watch:lib": "ng build ng-laydate --watch --configuration development",
     "test": "ng test",
