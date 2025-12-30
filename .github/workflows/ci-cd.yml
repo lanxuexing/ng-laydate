@@ -87,6 +87,6 @@ jobs:
       - name: Publish to npm (OIDC provenance)
         run: |
           npm publish ./dist/ng-laydate \
-            --tag latest \
+            --tag ${{ steps.determine-tag.outputs.tag }} \
             --provenance \
             --access public
