@@ -84,6 +84,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to npm
+      - name: Publish to npm (with provenance)
         # Using --provenance for Trusted Publishing (OIDC)
-        run: npm publish ./dist/ng-laydate --tag ${{ steps.determine-tag.outputs.tag }} --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm whoami
+          npm publish ./dist/ng-laydate \
+            --tag ${{ steps.determine-tag.outputs.tag }} \
+            --provenance \
+            --access public
