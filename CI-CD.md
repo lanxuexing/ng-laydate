@@ -1,5 +1,3 @@
----
-
 ## Table of Contents
 - [English Guide](#english)
   - [Actions & Triggers](#en-triggers)
