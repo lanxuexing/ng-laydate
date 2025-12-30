@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
-      id-token: write
-      contents: write
+      id-token: write # Required for OIDC Trusted Publishing
+      contents: write # Required for creating GitHub Releases
     outputs:
       release_tag: ${{ steps.determine-tag.outputs.tag }}
       is_prerelease: ${{ steps.determine-tag.outputs.is_prerelease }}
