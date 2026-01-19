@@ -1,6 +1,6 @@
 {
     "name": "ng-laydate",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "description": "A minimalist, powerful, and beautifully designed Date & Time Picker for Angular 18+, built with Signals.",
     "keywords": [
         "angular",
