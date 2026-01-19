@@ -1,4 +1,5 @@
-import { Injectable, inject, ViewContainerRef, ComponentRef, EnvironmentInjector, createComponent, ApplicationRef } from '@angular/core';
+import { Injectable, inject, ViewContainerRef, ComponentRef, EnvironmentInjector, createComponent, ApplicationRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { DateObject, LaydateConfig, CalendarDay } from './ng-laydate.types';
 import { NgLaydateComponent } from './ng-laydate.component';
 
@@ -9,6 +10,7 @@ export class NgLaydateService {
 
     private envInjector = inject(EnvironmentInjector);
     private appRef = inject(ApplicationRef);
+    private platformId = inject(PLATFORM_ID);
     private defaultVcr?: ViewContainerRef;
 
     // Instance Registry
@@ -60,6 +62,11 @@ export class NgLaydateService {
     }
 
     render(config: LaydateConfig): ComponentRef<NgLaydateComponent> | null {
+        // SSR Guard: Do not render dynamic components accessing DOM in Server
+        if (!isPlatformBrowser(this.platformId)) {
+            return null;
+        }
+
         const elem = typeof config.elem === 'string' ? document.querySelector(config.elem) as HTMLElement : config.elem;
         if (!elem) {
             console.error('Laydate: target element not found', config.elem);
@@ -169,6 +176,8 @@ export class NgLaydateService {
     }
 
     private setAbsolutePosition(elem: HTMLElement, componentEl: HTMLElement) {
+        if (!isPlatformBrowser(this.platformId)) return;
+
         requestAnimationFrame(() => {
             const rect = elem.getBoundingClientRect();
             const scrollT = window.pageYOffset || document.documentElement.scrollTop;

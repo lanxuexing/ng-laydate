@@ -1,5 +1,5 @@
-import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgLaydateService } from './ng-laydate.service';
 import { DateObject, LaydateConfig, CalendarDay } from './ng-laydate.types';
 import { SafeHtmlPipe } from './safe-html.pipe';
@@ -32,6 +32,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 export class NgLaydateComponent {
   private service = inject(NgLaydateService);
   private el = inject(ElementRef);
+  private platformId = inject(PLATFORM_ID);
   @ViewChildren('timeOl_hours') hoursOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_minutes') minutesOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_seconds') secondsOls!: QueryList<ElementRef<HTMLOListElement>>;
@@ -1119,17 +1120,19 @@ export class NgLaydateComponent {
     };
 
     // Use requestAnimationFrame for smoother UI update
-    requestAnimationFrame(() => {
-      if (cfg.range) {
-        scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
-        scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
-        scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
-      } else {
-        const cur = this.currentDate();
-        scroll(this.hoursOls, cur.hours);
-        scroll(this.minutesOls, cur.minutes);
-        scroll(this.secondsOls, cur.seconds);
-      }
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      requestAnimationFrame(() => {
+        if (cfg.range) {
+          scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
+          scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
+          scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
+        } else {
+          const cur = this.currentDate();
+          scroll(this.hoursOls, cur.hours);
+          scroll(this.minutesOls, cur.minutes);
+          scroll(this.secondsOls, cur.seconds);
+        }
+      });
+    }
   }
 }

@@ -36,6 +36,8 @@
 - 🌏 **国际化**: 完美支持中文 (`cn`) 和英文 (`en`)。
 - 🚩 **节日与假勤**: 内置公历节日显示，支持自定义节假日/加班标记。
 - 🖋️ **自定义渲染**: 提供灵活的 `cellRender` 或 `mark` 函数，支持在单元格内插入自定义 HTML。
+- ⚡ **极致性能**: 深度优化的渲染引擎，配合 `requestAnimationFrame` 实现丝滑的 60fps 交互体验。
+- 🖥️ **SSR 支持**: 完美兼容 Angular Universal / 服务端渲染 (SSR) 场景。
 - 🌓 **深色模式**: 高质量的深色主题支持。
 - 📝 **表单支持**: 完美支持模板驱动表单 (Template-driven) 和响应式表单 (Reactive Forms) 的**双向绑定** (`ControlValueAccessor`)。
 

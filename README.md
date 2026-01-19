@@ -36,6 +36,8 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 - 🌏 **Internationalization**: Full support for Chinese (`cn`) and English (`en`).
 - 🚩 **Special Days**: Built-in Gregorian festivals and customizable Holiday/Workday markers.
 - 🖋️ **Custom Content**: Flexible cell rendering via `cellRender` or `mark` functions.
+- ⚡ **Performance**: Optimized rendering engine with smart diffing and `requestAnimationFrame` for smooth 60fps interactions.
+- 🖥️ **SSR Ready**: Fully compatible with Angular Universal / Server-Side Rendering (SSR).
 - 🌓 **Dark Mode**: Premium dark theme support.
 - 📝 **Form Support**: Full two-way binding support for Template-driven and Reactive Forms (`ControlValueAccessor`).
 
