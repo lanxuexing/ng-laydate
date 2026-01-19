@@ -1,18 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
-import { LaydateComponent } from './laydate';
+import { NgLaydateComponent } from './ng-laydate.component';
 
-describe('LaydateComponent', () => {
-  let component: LaydateComponent;
-  let fixture: ComponentFixture<LaydateComponent>;
+describe('NgLaydateComponent', () => {
+  let component: NgLaydateComponent;
+  let fixture: ComponentFixture<NgLaydateComponent>;
+
+  beforeAll(() => {
+    TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LaydateComponent]
+      imports: [NgLaydateComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(LaydateComponent);
+    fixture = TestBed.createComponent(NgLaydateComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

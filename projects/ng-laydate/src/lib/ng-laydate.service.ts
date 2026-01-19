@@ -13,6 +13,8 @@ export class NgLaydateService {
 
     // Instance Registry
     private instances = new Map<string, NgLaydateComponent>();
+    // Track event listeners for cleanup
+    private documentClickListeners = new Map<ComponentRef<any>, any>();
 
     hexToRgba(hex: string, opacity: number): string {
         if (!hex) return `rgba(22, 183, 119, ${opacity})`; // Default green
@@ -151,9 +153,11 @@ export class NgLaydateService {
                 const target = e.target as Node;
                 if (!elem.contains(target) && !componentEl.contains(target)) {
                     this.destroy(componentRef, shadeEl);
-                    document.removeEventListener('mousedown', clickListener);
                 }
             };
+
+            // Register listener for cleanup
+            this.documentClickListeners.set(componentRef, clickListener);
 
             // Use mousedown to detect clicks before they bubble, with delay
             setTimeout(() => {
@@ -200,6 +204,14 @@ export class NgLaydateService {
         if (shadeEl && shadeEl.parentNode) {
             shadeEl.parentNode.removeChild(shadeEl);
         }
+
+        // Cleanup listener
+        const listener = this.documentClickListeners.get(ref);
+        if (listener) {
+            document.removeEventListener('mousedown', listener);
+            this.documentClickListeners.delete(ref);
+        }
+
         this.appRef.detachView(ref.hostView);
         ref.destroy();
     }
@@ -366,15 +378,11 @@ export class NgLaydateService {
         };
 
         // Helper to check disabled, marks, and holidays
-        const checkStatus = (y: number, m: number, d: number) => {
-            const status: { disabled: boolean; mark: string; holiday?: '休' | '班' } = { disabled: false, mark: '' };
-            if (!config) return status;
+        // Pre-calculate min/max timestamps outside the loop
+        let minTime = -Infinity;
+        let maxTime = Infinity;
 
-            // Check disabled
-            const dateOnly = new Date(y, m, d).getTime();
-            let minTime = -Infinity;
-            let maxTime = Infinity;
-
+        if (config) {
             if (config.min) {
                 const minD = this.parse(config.min) as DateObject;
                 minTime = new Date(minD.year, minD.month, minD.date).getTime();
@@ -383,7 +391,14 @@ export class NgLaydateService {
                 const maxD = this.parse(config.max) as DateObject;
                 maxTime = new Date(maxD.year, maxD.month, maxD.date).getTime();
             }
+        }
 
+        const checkStatus = (y: number, m: number, d: number) => {
+            const status: { disabled: boolean; mark: string; holiday?: '休' | '班' } = { disabled: false, mark: '' };
+            if (!config) return status;
+
+            // Check disabled
+            const dateOnly = new Date(y, m, d).getTime();
             status.disabled = dateOnly < minTime || dateOnly > maxTime;
 
             // Check callback disabledDate

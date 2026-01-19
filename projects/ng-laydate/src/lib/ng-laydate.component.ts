@@ -755,29 +755,29 @@ export class NgLaydateComponent {
     const cfg = this.finalConfig();
     if (!cfg.range) return false;
 
-    // Normalize for comparison based on type
-    const getTime = (d: DateObject) => {
-      // In year picker, just compare years
-      if (cfg.type === 'year') return new Date(d.year, 0, 1).getTime();
-      // In month picker, compare year and month
-      if (cfg.type === 'month') return new Date(d.year, d.month, 1).getTime();
-      // In date/time picker, compare YMD
-      return new Date(d.year, d.month, d.date).getTime();
+    // Optimize: Use integer comparison instead of Date objects
+    // This reduces GC pressure significantly during hover interaction
+    const getVal = (y: number, m: number, d: number) => {
+      if (cfg.type === 'year') return y;
+      if (cfg.type === 'month') return y * 100 + m;
+      return y * 10000 + m * 100 + d;
     };
 
-    const current = new Date(year, month, day).getTime();
-    const start = getTime(this.startDate());
+    const current = getVal(year, month, day);
+    const startObj = this.startDate();
+    const start = getVal(startObj.year, startObj.month, startObj.date);
 
     if (this.rangeState() === 'selecting') {
       const hover = this.hoverDate();
       if (!hover) return current === start;
-      const hoverT = getTime(hover);
-      const min = Math.min(start, hoverT);
-      const max = Math.max(start, hoverT);
+      const hoverVal = getVal(hover.year, hover.month, hover.date);
+      const min = Math.min(start, hoverVal);
+      const max = Math.max(start, hoverVal);
       return current >= min && current <= max;
     }
 
-    const end = getTime(this.endDate());
+    const endObj = this.endDate();
+    const end = getVal(endObj.year, endObj.month, endObj.date);
     return current >= start && current <= end;
   }
 
@@ -1118,15 +1118,18 @@ export class NgLaydateComponent {
       });
     };
 
-    if (cfg.range) {
-      scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
-      scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
-      scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
-    } else {
-      const cur = this.currentDate();
-      scroll(this.hoursOls, cur.hours);
-      scroll(this.minutesOls, cur.minutes);
-      scroll(this.secondsOls, cur.seconds);
-    }
+    // Use requestAnimationFrame for smoother UI update
+    requestAnimationFrame(() => {
+      if (cfg.range) {
+        scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
+        scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
+        scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
+      } else {
+        const cur = this.currentDate();
+        scroll(this.hoursOls, cur.hours);
+        scroll(this.minutesOls, cur.minutes);
+        scroll(this.secondsOls, cur.seconds);
+      }
+    });
   }
 }
