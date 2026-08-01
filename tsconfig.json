@@ -12,6 +12,10 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "target": "ES2022",
     "module": "preserve",
     "baseUrl": "./",
