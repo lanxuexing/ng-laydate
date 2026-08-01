@@ -2,7 +2,7 @@
 
 # NgLaydate
 
-**极简、强大、高颜值**的 Angular 日期时间选择器组件。基于 Angular Signals 全新打造，完美兼容 Angular 18+。
+**极简、强大、高颜值**的 Angular 日期时间选择器组件。基于 Angular Signals 全新打造，完美兼容 Angular 17+（支持 Angular 17, 18, 19, 21, 22+）。
 
 [![NPM package](https://img.shields.io/npm/v/ng-laydate.svg?style=flat-square)](https://npmjs.org/package/ng-laydate)
 [![GitHub Release Date](https://img.shields.io/github/release-date/lanxuexing/ng-laydate.svg?style=flat-square)](https://github.com/lanxuexing/ng-laydate/releases)
@@ -11,7 +11,7 @@
 [![NPM downloads](http://img.shields.io/npm/dm/ng-laydate.svg?style=flat-square)](https://npmjs.org/package/ng-laydate)
 [![CI/CD](https://github.com/lanxuexing/ng-laydate/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/lanxuexing/ng-laydate/actions)
 [![GitHub license](https://img.shields.io/github/license/lanxuexing/ng-laydate.svg?style=flat-square)](https://github.com/lanxuexing/ng-laydate/blob/main/LICENSE)
-[![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=flat-square&logo=angular&logoColor=white)](https://angular.dev)
+[![Angular 版本](https://img.shields.io/badge/Angular->=17.3.0-dd0031.svg?style=flat-square&logo=angular)](https://angular.cn)
 [![Signals](https://img.shields.io/badge/Signals-优化-blue.svg?style=flat-square&logo=dynamic-365&logoColor=white)](https://angular.cn/guide/signals)
 [![Code style: prettier](https://img.shields.io/badge/代码风格-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-欢迎-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -24,6 +24,12 @@
 </div>
 
 ---
+
+## ⚡ 版本兼容矩阵 (Compatibility Matrix)
+
+| 组件库版本 | 支持的 Angular 版本 | Signals 原生支持 |
+| :--- | :--- | :--- |
+| `ng-laydate ^1.0.0` | **Angular `>= 17.3.0`** (包括 17.x, 18.x, 19.x, 21.x, 22.x+) | 原生支持 |
 
 ## ✨ 特性
 
@@ -43,7 +49,7 @@
 
 ## 📦 安装
 
-该组件通过 Angular Library 形式分发。
+该组件通过 Angular Library 形式分发，支持 Angular **>= 17.3.0** (包含 **Angular 17, 18, 19, 21+**)。
 
 ```bash
 npm install ng-laydate

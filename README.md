@@ -2,7 +2,7 @@
 
 # NgLaydate
 
-A minimalist, powerful, and beautifully designed Date & Time Picker for Angular 18+, built with Signals.
+A minimalist, powerful, and beautifully designed Date & Time Picker for Angular 17+ (supports Angular 17, 18, 19, 21, 22+), built with Signals.
 
 [![NPM package](https://img.shields.io/npm/v/ng-laydate.svg?style=flat-square)](https://npmjs.org/package/ng-laydate)
 [![GitHub Release Date](https://img.shields.io/github/release-date/lanxuexing/ng-laydate.svg?style=flat-square)](https://github.com/lanxuexing/ng-laydate/releases)
@@ -11,7 +11,7 @@ A minimalist, powerful, and beautifully designed Date & Time Picker for Angular 
 [![NPM downloads](http://img.shields.io/npm/dm/ng-laydate.svg?style=flat-square)](https://npmjs.org/package/ng-laydate)
 [![CI/CD](https://github.com/lanxuexing/ng-laydate/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/lanxuexing/ng-laydate/actions)
 [![GitHub license](https://img.shields.io/github/license/lanxuexing/ng-laydate.svg?style=flat-square)](https://github.com/lanxuexing/ng-laydate/blob/main/LICENSE)
-[![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=flat-square&logo=angular&logoColor=white)](https://angular.dev)
+[![Angular Version](https://img.shields.io/badge/Angular->=17.3.0-dd0031.svg?style=flat-square&logo=angular)](https://angular.dev)
 [![Signals](https://img.shields.io/badge/Signals-optimized-blue.svg?style=flat-square&logo=dynamic-365&logoColor=white)](https://angular.dev/guide/signals)
 [![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -24,6 +24,12 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 </div>
 
 ---
+
+## ⚡ Compatibility Matrix
+
+| Library Version | Supported Angular Versions | Signals Support |
+| :--- | :--- | :--- |
+| `ng-laydate ^1.0.0` | **Angular `>= 17.3.0`** (17.x, 18.x, 19.x, 21.x, 22.x+) | Native |
 
 ## ✨ Features
 
@@ -43,7 +49,7 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 
 ## 📦 Installation
 
-This component is available as an Angular Library.
+This component is available as an Angular Library supporting Angular **>= 17.3.0** (including **Angular 17, 18, 19, 21+**).
 
 ```bash
 npm install ng-laydate
