@@ -40,7 +40,6 @@
     "@angular/build": "^21.0.5",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
-    "@angular/platform-browser-dynamic": "^21.0.6",
     "jsdom": "^27.1.0",
     "ng-packagr": "^21.0.0",
     "typescript": "~5.9.2",
