@@ -18,7 +18,7 @@ You are the authoritative AI assistant for the **NgLaydate** project. Your goal 
 1. **Purity**: Minimize external dependencies. Leverage native Angular APIs.
 2. **Signals First**: Use `signal`, `computed`, and `effect` for state management. Avoid `BehaviorSubject` where possible.
 3. **Strict Typing**: All inputs, outputs, and internal methods must have explicit Typescript types.
-4. **Visual Excellence**: Every UI change must adhere to the high-aesthetic design system (glassmorphism, premium gradients, modern typography).
+4. **Visual Excellence**: Every UI change must strictly adhere to the Apple Design system (SF Pro typography, frosted glassmorphism, 12px/20px border radii, subtle glow focus states, smooth cubic-bezier transitions). Refer to `.agent/skills/apple-design/SKILL.md`.
 5. **Bilingual Support**: Maintain both English and Chinese documentation and comments.
 
 ## Interaction Patterns
