@@ -288,7 +288,7 @@ export class NgLaydateComponent {
     if (!cfg.disabledTime) return false;
 
     // Get current date context
-    const dObj = isRight ? this.rightDate() : (cfg.range ? this.leftDate() : this.currentDate());
+    const dObj = isRight ? this.endDate() : (cfg.range ? this.startDate() : this.currentDate());
     const date = new Date(dObj.year, dObj.month, dObj.date, dObj.hours, dObj.minutes, dObj.seconds);
 
     // Call callback
@@ -408,7 +408,7 @@ export class NgLaydateComponent {
       if (cfg.ready) {
         cfg.ready(this.currentDate());
       }
-    }, { allowSignalWrites: true }); // We write to other signals in this effect
+    });
 
     // Scroll Effect: Whenever time view becomes active OR values change, scroll to selected values
     effect(() => {
@@ -615,16 +615,7 @@ export class NgLaydateComponent {
 
     if (cfg.range) {
       const dayObj = { year: day.year, month: day.month, date: day.day, hours: 0, minutes: 0, seconds: 0 };
-      if (this.isLinked()) {
-        this.handleRangeSelection(dayObj);
-      } else {
-        // Independent mode: Left panel always sets startDate, Right sets endDate
-        if (isRight) {
-          this.endDate.set({ ...this.endDate(), ...dayObj });
-        } else {
-          this.startDate.set({ ...this.startDate(), ...dayObj });
-        }
-      }
+      this.handleRangeSelection(dayObj);
     }
     else {
       const d = { ...this.currentDate() };
@@ -786,17 +777,7 @@ export class NgLaydateComponent {
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'year') {
       const dayObj = { year: y, month: 0, date: 1 };
-      if (this.isLinked()) {
-        this.handleRangeSelection(dayObj);
-      } else {
-        if (isRight) {
-          this.endDate.set({ ...this.endDate(), ...dayObj });
-          this.rightDate.set({ ...this.rightDate(), year: y });
-        } else {
-          this.startDate.set({ ...this.startDate(), ...dayObj });
-          this.leftDate.set({ ...this.leftDate(), year: y });
-        }
-      }
+      this.handleRangeSelection(dayObj);
       return;
     }
 
@@ -832,18 +813,7 @@ export class NgLaydateComponent {
     if (cfg.range && cfg.type === 'month') {
       const baseDate = isRight ? this.rightDate() : this.leftDate();
       const dayObj = { year: baseDate.year, month: m, date: 1 };
-
-      if (this.isLinked()) {
-        this.handleRangeSelection(dayObj);
-      } else {
-        if (isRight) {
-          this.endDate.set({ ...this.endDate(), ...dayObj });
-          this.rightDate.set({ ...this.rightDate(), month: m });
-        } else {
-          this.startDate.set({ ...this.startDate(), ...dayObj });
-          this.leftDate.set({ ...this.leftDate(), month: m });
-        }
-      }
+      this.handleRangeSelection(dayObj);
       return;
     }
 
@@ -885,13 +855,11 @@ export class NgLaydateComponent {
       let start = this.startDate();
       let end = { ...this.endDate(), ...day };
 
-      // Auto-swap only in linked mode
-      if (cfg.rangeLinked) {
-        const startTime = this.service.getTime(start);
-        const endTime = this.service.getTime(end);
-        if (startTime > endTime) {
-          [start, end] = [end, start];
-        }
+      // Auto-swap if start > end
+      const startTime = this.service.getTime(start);
+      const endTime = this.service.getTime(end);
+      if (startTime > endTime) {
+        [start, end] = [end, start];
       }
 
       this.startDate.set(start);
@@ -1010,18 +978,27 @@ export class NgLaydateComponent {
       return v;
     };
 
-    // 2. Handle Range (Array)
+    // 2. Handle Range (Array or Range String)
     let valArr: any[] = [];
     if (Array.isArray(value)) {
       valArr = value;
     } else if (typeof value === 'string' && cfg.range) {
-      // Legacy string helpers for range or single string range
-      const now = new Date();
-      if (value === 'last_7_days') valArr = [new Date(now.getTime() - 7 * 24 * 3600 * 1000), now];
-      else if (value === 'last_30_days') valArr = [new Date(now.getTime() - 30 * 24 * 3600 * 1000), now];
-      else if (value === 'last_90_days') valArr = [new Date(now.getTime() - 90 * 24 * 3600 * 1000), now];
-      else if (value === 'last_year_now') valArr = [new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()), now];
-      else if (value === 'next_year_today') valArr = [now, new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())];
+      const separator = typeof cfg.range === 'string' ? cfg.range : ' - ';
+      if (value.includes(separator)) {
+        valArr = value.split(separator);
+      } else if (value.includes(' - ')) {
+        valArr = value.split(' - ');
+      } else if (value.includes(' ~ ')) {
+        valArr = value.split(' ~ ');
+      } else {
+        // Legacy string helpers for range or single string range
+        const now = new Date();
+        if (value === 'last_7_days') valArr = [new Date(now.getTime() - 7 * 24 * 3600 * 1000), now];
+        else if (value === 'last_30_days') valArr = [new Date(now.getTime() - 30 * 24 * 3600 * 1000), now];
+        else if (value === 'last_90_days') valArr = [new Date(now.getTime() - 90 * 24 * 3600 * 1000), now];
+        else if (value === 'last_year_now') valArr = [new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()), now];
+        else if (value === 'next_year_today') valArr = [now, new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())];
+      }
     }
 
     // 3. Apply

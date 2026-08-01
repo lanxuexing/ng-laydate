@@ -15,8 +15,11 @@ export class NgLaydateService {
 
     // Instance Registry
     private instances = new Map<string, NgLaydateComponent>();
-    // Track event listeners for cleanup
+    // Track event listeners and timers for cleanup
     private documentClickListeners = new Map<ComponentRef<any>, any>();
+    private documentClickTimers = new Map<ComponentRef<any>, any>();
+    private shadeClickTimers = new Map<ComponentRef<any>, any>();
+    private subscriptionsMap = new Map<ComponentRef<any>, { unsubscribe: () => void }[]>();
 
     hexToRgba(hex: string, opacity: number): string {
         if (!hex) return `rgba(22, 183, 119, ${opacity})`; // Default green
@@ -128,6 +131,9 @@ export class NgLaydateService {
             }
         });
 
+        // Track subscriptions for cleanup
+        this.subscriptionsMap.set(componentRef, [sub, subClear]);
+
         // Create shade overlay if configured
         let shadeEl: HTMLElement | null = null;
         if (config.shade && config.position !== 'static') {
@@ -146,12 +152,14 @@ export class NgLaydateService {
             document.body.appendChild(shadeEl);
 
             // Click shade to close (with delay to avoid immediate close)
-            setTimeout(() => {
+            const timer = setTimeout(() => {
+                this.shadeClickTimers.delete(componentRef);
                 shadeEl?.addEventListener('click', (e) => {
                     e.stopPropagation();
                     this.destroy(componentRef, shadeEl);
                 });
             }, 150);
+            this.shadeClickTimers.set(componentRef, timer);
         }
 
         // Click outside to close - ONLY if no shade (shade handles its own close)
@@ -167,9 +175,14 @@ export class NgLaydateService {
             this.documentClickListeners.set(componentRef, clickListener);
 
             // Use mousedown to detect clicks before they bubble, with delay
-            setTimeout(() => {
-                document.addEventListener('mousedown', clickListener);
+            const timer = setTimeout(() => {
+                this.documentClickTimers.delete(componentRef);
+                // Verify component hasn't been destroyed before adding listener
+                if (this.documentClickListeners.has(componentRef)) {
+                    document.addEventListener('mousedown', clickListener);
+                }
             }, 150);
+            this.documentClickTimers.set(componentRef, timer);
         }
 
         return componentRef;
@@ -207,6 +220,18 @@ export class NgLaydateService {
     }
 
     private destroy(ref: ComponentRef<NgLaydateComponent>, shadeEl?: HTMLElement | null) {
+        // Clear pending timers
+        const clickTimer = this.documentClickTimers.get(ref);
+        if (clickTimer) {
+            clearTimeout(clickTimer);
+            this.documentClickTimers.delete(ref);
+        }
+        const shadeTimer = this.shadeClickTimers.get(ref);
+        if (shadeTimer) {
+            clearTimeout(shadeTimer);
+            this.shadeClickTimers.delete(ref);
+        }
+
         if (ref.instance.config().close) {
             ref.instance.config().close!();
         }
@@ -219,6 +244,13 @@ export class NgLaydateService {
         if (listener) {
             document.removeEventListener('mousedown', listener);
             this.documentClickListeners.delete(ref);
+        }
+
+        // Cleanup subscriptions
+        const subs = this.subscriptionsMap.get(ref);
+        if (subs) {
+            subs.forEach(s => s.unsubscribe());
+            this.subscriptionsMap.delete(ref);
         }
 
         this.appRef.detachView(ref.hostView);
@@ -277,7 +309,8 @@ export class NgLaydateService {
     // Get days in a month
     totalDay(year: number, month: number): number {
         const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        return this.isLeap(year) && month === 1 ? 29 : days[month];
+        const m = ((month % 12) + 12) % 12;
+        return this.isLeap(year) && m === 1 ? 29 : days[m];
     }
 
     // System date helper
@@ -308,19 +341,16 @@ export class NgLaydateService {
             value = '1970-01-01 ' + value;
         }
 
-        // Simple ISO parsing fallback
-        // In a real implementation this should use the format string to parse strictly
-
-        // Match yyyy-MM-dd manually to avoid timezone issues with new Date()
-        const match = typeof value === 'string' ? value.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/) : null;
+        // Match yyyy-MM-dd HH:mm:ss or yyyy-MM-dd manually to avoid timezone issues with new Date()
+        const match = typeof value === 'string' ? value.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/) : null;
         if (match) {
             return {
-                year: parseInt(match[1]),
-                month: parseInt(match[2]) - 1, // month is 0-indexed
-                date: parseInt(match[3]),
-                hours: 0,
-                minutes: 0,
-                seconds: 0
+                year: parseInt(match[1], 10),
+                month: parseInt(match[2], 10) - 1, // month is 0-indexed
+                date: parseInt(match[3], 10),
+                hours: match[4] ? parseInt(match[4], 10) : 0,
+                minutes: match[5] ? parseInt(match[5], 10) : 0,
+                seconds: match[6] ? parseInt(match[6], 10) : 0
             };
         }
 

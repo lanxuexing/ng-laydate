@@ -91,11 +91,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/ng-laydate/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-laydate/karma.conf.js"
-          }
+          "builder": "@angular/build:unit-test"
         }
       }
     }

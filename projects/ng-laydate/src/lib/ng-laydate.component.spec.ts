@@ -8,10 +8,6 @@ describe('NgLaydateComponent', () => {
   let component: NgLaydateComponent;
   let fixture: ComponentFixture<NgLaydateComponent>;
 
-  beforeAll(() => {
-    TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgLaydateComponent]
@@ -69,5 +65,30 @@ describe('NgLaydateComponent', () => {
     fixture.componentRef.setInput('config', { lang: 'cn' });
     fixture.detectChanges();
     expect(component.i18n().months[0]).toBe('1月');
+  });
+
+  it('should parse datetime initial value with hours, minutes, seconds intact', async () => {
+    const datetimeVal = '2024-05-15 14:30:45';
+    fixture.componentRef.setInput('config', { type: 'datetime', value: datetimeVal });
+    fixture.detectChanges();
+
+    expect(component.currentDate().year).toBe(2024);
+    expect(component.currentDate().month).toBe(4);
+    expect(component.currentDate().date).toBe(15);
+    expect(component.currentDate().hours).toBe(14);
+    expect(component.currentDate().minutes).toBe(30);
+    expect(component.currentDate().seconds).toBe(45);
+  });
+
+  it('should handle string range shortcut correctly', async () => {
+    const shortcuts = [{ text: 'Jan Range', value: '2024-01-01 - 2024-01-31' }];
+    fixture.componentRef.setInput('config', { range: true, shortcuts });
+    fixture.detectChanges();
+
+    component.handleShortcut(shortcuts[0]);
+    expect(component.startDate().year).toBe(2024);
+    expect(component.startDate().month).toBe(0);
+    expect(component.startDate().date).toBe(1);
+    expect(component.endDate().date).toBe(31);
   });
 });

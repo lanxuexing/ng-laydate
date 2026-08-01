@@ -138,14 +138,14 @@
             <tbody>
                 @for (row of getRows(data); track $index) {
                 <tr>
-                    @for (day of row; track day.day) {
+                    @for (day of row; track day.year + '-' + day.month + '-' + day.day) {
                     <td (mouseenter)="hoverValue({year: day.year, month: day.month, date: day.day})"
                         (click)="selectDay(day, isRight)" [attr.lay-ymd]="day.year + '-' + day.month + '-' + day.day"
                         [class.laydate-day-prev]="day.type === 'prev'" [class.laydate-day-next]="day.type === 'next'"
                         [class.layui-this]="!day.disabled && isThisDay(day.year, day.month, day.day, isRight)"
                         [class.laydate-disabled]="day.disabled" [class.laydate-day-mark-wrap]="day.mark"
-                        [class.laydate-day-range]="finalConfig().rangeLinked && isInRange(day.year, day.month, day.day)"
-                        [class.laydate-selected]="finalConfig().rangeLinked && isInRange(day.year, day.month, day.day)">
+                        [class.laydate-day-range]="isInRange(day.year, day.month, day.day)"
+                        [class.laydate-selected]="isInRange(day.year, day.month, day.day)">
                         <div>
                             @if (day.holiday) {
                             <span class="laydate-holiday-badge" [class.laydate-holiday-work]="day.holiday === '班'">{{
@@ -172,7 +172,7 @@
     <ul class="layui-laydate-list laydate-year-list">
         @for (y of yearList; track y) {
         <li (click)="selectYear(y, isRight)" (mouseenter)="hoverValue({year: y, month: 0, date: 1})"
-            [class.laydate-selected]="finalConfig().rangeLinked && isInRange(y, 0, 1)"
+            [class.laydate-selected]="isInRange(y, 0, 1)"
             [class.layui-this]="isThisYear(y, isRight)">
             {{ i18n().formatYear(y) }}</li>
         }
@@ -183,7 +183,7 @@
     <ul class="layui-laydate-list laydate-month-list">
         @for (m of i18n().months; track m; let i = $index) {
         <li (click)="selectMonth(i, isRight)" (mouseenter)="hoverValue({year: date.year, month: i, date: 1})"
-            [class.laydate-selected]="finalConfig().rangeLinked && isInRange(date.year, i, 1)"
+            [class.laydate-selected]="isInRange(date.year, i, 1)"
             [class.layui-this]="isThisMonth(i, date.year, isRight)">
             {{ m }}</li>
         }
