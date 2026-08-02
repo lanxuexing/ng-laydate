@@ -32,7 +32,7 @@ export interface LaydateConfig {
     min?: string | Date | number; // '1900-1-1' or -7 (7 days ago)
     max?: string | Date | number; // '2099-12-31' or 7 (7 days later)
     trigger?: string; // 'click'
-    darkMode?: boolean | number | 'system' | 'auto'; // Dark mode switch: true, false, or 'system'/'auto' to follow OS
+    darkMode?: boolean | number | 'system' | 'auto' | (() => boolean | number | 'system' | 'auto'); // Dark mode switch: true, false, or 'system'/'auto' to follow OS
     show?: boolean;
     position?: 'absolute' | 'fixed' | 'static';
     zIndex?: number;

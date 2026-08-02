@@ -188,7 +188,8 @@ export class NgLaydateComponent {
     const themeBase = this.parsedTheme().base;
     if (themeBase === 'dark') return true;
 
-    const dm = cfg.darkMode;
+    const rawDm = cfg.darkMode;
+    const dm = typeof rawDm === 'function' ? (rawDm as Function)() : rawDm;
     if (dm === 'system' || dm === 'auto' || cfg.theme === 'system' || cfg.theme === 'auto') {
       return this.systemDarkMode();
     }

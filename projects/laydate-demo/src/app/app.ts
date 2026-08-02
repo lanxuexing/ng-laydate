@@ -583,6 +583,7 @@ export class AppComponent {}`;
       elem: '#ID-laydate-type-datetime',
       type: 'datetime',
       lang: () => this.currentLang(),
+      darkMode: () => this.demoDarkMode(),
       done: (value) => {
         console.log('Programmatic select:', value);
       }
