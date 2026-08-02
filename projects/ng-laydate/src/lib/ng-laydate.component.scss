@@ -1140,14 +1140,14 @@ ng-laydate.layui-laydate.laydate-theme-dark {
             .layui-laydate-shortcut {
                 width: 100% !important;
                 height: auto !important;
-                max-height: 50px !important;
+                max-height: 90px !important;
                 flex: 0 0 auto !important;
                 display: flex !important;
                 flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                overflow-x: auto !important;
+                flex-wrap: wrap !important;
+                overflow-y: auto !important;
                 -webkit-overflow-scrolling: touch !important;
-                gap: 8px !important;
+                gap: 6px 8px !important;
                 padding: 8px 12px !important;
                 border-right: none !important;
                 border-bottom: 1px solid #f2f2f2 !important;
@@ -1156,12 +1156,12 @@ ng-laydate.layui-laydate.laydate-theme-dark {
 
                 li {
                     flex: 0 0 auto !important;
-                    height: 28px !important;
-                    line-height: 28px !important;
-                    padding: 0 12px !important;
+                    height: 26px !important;
+                    line-height: 26px !important;
+                    padding: 0 10px !important;
                     background: rgba(22, 183, 119, 0.08) !important;
                     color: #16b777 !important;
-                    border-radius: 14px !important;
+                    border-radius: 13px !important;
                     font-size: 12px !important;
                     font-weight: 500 !important;
                     white-space: nowrap !important;
