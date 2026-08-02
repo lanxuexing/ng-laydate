@@ -74,7 +74,7 @@ export class App implements AfterViewInit {
         sec5_6: 'Programmatic Hint',
 
         sec6Title: '6. Shortcuts Gallery',
-        sec6Desc: 'Swipe horizontally to explore various shortcut presets.',
+        sec6Desc: 'Explore various shortcut presets with responsive auto-wrapping layout.',
         sec6_1: 'Preset Dates',
         sec6_2: 'Year Select',
         sec6_3: 'Time Intervals',
@@ -140,8 +140,8 @@ export class App implements AfterViewInit {
       sec5_5: 'Shade Overlay (遮罩层 0.8)',
       sec5_6: 'Programmatic Hint (服务式弹出 Hint)',
 
-      sec6Title: '6. Shortcuts Gallery (横向快捷键展示区)',
-      sec6Desc: '横向滑动可探索更多预设快捷键面板。',
+      sec6Title: '6. Shortcuts Gallery (快捷键展示区)',
+      sec6Desc: '预设快捷键展示区，根据屏幕尺寸自适应自动换行。',
       sec6_1: 'Preset Dates (常用日期快捷)',
       sec6_2: 'Year Select (年份快捷)',
       sec6_3: 'Time Intervals (30分钟间隔)',
