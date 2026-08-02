@@ -207,6 +207,25 @@ header {
   gap: 24px;
 }
 
+/* Static Gallery flex layout prevents wide range panels from overlapping */
+.demo-grid.static-gallery-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 32px !important;
+  align-items: flex-start !important;
+
+  > div {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+
+  .layui-laydate-static {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+}
+
 .layui-inline {
   width: 100%;
 
