@@ -359,17 +359,30 @@ header {
   }
 
   .demo-grid.static-gallery-grid {
-    gap: 20px !important;
+    gap: 24px !important;
 
     > div {
       flex: 1 1 100% !important;
       width: 100% !important;
       display: flex !important;
-      justify-content: center !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+
+      label {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+      }
+
+      ng-laydate {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+      }
     }
 
     .layui-laydate-static {
       max-width: 100% !important;
+      box-sizing: border-box !important;
     }
   }
 
