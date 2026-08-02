@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, inject, signal, computed, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { NgLaydateDirective, NgLaydateComponent, NgLaydateService } from 'ng-laydate';
+import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang } from 'ng-laydate';
 
 @Component({
   selector: 'app-root',
@@ -15,18 +15,25 @@ export class App implements AfterViewInit {
   private laydate = inject(NgLaydateService);
   private platformId = inject(PLATFORM_ID);
 
-  private detectInitialLang(): 'cn' | 'en' {
+  private detectInitialLang(): SupportedLang {
     if (isPlatformBrowser(this.platformId)) {
       const browserLang = (navigator.language || (navigator as any).userLanguage || '').toLowerCase();
-      return browserLang.startsWith('zh') ? 'cn' : 'en';
+      if (browserLang.startsWith('zh-tw') || browserLang.startsWith('zh-hk')) return 'tw';
+      if (browserLang.startsWith('zh')) return 'cn';
+      if (browserLang.startsWith('ja')) return 'ja';
+      if (browserLang.startsWith('ko')) return 'ko';
+      if (browserLang.startsWith('es')) return 'es';
+      if (browserLang.startsWith('de')) return 'de';
+      if (browserLang.startsWith('fr')) return 'fr';
+      return 'en';
     }
     return 'cn';
   }
 
-  // Language state (cn / en) initialized by browser language
-  currentLang = signal<'cn' | 'en'>(this.detectInitialLang());
+  // Language state initialized by browser language
+  currentLang = signal<SupportedLang>(this.detectInitialLang());
 
-  setLang(lang: 'cn' | 'en') {
+  setLang(lang: SupportedLang) {
     this.currentLang.set(lang);
   }
 

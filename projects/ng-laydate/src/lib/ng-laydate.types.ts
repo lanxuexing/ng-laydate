@@ -18,6 +18,8 @@ export interface CalendarDay {
     customContent?: string;
 }
 
+export type SupportedLang = 'cn' | 'en' | 'tw' | 'ja' | 'ko' | 'es' | 'de' | 'fr';
+
 export interface LaydateConfig {
     elem?: any; // Selector or element
     id?: string; // Custom ID for hint/api
@@ -36,7 +38,7 @@ export interface LaydateConfig {
     zIndex?: number;
     showBottom?: boolean;
     btns?: string[]; // ['clear', 'now', 'confirm']
-    lang?: 'cn' | 'en' | (() => 'cn' | 'en');
+    lang?: SupportedLang | (() => SupportedLang);
     theme?: string | string[]; // 'default', 'molv', 'grid', 'fullpanel', '#color', or ['grid', '#color']
     calendar?: boolean;
     mark?: Record<string, string> | ((ymd: { year: number; month: number; date: number }, render: (input: string | Record<string, string>) => string) => string | void);

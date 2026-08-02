@@ -56,14 +56,46 @@ describe('NgLaydateComponent', () => {
     expect(shortcutItems[0].textContent).toContain('Today');
   });
 
-  it('should respect lang setting for month names', () => {
+  it('should respect lang setting for month and week names across 8 supported languages', () => {
     fixture.componentRef.setInput('config', { lang: 'en' });
     fixture.detectChanges();
     expect(component.i18n().months[0]).toBe('Jan');
+    expect(component.i18n().weeks[0]).toBe('Su');
 
     fixture.componentRef.setInput('config', { lang: 'cn' });
     fixture.detectChanges();
     expect(component.i18n().months[0]).toBe('1月');
+    expect(component.i18n().weeks[0]).toBe('日');
+
+    fixture.componentRef.setInput('config', { lang: 'tw' });
+    fixture.detectChanges();
+    expect(component.i18n().months[0]).toBe('1月');
+    expect(component.i18n().tools.confirm).toBe('確認');
+
+    fixture.componentRef.setInput('config', { lang: 'ja' });
+    fixture.detectChanges();
+    expect(component.i18n().weeks[1]).toBe('月');
+    expect(component.i18n().tools.confirm).toBe('決定');
+
+    fixture.componentRef.setInput('config', { lang: 'ko' });
+    fixture.detectChanges();
+    expect(component.i18n().weeks[0]).toBe('일');
+    expect(component.i18n().tools.confirm).toBe('확인');
+
+    fixture.componentRef.setInput('config', { lang: 'es' });
+    fixture.detectChanges();
+    expect(component.i18n().months[0]).toBe('Ene');
+    expect(component.i18n().tools.confirm).toBe('Confirmar');
+
+    fixture.componentRef.setInput('config', { lang: 'de' });
+    fixture.detectChanges();
+    expect(component.i18n().months[0]).toBe('Jan');
+    expect(component.i18n().tools.confirm).toBe('Bestätigen');
+
+    fixture.componentRef.setInput('config', { lang: 'fr' });
+    fixture.detectChanges();
+    expect(component.i18n().months[0]).toBe('Janv');
+    expect(component.i18n().tools.confirm).toBe('Valider');
   });
 
   it('should parse datetime initial value with hours, minutes, seconds intact', async () => {

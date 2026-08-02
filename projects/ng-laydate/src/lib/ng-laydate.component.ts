@@ -190,19 +190,150 @@ export class NgLaydateComponent {
         monthTips: 'Select Month',
         yearTips: 'Select Year',
         duration: 'Duration',
-        tools: {
-          confirm: 'Confirm',
-          clear: 'Clear',
-          now: 'Now'
-        },
+        tools: { confirm: 'Confirm', clear: 'Clear', now: 'Now' },
         formatYear: (year: number) => `${year}`,
-        formatMonth: (month: number) => {
-          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          return months[month];
-        },
+        formatMonth: (month: number) => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month],
         invalidRange: 'Date range limit set to <br> {min} - {max}',
         invalidDate: 'Date is unavailable',
         invalidEndEarly: 'End time cannot be earlier than start time<br>Please reselect'
+      };
+    }
+
+    if (lang === 'tw') {
+      return {
+        weeks: ['日', '一', '二', '三', '四', '五', '六'],
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        time: ['時', '分', '秒'],
+        timeTips: '選擇時間',
+        backToDate: '返回日期',
+        hint: '預覽',
+        startTime: '開始時間',
+        endTime: '結束時間',
+        dateTips: '選擇日期',
+        monthTips: '選擇月份',
+        yearTips: '選擇年份',
+        duration: '時長',
+        tools: { confirm: '確認', clear: '清空', now: '現在' },
+        formatYear: (year: number) => `${year}年`,
+        formatMonth: (month: number) => `${month + 1}月`,
+        invalidRange: '日期可選項設定在 <br> {min} 到 {max}',
+        invalidDate: '此日期不可選',
+        invalidEndEarly: '結束時間不能早於開始時間<br>請重新選擇'
+      };
+    }
+
+    if (lang === 'ja') {
+      return {
+        weeks: ['日', '月', '火', '水', '木', '金', '土'],
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        time: ['時', '分', '秒'],
+        timeTips: '時間を選択',
+        backToDate: '日付に戻る',
+        hint: 'プレビュー',
+        startTime: '開始時間',
+        endTime: '終了時間',
+        dateTips: '日付を選択',
+        monthTips: '月を選択',
+        yearTips: '年を選択',
+        duration: '期間',
+        tools: { confirm: '決定', clear: 'クリア', now: '現在' },
+        formatYear: (year: number) => `${year}年`,
+        formatMonth: (month: number) => `${month + 1}月`,
+        invalidRange: '選択可能な範囲は <br> {min} から {max} です',
+        invalidDate: '選択できない日付です',
+        invalidEndEarly: '終了時間は開始時間より前には設定できません<br>再選択してください'
+      };
+    }
+
+    if (lang === 'ko') {
+      return {
+        weeks: ['일', '월', '화', '수', '목', '금', '토'],
+        months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        time: ['시', '분', '초'],
+        timeTips: '시간 선택',
+        backToDate: '날짜로 돌아가기',
+        hint: '미리보기',
+        startTime: '시작 시간',
+        endTime: '종료 시간',
+        dateTips: '날짜 선택',
+        monthTips: '월 선택',
+        yearTips: '연도 선택',
+        duration: '기간',
+        tools: { confirm: '확인', clear: '초기화', now: '현재' },
+        formatYear: (year: number) => `${year}년`,
+        formatMonth: (month: number) => `${month + 1}월`,
+        invalidRange: '선택 가능한 범위를 벗어났습니다 <br> {min} ~ {max}',
+        invalidDate: '선택할 수 없는 날짜입니다',
+        invalidEndEarly: '종료 시간은 시작 시간보다 빠를 수 없습니다<br>다시 선택해 주세요'
+      };
+    }
+
+    if (lang === 'es') {
+      return {
+        weeks: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+        months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        time: ['Horas', 'Minutos', 'Segundos'],
+        timeTips: 'Seleccionar Hora',
+        backToDate: 'Volver a Fecha',
+        hint: 'Vista previa',
+        startTime: 'Hora inicio',
+        endTime: 'Hora fin',
+        dateTips: 'Seleccionar Fecha',
+        monthTips: 'Seleccionar Mes',
+        yearTips: 'Seleccionar Año',
+        duration: 'Duración',
+        tools: { confirm: 'Confirmar', clear: 'Limpiar', now: 'Ahora' },
+        formatYear: (year: number) => `${year}`,
+        formatMonth: (month: number) => ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'][month],
+        invalidRange: 'Rango de fechas permitido <br> {min} - {max}',
+        invalidDate: 'Fecha no disponible',
+        invalidEndEarly: 'La hora de fin no puede ser anterior a la hora de inicio'
+      };
+    }
+
+    if (lang === 'de') {
+      return {
+        weeks: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        months: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+        time: ['Stunden', 'Minuten', 'Sekunden'],
+        timeTips: 'Zeit wählen',
+        backToDate: 'Zurück zum Datum',
+        hint: 'Vorschau',
+        startTime: 'Startzeit',
+        endTime: 'Endzeit',
+        dateTips: 'Datum wählen',
+        monthTips: 'Monat wählen',
+        yearTips: 'Jahr wählen',
+        duration: 'Dauer',
+        tools: { confirm: 'Bestätigen', clear: 'Löschen', now: 'Jetzt' },
+        formatYear: (year: number) => `${year}`,
+        formatMonth: (month: number) => ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'][month],
+        invalidRange: 'Gültiger Datumsbereich <br> {min} - {max}',
+        invalidDate: 'Datum nicht verfügbar',
+        invalidEndEarly: 'Endzeit darf nicht vor der Startzeit liegen'
+      };
+    }
+
+    if (lang === 'fr') {
+      return {
+        weeks: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        months: ['Janv', 'Févr', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
+        time: ['Heures', 'Minutes', 'Secondes'],
+        timeTips: "Choisir l'heure",
+        backToDate: 'Retour à la date',
+        hint: 'Aperçu',
+        startTime: 'Heure de début',
+        endTime: 'Heure de fin',
+        dateTips: 'Choisir la date',
+        monthTips: 'Choisir le mois',
+        yearTips: "Choisir l'année",
+        duration: 'Durée',
+        tools: { confirm: 'Valider', clear: 'Effacer', now: "Aujourd'hui" },
+        formatYear: (year: number) => `${year}`,
+        formatMonth: (month: number) => ['Janv', 'Févr', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'][month],
+        invalidRange: 'Plage de dates autorisée <br> {min} - {max}',
+        invalidDate: 'Date non disponible',
+        invalidEndEarly: "L'heure de fin ne peut pas être antérieure à l'heure de début"
       };
     }
 

@@ -8,6 +8,12 @@
       <div class="lang-switch-segmented">
         <button type="button" [class.active]="currentLang() === 'cn'" (click)="setLang('cn')">🇨🇳 中文</button>
         <button type="button" [class.active]="currentLang() === 'en'" (click)="setLang('en')">🇬🇧 English</button>
+        <button type="button" [class.active]="currentLang() === 'tw'" (click)="setLang('tw')">🇭🇰 繁體</button>
+        <button type="button" [class.active]="currentLang() === 'ja'" (click)="setLang('ja')">🇯🇵 日本語</button>
+        <button type="button" [class.active]="currentLang() === 'ko'" (click)="setLang('ko')">🇰🇷 한국어</button>
+        <button type="button" [class.active]="currentLang() === 'es'" (click)="setLang('es')">🇪🇸 Español</button>
+        <button type="button" [class.active]="currentLang() === 'de'" (click)="setLang('de')">🇩🇪 Deutsch</button>
+        <button type="button" [class.active]="currentLang() === 'fr'" (click)="setLang('fr')">🇫🇷 Français</button>
       </div>
 
       <span class="angular-version-badge">
