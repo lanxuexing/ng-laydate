@@ -956,20 +956,30 @@ ng-laydate.layui-laydate.laydate-theme-dark {
         background-color: #333;
     }
 
-    /* Time list header fix */
+    /* Time list header & item dark theme fix */
     .laydate-time-list li p {
-        background-color: #333;
-        color: #eee;
-        border-bottom-color: #555;
+        background: #2a2a2a !important;
+        color: #eee !important;
+        border-bottom: 1px solid #444 !important;
     }
 
     .laydate-time-list li {
-        border-right-color: #555;
+        border-right-color: #444 !important;
     }
 
-    .laydate-time-list ol li:not(.layui-this):hover {
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        color: rgba(255, 255, 255, 0.7) !important;
+    .laydate-time-list ol li {
+        color: #eee;
+
+        &.laydate-disabled {
+            color: #666 !important;
+            background-color: transparent !important;
+            cursor: not-allowed !important;
+        }
+
+        &:not(.layui-this):not(.laydate-disabled):hover {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
     }
 }
 
