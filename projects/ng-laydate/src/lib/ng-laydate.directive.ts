@@ -75,6 +75,10 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     }
 
     open() {
+        if (this.el.nativeElement) {
+            this.el.nativeElement.setAttribute('autocomplete', 'off');
+        }
+
         if (this.componentRef) {
             return;
         }

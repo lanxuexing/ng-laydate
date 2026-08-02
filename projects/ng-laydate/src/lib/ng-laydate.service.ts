@@ -80,6 +80,10 @@ export class NgLaydateService {
             return null;
         }
 
+        if (elem instanceof HTMLElement) {
+            elem.setAttribute('autocomplete', 'off');
+        }
+
         // If position is static, render immediately
         if (config.position === 'static') {
             return this.openPanel(config, elem);
