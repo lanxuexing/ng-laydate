@@ -952,6 +952,8 @@ ng-laydate.layui-laydate.laydate-theme-dark {
     ng-laydate.layui-laydate {
         max-width: calc(100vw - 24px) !important;
         box-sizing: border-box !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
 
         &.layui-laydate-range {
             width: calc(100vw - 24px) !important;
@@ -972,7 +974,38 @@ ng-laydate.layui-laydate.laydate-theme-dark {
             }
         }
 
-        &:not(.layui-laydate-range):not(.laydate-theme-fullpanel) {
+        &.laydate-theme-fullpanel {
+            width: calc(100vw - 24px) !important;
+            max-width: calc(100vw - 24px) !important;
+            box-sizing: border-box !important;
+
+            .layui-laydate-main {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .layui-laydate-header,
+            .layui-laydate-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .laydate-time-list {
+                width: 100% !important;
+                box-sizing: border-box !important;
+
+                ol {
+                    width: 33.33% !important;
+                    box-sizing: border-box !important;
+                }
+            }
+        }
+
+        &:not(.layui-laydate-range) {
             max-width: calc(100vw - 24px) !important;
         }
 

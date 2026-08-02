@@ -260,11 +260,20 @@ export class NgLaydateService {
                 top = rect.top + scrollT - panelH - 2; // flip up
             }
 
-            // Horizontal Alignment: check if it overflows the right
-            if (left + panelW > scrollL + window.innerWidth) {
-                left = scrollL + window.innerWidth - panelW - 5;
+            // Horizontal Alignment & Mobile Responsive Clamp
+            const isMobile = window.innerWidth <= 640;
+            if (isMobile) {
+                const maxMobileWidth = window.innerWidth - 24;
+                componentEl.style.maxWidth = `${maxMobileWidth}px`;
+                componentEl.style.boxSizing = 'border-box';
+                const actualWidth = Math.min(panelW || maxMobileWidth, maxMobileWidth);
+                left = Math.max(12, scrollL + (window.innerWidth - actualWidth) / 2);
+            } else {
+                if (left + panelW > scrollL + window.innerWidth) {
+                    left = scrollL + window.innerWidth - panelW - 5;
+                }
+                if (left < scrollL) left = scrollL;
             }
-            if (left < scrollL) left = scrollL;
 
             componentEl.style.top = top + 'px';
             componentEl.style.left = left + 'px';
