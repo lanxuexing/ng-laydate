@@ -987,9 +987,9 @@ ng-laydate.layui-laydate.laydate-theme-dark {
 
     /* Time list header & item dark theme fix */
     .laydate-time-list li p {
-        background: #2a2a2a !important;
+        background: #333333 !important;
         color: #eee !important;
-        border-bottom: 1px solid #444 !important;
+        border-bottom: 1px solid var(--laydate-border-color, #444) !important;
     }
 
     .laydate-time-list li {
