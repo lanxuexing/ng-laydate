@@ -1,4 +1,4 @@
-import { Directive, ElementRef, ComponentRef, OnDestroy, inject, input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Directive, ElementRef, ComponentRef, OnDestroy, inject, input, Output, EventEmitter, forwardRef, effect } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgLaydateComponent } from './ng-laydate.component';
 import { LaydateConfig } from './ng-laydate.types';
@@ -39,6 +39,19 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     private onChange = (_: any) => { };
     private onTouched = () => { };
     private _value: any = '';
+
+    constructor() {
+        effect(() => {
+            const rawConfig = this.configInput();
+            const config: LaydateConfig = (typeof rawConfig === 'object' && rawConfig) ? { ...rawConfig } : {};
+            if (!config.elem && this.el?.nativeElement) {
+                config.elem = this.el.nativeElement;
+            }
+            if (config.elem) {
+                this.laydateService.updateConfig(config.elem, config);
+            }
+        });
+    }
 
     // ControlValueAccessor Interface
     writeValue(obj: any): void {

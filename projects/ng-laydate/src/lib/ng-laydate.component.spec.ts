@@ -122,4 +122,18 @@ describe('NgLaydateComponent', () => {
     expect(component.startDate().date).toBe(1);
     expect(component.endDate().date).toBe(31);
   });
+
+  it('should reactively update i18n dictionary when config input signal changes', async () => {
+    fixture.componentRef.setInput('config', { lang: 'cn' });
+    fixture.detectChanges();
+    expect(component.i18n().tools.confirm).toBe('确定');
+
+    fixture.componentRef.setInput('config', { lang: 'en' });
+    fixture.detectChanges();
+    expect(component.i18n().tools.confirm).toBe('Confirm');
+
+    fixture.componentRef.setInput('config', { lang: 'ja' });
+    fixture.detectChanges();
+    expect(component.i18n().tools.confirm).toBe('決定');
+  });
 });

@@ -17,6 +17,8 @@ export class NgLaydateService {
     private instances = new Map<string, NgLaydateComponent>();
     // Track active panel refs by element
     private activePanels = new Map<HTMLElement, ComponentRef<NgLaydateComponent>>();
+    // Track latest configs by element
+    private elementConfigs = new Map<HTMLElement, LaydateConfig>();
     // Track elements that already have event listeners attached
     private boundElements = new WeakSet<HTMLElement>();
     // Track event listeners and timers for cleanup
@@ -68,6 +70,14 @@ export class NgLaydateService {
         this.defaultVcr = vcr;
     }
 
+    updateConfig(elem: HTMLElement, config: LaydateConfig) {
+        this.elementConfigs.set(elem, config);
+        const activeRef = this.activePanels.get(elem);
+        if (activeRef) {
+            activeRef.setInput('config', config);
+        }
+    }
+
     render(config: LaydateConfig): ComponentRef<NgLaydateComponent> | null {
         // SSR Guard: Do not render dynamic components accessing DOM in Server
         if (!isPlatformBrowser(this.platformId)) {
@@ -82,6 +92,7 @@ export class NgLaydateService {
 
         if (elem instanceof HTMLElement) {
             elem.setAttribute('autocomplete', 'off');
+            this.elementConfigs.set(elem, config);
         }
 
         // If position is static, render immediately
@@ -95,7 +106,8 @@ export class NgLaydateService {
 
             const triggerHandler = () => {
                 if (!this.activePanels.get(elem)) {
-                    this.openPanel(config, elem);
+                    const latestConfig = this.elementConfigs.get(elem) || config;
+                    this.openPanel(latestConfig, elem);
                 }
             };
 
@@ -105,7 +117,8 @@ export class NgLaydateService {
 
         // Only open panel immediately on render if explicitly set in config.show === true
         if (config.show === true && !this.activePanels.get(elem)) {
-            return this.openPanel(config, elem);
+            const latestConfig = this.elementConfigs.get(elem) || config;
+            return this.openPanel(latestConfig, elem);
         }
 
         return this.activePanels.get(elem) || null;
