@@ -301,6 +301,44 @@ header {
     }
   }
 
+  .code-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .code-tab-segmented {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    button {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        color: #ffffff;
+      }
+
+      &.active {
+        background: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
   .code-lang-label {
     font-size: 0.75rem;
     font-weight: 600;

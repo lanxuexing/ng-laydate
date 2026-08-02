@@ -49,13 +49,19 @@
     @if (showCode()['sec1']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec1') === 'html'" (click)="setTab('sec1', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec1') === 'ts'" (click)="setTab('sec1', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec1']" (click)="copyCode('sec1', sec1Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec1']"
+          (click)="copyCode('sec1', getTab('sec1') === 'ts' ? sec1CodeTs : sec1CodeHtml)">
           @if (copiedState()['sec1']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -65,7 +71,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec1Code)"></code></pre>
+      @if (getTab('sec1') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec1CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec1CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -106,13 +116,19 @@
     @if (showCode()['sec2']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec2') === 'html'" (click)="setTab('sec2', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec2') === 'ts'" (click)="setTab('sec2', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec2']" (click)="copyCode('sec2', sec2Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec2']"
+          (click)="copyCode('sec2', getTab('sec2') === 'ts' ? sec2CodeTs : sec2CodeHtml)">
           @if (copiedState()['sec2']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -122,7 +138,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec2Code)"></code></pre>
+      @if (getTab('sec2') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec2CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec2CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -170,13 +190,19 @@
     @if (showCode()['sec3']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec3') === 'html'" (click)="setTab('sec3', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec3') === 'ts'" (click)="setTab('sec3', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec3']" (click)="copyCode('sec3', sec3Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec3']"
+          (click)="copyCode('sec3', getTab('sec3') === 'ts' ? sec3CodeTs : sec3CodeHtml)">
           @if (copiedState()['sec3']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -186,7 +212,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec3Code)"></code></pre>
+      @if (getTab('sec3') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec3CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec3CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -239,13 +269,19 @@
     @if (showCode()['sec4']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec4') === 'html'" (click)="setTab('sec4', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec4') === 'ts'" (click)="setTab('sec4', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec4']" (click)="copyCode('sec4', sec4Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec4']"
+          (click)="copyCode('sec4', getTab('sec4') === 'ts' ? sec4CodeTs : sec4CodeHtml)">
           @if (copiedState()['sec4']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -255,7 +291,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec4Code)"></code></pre>
+      @if (getTab('sec4') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec4CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec4CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -306,13 +346,19 @@
     @if (showCode()['sec5']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec5') === 'html'" (click)="setTab('sec5', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec5') === 'ts'" (click)="setTab('sec5', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec5']" (click)="copyCode('sec5', sec5Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec5']"
+          (click)="copyCode('sec5', getTab('sec5') === 'ts' ? sec5CodeTs : sec5CodeHtml)">
           @if (copiedState()['sec5']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -322,7 +368,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec5Code)"></code></pre>
+      @if (getTab('sec5') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec5CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec5CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -377,13 +427,19 @@
     @if (showCode()['sec6']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec6') === 'html'" (click)="setTab('sec6', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec6') === 'ts'" (click)="setTab('sec6', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Template</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec6']" (click)="copyCode('sec6', sec6Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec6']"
+          (click)="copyCode('sec6', getTab('sec6') === 'ts' ? sec6CodeTs : sec6CodeHtml)">
           @if (copiedState()['sec6']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -393,7 +449,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec6Code)"></code></pre>
+      @if (getTab('sec6') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec6CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec6CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -446,13 +506,19 @@
     @if (showCode()['sec7']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec7') === 'html'" (click)="setTab('sec7', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec7') === 'ts'" (click)="setTab('sec7', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">TypeScript / Component</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec7']" (click)="copyCode('sec7', sec7Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec7']"
+          (click)="copyCode('sec7', getTab('sec7') === 'ts' ? sec7CodeTs : sec7CodeHtml)">
           @if (copiedState()['sec7']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -462,7 +528,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec7Code, 'typescript')"></code></pre>
+      @if (getTab('sec7') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec7CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec7CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 
@@ -503,13 +573,19 @@
     @if (showCode()['sec8']) {
     <div class="code-preview-wrapper">
       <div class="code-preview-header">
-        <div class="mac-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
+        <div class="code-header-left">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="code-tab-segmented">
+            <button type="button" [class.active]="getTab('sec8') === 'html'" (click)="setTab('sec8', 'html')">HTML</button>
+            <button type="button" [class.active]="getTab('sec8') === 'ts'" (click)="setTab('sec8', 'ts')">TypeScript</button>
+          </div>
         </div>
-        <span class="code-lang-label">HTML / Inline Component</span>
-        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec8']" (click)="copyCode('sec8', sec8Code)">
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec8']"
+          (click)="copyCode('sec8', getTab('sec8') === 'ts' ? sec8CodeTs : sec8CodeHtml)">
           @if (copiedState()['sec8']) {
             <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
             <span>{{ t().copied }}</span>
@@ -519,7 +595,11 @@
           }
         </button>
       </div>
-      <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec8Code)"></code></pre>
+      @if (getTab('sec8') === 'ts') {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec8CodeTs, 'typescript')"></code></pre>
+      } @else {
+        <pre class="code-content"><code [innerHTML]="getHighlightedCode(sec8CodeHtml, 'markup')"></code></pre>
+      }
     </div>
     }
 

@@ -41,12 +41,21 @@ export class App implements AfterViewInit {
     this.currentLang.set(lang);
   }
 
-  // Code toggle & copy state
+  // Code toggle, tab & copy state
   showCode = signal<Record<string, boolean>>({});
   copiedState = signal<Record<string, boolean>>({});
+  activeTab = signal<Record<string, 'html' | 'ts'>>({});
 
   toggleCode(secId: string) {
     this.showCode.update(state => ({ ...state, [secId]: !state[secId] }));
+  }
+
+  setTab(secId: string, tab: 'html' | 'ts') {
+    this.activeTab.update(state => ({ ...state, [secId]: tab }));
+  }
+
+  getTab(secId: string): 'html' | 'ts' {
+    return this.activeTab()[secId] || 'html';
   }
 
   async copyCode(secId: string, codeText: string) {
@@ -232,9 +241,8 @@ export class App implements AfterViewInit {
     };
   });
 
-  // Clean Code Snippets
-  sec1Code = `<!-- 1. The Essentials -->
-<!-- Standard Date Picker -->
+  // Section 1 Snippets
+  sec1CodeHtml = `<!-- Standard Date Picker -->
 <input [laydate]="{ lang: 'cn' }">
 
 <!-- Theme: Molv (Ink Green) -->
@@ -246,8 +254,17 @@ export class App implements AfterViewInit {
 <!-- English i18n -->
 <input [laydate]="{ lang: 'en' }">`;
 
-  sec2Code = `<!-- 2. Selection Range -->
-<!-- Date Range -->
+  sec1CodeTs = `import { Component } from '@angular/core';
+import { NgLaydateDirective } from 'ng-laydate';
+
+@Component({
+  imports: [NgLaydateDirective],
+  template: \`<input [laydate]="{ lang: 'cn' }">\`
+})
+export class AppComponent {}`;
+
+  // Section 2 Snippets
+  sec2CodeHtml = `<!-- Date Range -->
 <input [laydate]="{ range: true }">
 
 <!-- DateTime Range -->
@@ -256,14 +273,27 @@ export class App implements AfterViewInit {
 <!-- Custom Separator (~ Month Range) -->
 <input [laydate]="{ type: 'month', range: '~', format: 'yyyy-MM' }">
 
-<!-- Synchronized Linked Panels -->
+<!-- Synchronized Linked Range Panels -->
 <input [laydate]="{ range: true, rangeLinked: true }">
 
-<!-- Manual Confirm -->
+<!-- Manual Confirm Button Required -->
 <input [laydate]="{ autoConfirm: false }">`;
 
-  sec3Code = `<!-- 3. Constraints & Logic -->
-<!-- Min/Max Boundary (2016-10-14 to 2080-10-14) -->
+  sec2CodeTs = `import { Component } from '@angular/core';
+import { NgLaydateDirective } from 'ng-laydate';
+
+@Component({
+  imports: [NgLaydateDirective],
+  template: \`<input [laydate]="{ range: true, rangeLinked: true }">\`
+})
+export class AppComponent {
+  onDateChange(event: any) {
+    console.log('Selected Range:', event.target.value);
+  }
+}`;
+
+  // Section 3 Snippets
+  sec3CodeHtml = `<!-- Min/Max Boundary (2016-10-14 to 2080-10-14) -->
 <input [laydate]="{ min: '2016-10-14', max: '2080-10-14' }">
 
 <!-- Relative Days Boundary (-7 to +7 days) -->
@@ -272,17 +302,39 @@ export class App implements AfterViewInit {
 <!-- Restricted Time Range (09:30:00 to 17:30:00) -->
 <input [laydate]="{ type: 'time', min: '09:30:00', max: '17:30:00' }">
 
-<!-- Logic-Based Disabling Function -->
+<!-- Logic-Based Custom Disabling -->
 <input [laydate]="{ disabledDate: disabledDateFn }">`;
 
-  sec4Code = `<!-- 4. Aesthetics & Themes -->
-<!-- FULLPANEL Side-by-Side Mode -->
+  sec3CodeTs = `import { Component } from '@angular/core';
+
+@Component({...})
+export class AppComponent {
+  // Logic-based date disabling (Disable weekends)
+  disabledDateFn = (date: Date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; // true to disable
+  };
+
+  // Disable future dates
+  disabledDateFuture = (date: Date) => {
+    return date.getTime() > Date.now();
+  };
+
+  // Complex hierarchical time rules (Hours/Minutes/Seconds constraint)
+  disabledTimeComplex = (type: 'hours' | 'minutes' | 'seconds', date: Date) => {
+    if (type === 'hours') return [0, 1, 2, 3, 4, 5, 6, 22, 23]; // Disable early/late hours
+    return [];
+  };
+}`;
+
+  // Section 4 Snippets
+  sec4CodeHtml = `<!-- FULLPANEL Side-by-Side Date & Time View -->
 <input [laydate]="{ type: 'datetime', theme: 'fullpanel' }">
 
 <!-- Dark Theme -->
 <input [laydate]="{ darkMode: true }">
 
-<!-- Custom Accent Color + Dark Mode -->
+<!-- Custom Hex Accent Color + Dark Mode -->
 <input [laydate]="{ darkMode: true, theme: '#FF5722' }">
 
 <!-- Grid Style + Accent Color -->
@@ -291,51 +343,129 @@ export class App implements AfterViewInit {
 <!-- Circle Style + Accent Color -->
 <input [laydate]="{ theme: ['circle', '#2196F3'] }">`;
 
-  sec5Code = `<!-- 5. Smart Features -->
-<!-- Dynamic Annotations / Marks -->
+  sec4CodeTs = `import { Component } from '@angular/core';
+
+@Component({...})
+export class AppComponent {
+  // Reactive configuration signal
+  config = {
+    type: 'datetime',
+    theme: 'fullpanel',
+    darkMode: true
+  };
+}`;
+
+  // Section 5 Snippets
+  sec5CodeHtml = `<!-- Dynamic Annotations / Marks -->
 <input [laydate]="{ mark: markFunction }">
 
 <!-- Custom Cell Render Callback -->
 <input [laydate]="{ cellRender: cellRenderDemo }">
 
 <!-- Gregorian Festivals & Holiday Markers -->
-<input [laydate]="{ calendar: true, holidays: ['2025-01-01', '2025-10-01'] }">
+<input [laydate]="{ calendar: true, holidays: [['2025-1-1','2025-1-2'],['2025-1-4']] }">
 
 <!-- Programmatic Service Hint -->
-<button (click)="laydate.hint(inputEl, 'Custom Hint!')">Show Hint</button>`;
+<button (click)="showHint(inputEl)">Show Hint</button>`;
 
-  sec6Code = `<!-- 6. Shortcuts Gallery -->
-<!-- Preset Date Shortcuts -->
-<input [laydate]="{ shortcuts: presetShortcuts }">
+  sec5CodeTs = `import { Component, inject } from '@angular/core';
+import { NgLaydateService } from 'ng-laydate';
+
+@Component({...})
+export class AppComponent {
+  private laydateService = inject(NgLaydateService);
+
+  // Dynamic Annotations Mark Callback
+  markFunction = (ymd: { year: number; month: number; date: number }, render: Function) => {
+    if (ymd.month === 6 && ymd.date === 1) return render('Children');
+    return render({ '0-10-14': 'Birthday', '0-0-15': 'Mid' });
+  };
+
+  // Custom Cell HTML Injector
+  cellRenderDemo = (ymd: any, render: Function, info: any) => {
+    if (info.type === 'date' && ymd.date === 8) {
+      render(\`<span style="color:#16b777;font-weight:bold;border:1px solid #16b777;border-radius:50%;padding:2px 6px;">\${ymd.date}</span>\`);
+    }
+  };
+
+  // Programmatic Hint Call
+  showHint(targetEl: HTMLElement) {
+    this.laydateService.hint(targetEl, 'Custom Hint Message! <br> Auto close in 3s');
+  }
+}`;
+
+  // Section 6 Snippets
+  sec6CodeHtml = `<!-- Preset Date Shortcuts -->
+<input [laydate]="{ shortcuts: shortcutsDate }">
 
 <!-- Year Select Shortcuts -->
-<input [laydate]="{ type: 'year', shortcuts: yearShortcuts }">
+<input [laydate]="{ type: 'year', shortcuts: shortcutsYear }">
 
-<!-- 30-Minute Time Interval Steps -->
-<input [laydate]="{ type: 'time', shortcuts: timeShortcuts }">`;
+<!-- 30-Minute Interval Steps Shortcuts -->
+<input [laydate]="{ type: 'time', shortcuts: shortcutsTime }">`;
 
-  sec7Code = `// 7. Integration & Developer API
-import { Component } from '@angular/core';
+  sec6CodeTs = `import { Component } from '@angular/core';
+
+@Component({...})
+export class AppComponent {
+  // Preset Date Shortcuts Definition
+  shortcutsDate = [
+    { text: 'Yesterday', value: () => new Date(Date.now() - 86400000) },
+    { text: 'Today', value: () => new Date() },
+    { text: 'Tomorrow', value: () => new Date(Date.now() + 86400000) },
+    { text: 'Last 7 Days', value: () => [new Date(Date.now() - 7 * 86400000), new Date()] }
+  ];
+
+  // 30-Minute Step Shortcuts Definition
+  shortcutsTime = Array.from({ length: 48 }, (_, i) => {
+    const h = String(Math.floor(i / 2)).padStart(2, '0');
+    const m = i % 2 === 0 ? '00' : '30';
+    return { text: \`\${h}:\${m}:00\`, value: \`\${h}:\${m}:00\` };
+  });
+}`;
+
+  // Section 7 Snippets
+  sec7CodeHtml = `<!-- Reactive Form Control -->
+<form [formGroup]="myForm">
+  <input formControlName="date" [laydate]="{ lang: 'cn' }">
+</form>
+
+<!-- Template-driven [(ngModel)] -->
+<input [(ngModel)]="templateModel" [laydate]="{ lang: 'cn' }">
+
+<!-- Custom Display Filter Config -->
+<input [laydate]="displayFormatConfig">`;
+
+  sec7CodeTs = `import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { NgLaydateDirective } from 'ng-laydate';
 
 @Component({
   imports: [ReactiveFormsModule, NgLaydateDirective],
-  template: \`
-    <!-- Reactive Form Integration -->
-    <form [formGroup]="myForm">
-      <input formControlName="birthday" [laydate]="{ lang: 'cn' }">
-    </form>
-  \`
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
+  // Reactive Form Integration
   myForm = new FormGroup({
-    birthday: new FormControl('2024-05-20')
+    date: new FormControl('2024-05-20')
   });
+
+  templateModel = '2024-06-01';
+
+  // Custom Display Filter Config
+  displayFormatConfig = {
+    lang: 'cn',
+    formatToDisplay: (value: string) => {
+      if (!value) return '';
+      const date = new Date(value);
+      const weekday = date.toLocaleDateString('zh-CN', { weekday: 'long' });
+      return \`\${value} (\${weekday})\`;
+    }
+  };
 }`;
 
-  sec8Code = `<!-- 8. Static Gallery (Inline Components) -->
-<!-- Default Static Inline Panel -->
+  // Section 8 Snippets
+  sec8CodeHtml = `<!-- Default Static Inline Panel -->
 <ng-laydate [config]="{ position: 'static', lang: 'cn' }"></ng-laydate>
 
 <!-- Static Inline FullPanel Mode -->
@@ -343,6 +473,15 @@ export class AppComponent {
 
 <!-- Static Inline Grid Theme -->
 <ng-laydate [config]="{ position: 'static', theme: 'grid' }"></ng-laydate>`;
+
+  sec8CodeTs = `import { Component } from '@angular/core';
+import { NgLaydateComponent } from 'ng-laydate';
+
+@Component({
+  imports: [NgLaydateComponent],
+  template: \`<ng-laydate [config]="{ position: 'static', type: 'datetime', theme: 'fullpanel' }"></ng-laydate>\`
+})
+export class AppComponent {}`;
 
   // Responsive Form
   myForm = new FormGroup({
