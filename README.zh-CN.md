@@ -29,7 +29,7 @@
 
 | 组件库版本 | 支持的 Angular 版本 | Signals 原生支持 |
 | :--- | :--- | :--- |
-| `ng-laydate ^1.0.0` | **Angular `>= 17.3.0`** (包括 17.x, 18.x, 19.x, 21.x, 22.x+) | 原生支持 |
+| `ng-laydate ^1.1.0` | **Angular `>= 17.3.0`** (包括 17.x, 18.x, 19.x, 21.x, 22.x+) | 原生支持 |
 
 ## ✨ 特性
 
@@ -39,7 +39,7 @@
 - ⚡ **快捷选项**: 可自定义快捷选择按钮，支持侧边栏或页脚展示。
 - 🎨 **丰富主题**: 内置 `default`、`molv` (墨绿)、`grid` (格子)、`circle` (圆形)、`dark` (深色) 以及特色 `fullpanel` (左右联动全面板) 主题。
 - 🕒 **精准控制**: 智能时分秒列显隐控制，支持自动滚动定位。
-- 🌏 **国际化**: 完美支持中文 (`cn`) 和英文 (`en`)。
+- 🌏 **多语言国际化**: 原生支持全球 8 大主流语言（`cn` 简中、`en` 英文、`tw` 繁中、`ja` 日语、`ko` 韩语、`es` 西班牙语、`de` 德语、`fr` 法语），支持浏览器语言智能自动检测与零刷新响应式秒切。
 - 🚩 **节日与假勤**: 内置公历节日显示，支持自定义节假日/加班标记。
 - 🖋️ **自定义渲染**: 提供灵活的 `cellRender` 或 `mark` 函数，支持在单元格内插入自定义 HTML。
 - ⚡ **极致性能**: 深度优化的渲染引擎，配合 `requestAnimationFrame` 实现丝滑的 60fps 交互体验。
@@ -130,7 +130,7 @@ export class MyComponent {}
 | `shortcuts` | `Array` | - | 高级快捷选项 (如 `[{text: '今天', value: new Date()}]`)。 |
 | `shorthand` | `Record<string, string>` | - | 简单快捷键 (如 `{'yesterday': '2024-01-01'}`)。 |
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | 页脚显示的按钮及其顺序。 |
-| `lang` | `'cn' \| 'en'` | `'cn'` | 语言设置。 |
+| `lang` | `SupportedLang \| (() => SupportedLang)` | 自动 / `'cn'` | 语言切换（支持 `cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr` 8 种语言）。支持传入动态 Getter 函数及浏览器语言自动感知。 |
 | `weekStart` | `number` | `0` | 星期起始日（0-6，0 代表周日）。 |
 | `darkMode` | `boolean` | `false` | 是否强制开启深色模式。 |
 | `show` | `boolean` | `false` | 是否在初始化完成后立即显示选择器。 |

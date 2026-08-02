@@ -29,7 +29,7 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 
 | Library Version | Supported Angular Versions | Signals Support |
 | :--- | :--- | :--- |
-| `ng-laydate ^1.0.0` | **Angular `>= 17.3.0`** (17.x, 18.x, 19.x, 21.x, 22.x+) | Native |
+| `ng-laydate ^1.1.0` | **Angular `>= 17.3.0`** (17.x, 18.x, 19.x, 21.x, 22.x+) | Native |
 
 ## ✨ Features
 
@@ -39,7 +39,7 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 - ⚡ **Shortcuts**: Customizable quick-selection buttons (sidebar or footer).
 - 🎨 **Rich Themes**: Includes `default`, `molv` (teal), `grid`, `circle`, `dark`, and a special `fullpanel` (side-by-side) theme.
 - 🕒 **Precision Control**: Intelligent H:M:S column visibility and auto-scrolling.
-- 🌏 **Internationalization**: Full support for Chinese (`cn`) and English (`en`).
+- 🌏 **Global i18n**: Out-of-the-box support for 8 major international languages (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`), with automatic browser locale detection and zero-refresh reactive language switching.
 - 🚩 **Special Days**: Built-in Gregorian festivals and customizable Holiday/Workday markers.
 - 🖋️ **Custom Content**: Flexible cell rendering via `cellRender` or `mark` functions.
 - ⚡ **Performance**: Optimized rendering engine with smart diffing and `requestAnimationFrame` for smooth 60fps interactions.
@@ -130,7 +130,7 @@ Use the component directly for static or embedded pickers.
 | `shortcuts` | `Array` | - | Adv shortcuts (e.g., `[{text: 'Today', value: new Date()}]`). |
 | `shorthand` | `Record<string, string>` | - | Simple shortcuts (e.g., `{'yesterday': '2024-01-01'}`). |
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | Footer buttons to display and their order. |
-| `lang` | `'cn' \| 'en'` | `'cn'` | Language toggle. |
+| `lang` | `SupportedLang \| (() => SupportedLang)` | Auto / `'cn'` | International language toggle (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`). Supports reactive getters & auto browser locale detection. |
 | `weekStart` | `number` | `0` | Start of the week (0-6, 0 is Sunday). |
 | `darkMode` | `boolean` | `false` | Force enable dark mode regardless of theme. |
 | `show` | `boolean` | `false` | Whether to show the picker immediately on render. |
