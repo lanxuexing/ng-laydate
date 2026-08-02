@@ -37,9 +37,45 @@ export class App implements AfterViewInit {
     this.currentLang.set(lang);
   }
 
+  // Code toggle & copy state
+  showCode = signal<Record<string, boolean>>({});
+  copiedState = signal<Record<string, boolean>>({});
+
+  toggleCode(secId: string) {
+    this.showCode.update(state => ({ ...state, [secId]: !state[secId] }));
+  }
+
+  async copyCode(secId: string, codeText: string) {
+    if (isPlatformBrowser(this.platformId) && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(codeText);
+        this.copiedState.update(state => ({ ...state, [secId]: true }));
+        setTimeout(() => {
+          this.copiedState.update(state => ({ ...state, [secId]: false }));
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code', err);
+      }
+    }
+  }
+
   // Reactive translation dictionary
   t = computed(() => {
     const lang = this.currentLang();
+    const isEn = lang === 'en';
+    const isZh = lang === 'cn' || lang === 'tw';
+
+    const actionText = {
+      cn: { viewCode: '查看代码', hideCode: '收起代码', copyCode: '复制代码', copied: '已复制!' },
+      en: { viewCode: 'View Code', hideCode: 'Hide Code', copyCode: 'Copy Code', copied: 'Copied!' },
+      tw: { viewCode: '查看程式碼', hideCode: '收起程式碼', copyCode: '複製程式碼', copied: '已複製!' },
+      ja: { viewCode: 'コードを表示', hideCode: 'コード非表示', copyCode: 'コードをコピー', copied: 'コピー完了!' },
+      ko: { viewCode: '코드 보기', hideCode: '코드 숨기기', copyCode: '코드 복사', copied: '복사됨!' },
+      es: { viewCode: 'Ver Código', hideCode: 'Ocultar Código', copyCode: 'Copiar Código', copied: '¡Copiado!' },
+      de: { viewCode: 'Code Anzeigen', hideCode: 'Code Ausblenden', copyCode: 'Code Kopieren', copied: 'Kopiert!' },
+      fr: { viewCode: 'Voir le Code', hideCode: 'Masquer le Code', copyCode: 'Copier le Code', copied: 'Copié!' }
+    }[lang] || { viewCode: 'View Code', hideCode: 'Hide Code', copyCode: 'Copy Code', copied: 'Copied!' };
+
     if (lang === 'en') {
       return {
         subtitle: 'Minimalist · Powerful · Elegant Date & Time Picker for Angular 17+',
@@ -105,7 +141,8 @@ export class App implements AfterViewInit {
 
         hintBtn: 'Show Hint',
         hintText: 'This is a hint! <br> 3 seconds to close',
-        starGithub: 'Star on GitHub'
+        starGithub: 'Star on GitHub',
+        ...actionText
       };
     }
     return {
@@ -172,9 +209,125 @@ export class App implements AfterViewInit {
 
       hintBtn: '弹出 Hint',
       hintText: '这是一个 Hint 提示框！<br>3秒后自动关闭',
-      starGithub: 'Star on GitHub'
+      starGithub: 'Star on GitHub',
+      ...actionText
     };
   });
+
+  // Code Snippets for Demo Sections
+  sec1Code = `<!-- 1. The Essentials -->
+<!-- Standard Date -->
+<input type="text" class="layui-input" [laydate]="{ lang: 'cn' }">
+
+<!-- Theme: Molv -->
+<input type="text" class="layui-input" [laydate]="{ value: '2023-10-01', theme: 'molv' }">
+
+<!-- DateTime Mode -->
+<input type="text" class="layui-input" [laydate]="{ type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss' }">
+
+<!-- English i18n -->
+<input type="text" class="layui-input" [laydate]="{ lang: 'en' }">`;
+
+  sec2Code = `<!-- 2. Selection Range -->
+<!-- Date Range -->
+<input type="text" class="layui-input" [laydate]="{ range: true }">
+
+<!-- DateTime Range -->
+<input type="text" class="layui-input" [laydate]="{ type: 'datetime', range: true }">
+
+<!-- Month Range with Custom Separator -->
+<input type="text" class="layui-input" [laydate]="{ type: 'month', range: '~', format: 'yyyy-MM' }">
+
+<!-- Synchronized Linked Panels -->
+<input type="text" class="layui-input" [laydate]="{ range: true, rangeLinked: true }">
+
+<!-- Manual Confirm -->
+<input type="text" class="layui-input" [laydate]="{ autoConfirm: false }">`;
+
+  sec3Code = `<!-- 3. Constraints & Logic -->
+<!-- Min/Max Bounds (2016-01-01 to 2080-12-31) -->
+<input type="text" class="layui-input" [laydate]="{ min: '2016-01-01', max: '2080-12-31' }">
+
+<!-- Relative Bounds (-7 to +7 days) -->
+<input type="text" class="layui-input" [laydate]="{ min: -7, max: 7 }">
+
+<!-- Time Bounds (09:30:00 to 17:30:00) -->
+<input type="text" class="layui-input" [laydate]="{ type: 'time', min: '09:30:00', max: '17:30:00' }">
+
+<!-- Disable Future Dates -->
+<input type="text" class="layui-input" [laydate]="{ max: 0 }">`;
+
+  sec4Code = `<!-- 4. Aesthetics & Themes -->
+<!-- FullPanel Mode (Side-by-Side Date & Time) -->
+<input type="text" class="layui-input" [laydate]="{ type: 'datetime', theme: 'fullpanel' }">
+
+<!-- Dark Theme -->
+<input type="text" class="layui-input" [laydate]="{ theme: 'dark' }">
+
+<!-- Dark Theme + Custom Accent Color -->
+<input type="text" class="layui-input" [laydate]="{ theme: '#ff5722', themeMode: 'dark' }">
+
+<!-- Grid Style + Purple Accent -->
+<input type="text" class="layui-input" [laydate]="{ theme: '#7c3aed', themeStyle: 'grid' }">
+
+<!-- Circle Style + Blue Accent -->
+<input type="text" class="layui-input" [laydate]="{ theme: '#2563eb', themeStyle: 'circle' }">`;
+
+  sec5Code = `<!-- 5. Smart Features -->
+<!-- Custom Mark Function -->
+<input type="text" class="layui-input" [laydate]="{ mark: markFunction }">
+
+<!-- Custom Cell Render Callback -->
+<input type="text" class="layui-input" [laydate]="{ cellRender: cellRenderDemo }">
+
+<!-- Built-in Festivals & Holidays -->
+<input type="text" class="layui-input" [laydate]="{ calendar: true, holidays: ['2024-01-01', '2024-10-01'] }">
+
+<!-- Programmatic Service Hint -->
+<button (click)="laydate.hint(inputEl, 'Custom Hint Message!')">Show Hint</button>`;
+
+  sec6Code = `<!-- 6. Shortcuts Gallery -->
+<!-- Preset Dates -->
+<input type="text" class="layui-input" [laydate]="{ shortcuts: presetShortcuts }">
+
+<!-- Year Select Shortcuts -->
+<input type="text" class="layui-input" [laydate]="{ type: 'year', shortcuts: yearShortcuts }">
+
+<!-- 30-Minute Time Interval Steps -->
+<input type="text" class="layui-input" [laydate]="{ type: 'time', shortcuts: timeShortcuts }">`;
+
+  sec7Code = `// 7. Integration & Developer API
+import { Component } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { NgLaydateDirective } from 'ng-laydate';
+
+@Component({
+  imports: [ReactiveFormsModule, NgLaydateDirective],
+  template: \`
+    <!-- Reactive Form Control -->
+    <form [formGroup]="myForm">
+      <input type="text" class="layui-input" formControlName="birthday" [laydate]="{ lang: 'cn' }">
+    </form>
+
+    <!-- Custom Display Filter -->
+    <input type="text" class="layui-input" [laydate]="displayFormatConfig">
+  \`
+})
+export class AppComponent {
+  myForm = new FormGroup({
+    birthday: new FormControl('2024-05-20')
+  });
+}`;
+
+  sec8Code = `<!-- 8. Static Gallery (Inline Components) -->
+<!-- Default Inline Static Panel -->
+<ng-laydate [config]="{ position: 'static', lang: 'cn' }"></ng-laydate>
+
+<!-- Inline Static FullPanel -->
+<ng-laydate [config]="{ position: 'static', type: 'datetime', theme: 'fullpanel' }"></ng-laydate>
+
+<!-- Inline Static Grid Style -->
+<ng-laydate [config]="{ position: 'static', theme: 'grid' }"></ng-laydate>`;
 
   // Responsive Form
   myForm = new FormGroup({

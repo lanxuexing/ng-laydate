@@ -36,7 +36,39 @@
 
   <!-- 1. The Essentials -->
   <div class="demo-section">
-    <h2>{{ t().sec1Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec1Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec1')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec1'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec1']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec1']" (click)="copyCode('sec1', sec1Code)">
+          @if (copiedState()['sec1']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec1Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec1_1 }}</label>
@@ -61,7 +93,39 @@
 
   <!-- 2. Range & Selection -->
   <div class="demo-section">
-    <h2>{{ t().sec2Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec2Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec2')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec2'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec2']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec2']" (click)="copyCode('sec2', sec2Code)">
+          @if (copiedState()['sec2']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec2Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec2_1 }}</label>
@@ -93,7 +157,39 @@
 
   <!-- 3. Constraints & Logic -->
   <div class="demo-section">
-    <h2>{{ t().sec3Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec3Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec3')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec3'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec3']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec3']" (click)="copyCode('sec3', sec3Code)">
+          @if (copiedState()['sec3']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec3Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec3_1 }}</label>
@@ -130,7 +226,39 @@
 
   <!-- 4. Premium & Aesthetics -->
   <div class="demo-section">
-    <h2>{{ t().sec4Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec4Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec4')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec4'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec4']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec4']" (click)="copyCode('sec4', sec4Code)">
+          @if (copiedState()['sec4']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec4Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec4_1 }}</label>
@@ -165,7 +293,39 @@
 
   <!-- 5. Smart Features -->
   <div class="demo-section">
-    <h2>{{ t().sec5Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec5Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec5')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec5'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec5']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec5']" (click)="copyCode('sec5', sec5Code)">
+          @if (copiedState()['sec5']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec5Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec5_1 }}</label>
@@ -203,8 +363,40 @@
 
   <!-- 6. Shortcuts Gallery -->
   <div class="demo-section">
-    <h2>{{ t().sec6Title }}</h2>
-    <p style="margin-top: -20px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted);">{{ t().sec6Desc }}</p>
+    <div class="section-header">
+      <h2>{{ t().sec6Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec6')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec6'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+    <p style="margin-top: -12px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted);">{{ t().sec6Desc }}</p>
+
+    @if (showCode()['sec6']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Template</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec6']" (click)="copyCode('sec6', sec6Code)">
+          @if (copiedState()['sec6']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec6Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec6_1 }}</label>
@@ -241,7 +433,39 @@
 
   <!-- 7. Integration & Dev API -->
   <div class="demo-section">
-    <h2>{{ t().sec7Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec7Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec7')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec7'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec7']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">TypeScript / Component</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec7']" (click)="copyCode('sec7', sec7Code)">
+          @if (copiedState()['sec7']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec7Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid">
       <div class="layui-inline" [formGroup]="myForm">
         <label>{{ t().sec7_1 }}</label>
@@ -266,7 +490,39 @@
 
   <!-- 8. Static Gallery (Inline) -->
   <div class="demo-section">
-    <h2>{{ t().sec8Title }}</h2>
+    <div class="section-header">
+      <h2>{{ t().sec8Title }}</h2>
+      <button type="button" class="code-toggle-btn" (click)="toggleCode('sec8')">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.7 11.7L1 8l3.7-3.7 1.4 1.4L2.8 8l3.3 2.3-1.4 1.4zm6.6 0l-1.4-1.4L13.2 8l-3.3-2.3 1.4-1.4L15 8l-3.7 3.7z"/>
+        </svg>
+        <span>{{ showCode()['sec8'] ? t().hideCode : t().viewCode }}</span>
+      </button>
+    </div>
+
+    @if (showCode()['sec8']) {
+    <div class="code-preview-wrapper">
+      <div class="code-preview-header">
+        <div class="mac-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="code-lang-label">HTML / Inline Component</span>
+        <button type="button" class="copy-btn" [class.copied]="copiedState()['sec8']" (click)="copyCode('sec8', sec8Code)">
+          @if (copiedState()['sec8']) {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+            <span>{{ t().copied }}</span>
+          } @else {
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1h-3A1.5 1.5 0 0 0 5 2.5v1A1.5 1.5 0 0 0 6.5 5h3A1.5 1.5 0 0 0 11 3.5v-1A1.5 1.5 0 0 0 9.5 1zm-3 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/></svg>
+            <span>{{ t().copyCode }}</span>
+          }
+        </button>
+      </div>
+      <pre class="code-content"><code>{{ sec8Code }}</code></pre>
+    </div>
+    }
+
     <div class="demo-grid static-gallery-grid">
       <div>
         <label>{{ t().sec8_1 }}</label>
