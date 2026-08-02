@@ -6,6 +6,8 @@ import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
 
+export type ThemeMode = 'system' | 'light' | 'dark';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,6 +20,44 @@ export class App implements AfterViewInit {
   private laydate = inject(NgLaydateService);
   private platformId = inject(PLATFORM_ID);
   private sanitizer = inject(DomSanitizer);
+
+  // Theme mode state ('system' | 'light' | 'dark')
+  themeMode = signal<ThemeMode>('system');
+
+  setThemeMode(mode: ThemeMode) {
+    this.themeMode.set(mode);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('ng-laydate-theme', mode);
+      this.applyTheme(mode);
+    }
+  }
+
+  private applyTheme(mode: ThemeMode) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const root = document.documentElement;
+
+    if (mode === 'system') {
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.setAttribute('data-theme', systemDark ? 'dark' : 'light');
+    } else {
+      root.setAttribute('data-theme', mode);
+    }
+  }
+
+  private initTheme() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const saved = localStorage.getItem('ng-laydate-theme') as ThemeMode;
+    const initialMode: ThemeMode = (saved === 'light' || saved === 'dark' || saved === 'system') ? saved : 'system';
+    this.themeMode.set(initialMode);
+    this.applyTheme(initialMode);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', () => {
+      if (this.themeMode() === 'system') {
+        this.applyTheme('system');
+      }
+    });
+  }
 
   private detectInitialLang(): SupportedLang {
     if (isPlatformBrowser(this.platformId)) {
@@ -492,6 +532,7 @@ export class AppComponent {}`;
   templateModel = '2024-05-02';
 
   ngAfterViewInit() {
+    this.initTheme();
     // 14. Programmatic Render Demo
     this.laydate.render({
       elem: '#ID-laydate-type-datetime',
