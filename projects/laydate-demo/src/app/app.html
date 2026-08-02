@@ -101,7 +101,7 @@
       </div>
       <div class="layui-inline">
         <label>{{ t().sec1_2 }}</label>
-        <input type="text" class="layui-input" [laydate]="{value: '2023-10-01', theme: 'molv', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{value: '2023-10-01', theme: 'molv', darkMode: demoDarkMode(), lang: currentLang()}"
           (change)="onDateChange($event)">
       </div>
       <div class="layui-inline">

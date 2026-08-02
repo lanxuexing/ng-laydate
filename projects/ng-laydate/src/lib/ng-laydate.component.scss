@@ -699,17 +699,17 @@ ng-laydate.layui-laydate {
         /* Override CSS var */
 
         .layui-laydate-header {
-            background-color: #16baaa;
+            background-color: #16baaa !important;
             border: none;
 
             i,
             span {
-                color: #fff;
+                color: #fff !important;
             }
 
             i:hover,
             span:hover {
-                color: #fff;
+                color: #fff !important;
                 opacity: 0.8;
             }
         }
