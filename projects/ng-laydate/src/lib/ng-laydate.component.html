@@ -194,7 +194,7 @@
 </ng-template>
 
 <ng-template #timePanel let-date="date" let-isRight="isRight">
-    @if (finalConfig().theme !== 'fullpanel') {
+    @if (finalConfig().range && finalConfig().theme !== 'fullpanel') {
     <div class="laydate-time-header">
         {{ (isRight ? i18n().endTime : i18n().startTime) }} [ {{ digit(date.hours) }}:{{ digit(date.minutes)
         }}:{{
