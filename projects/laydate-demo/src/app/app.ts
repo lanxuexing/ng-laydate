@@ -271,8 +271,12 @@ export class App implements AfterViewInit {
   };
 
   onLimitReady = () => {
+    const isEn = this.currentLang() === 'en';
+    const content = isEn
+      ? 'Date range limit set to <br> 2016-10-14 - 2080-10-14'
+      : '日期可选值设定在 <br> 2016-10-14 到 2080-10-14';
     this.laydate.hint('ins22', {
-      content: '日期可选值设定在 <br> 2016-10-14 到 2080-10-14',
+      content,
       ms: 3000
     });
   };
