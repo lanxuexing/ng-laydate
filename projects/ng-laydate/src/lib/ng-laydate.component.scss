@@ -979,6 +979,11 @@ ng-laydate.layui-laydate.laydate-theme-dark {
         max-width: calc(100vw - 24px) !important;
         box-sizing: border-box !important;
 
+        .layui-laydate-content-wrapper {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
         .layui-laydate-main {
             width: 100% !important;
             max-width: 100% !important;
@@ -988,6 +993,22 @@ ng-laydate.layui-laydate.laydate-theme-dark {
         .layui-laydate-content {
             width: 100% !important;
             max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .layui-laydate-list {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .laydate-year-list > li {
+            width: 33.33% !important;
+            box-sizing: border-box !important;
+        }
+
+        .laydate-month-list > li {
+            width: 25% !important;
             box-sizing: border-box !important;
         }
 
