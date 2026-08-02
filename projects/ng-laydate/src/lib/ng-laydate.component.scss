@@ -97,7 +97,7 @@ ng-laydate.layui-laydate {
 
         .layui-laydate-header {
             width: 100%;
-            border-bottom: 1px solid #f2f2f2;
+            border-bottom: 1px solid var(--laydate-border-color, #f2f2f2);
             padding: 10px 0 5px;
             box-sizing: border-box;
             text-align: center;
@@ -127,7 +127,7 @@ ng-laydate.layui-laydate {
             width: 272px;
             flex: 1;
             box-sizing: border-box;
-            border-right: 1px solid #f2f2f2;
+            border-right: 1px solid var(--laydate-border-color, #f2f2f2);
         }
 
         .layui-laydate-content-side {
@@ -169,7 +169,7 @@ ng-laydate.layui-laydate {
                 li {
                     flex: 1;
                     height: 100%;
-                    border-left: 1px solid #f2f2f2;
+                    border-left: 1px solid var(--laydate-border-color, #f2f2f2);
                     display: flex;
                     flex-direction: column;
                     width: auto;
@@ -286,7 +286,7 @@ ng-laydate.layui-laydate {
         /* 确保在列表之上 */
         line-height: 30px;
         padding: 10px 70px 5px;
-        border-bottom: 1px solid #e2e2e2;
+        border-bottom: 1px solid var(--laydate-border-color, #e2e2e2);
     }
 
     .layui-laydate-header * {
@@ -675,15 +675,13 @@ ng-laydate.layui-laydate {
     }
 
     .layui-laydate-footer {
-        flex: 0 0 100%;
-        width: 100%;
         box-sizing: border-box;
         position: relative;
         z-index: 11;
         height: 46px;
         line-height: 26px;
         padding: 10px;
-        border-top: 1px solid #e2e2e2;
+        border-top: 1px solid var(--laydate-border-color, #e2e2e2);
         background-color: #fff;
     }
 
@@ -708,7 +706,7 @@ ng-laydate.layui-laydate {
         }
 
         .layui-laydate-footer {
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--laydate-border-color, #eee);
 
             span:hover {
                 color: #16baaa;
@@ -720,9 +718,9 @@ ng-laydate.layui-laydate {
 
         .layui-laydate-content td,
         .layui-laydate-content thead,
-        .laydate-year-list>li,
+        .layui-year-list>li,
         .laydate-month-list>li {
-            border: 1px solid #e2e2e2;
+            border: 1px solid var(--laydate-border-color, #e2e2e2);
         }
     }
 

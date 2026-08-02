@@ -26,7 +26,8 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     '[class.laydate-ym-show]': '!finalConfig().range && (view() === "year" || view() === "month")',
     '[class.laydate-time-show]': '!finalConfig().range && view() === "time"',
     '[style.--laydate-theme-color]': 'parsedTheme().color',
-    '[style.--laydate-theme-color-light]': 'themeColorLight()'
+    '[style.--laydate-theme-color-light]': 'themeColorLight()',
+    '[style.--laydate-border-color]': 'themeColorBorder()'
   }
 })
 export class NgLaydateComponent {
@@ -172,6 +173,14 @@ export class NgLaydateComponent {
   themeColorLight = computed(() => {
     const color = this.parsedTheme().color;
     return this.service.hexToRgba(color || '#16b777', 0.1);
+  });
+
+  themeColorBorder = computed(() => {
+    const color = this.parsedTheme().color;
+    if (color) {
+      return this.service.hexToRgba(color, 0.3);
+    }
+    return this.isDarkMode() ? '#444444' : '#e2e2e2';
   });
 
   isDarkMode = computed(() => {
