@@ -194,13 +194,6 @@
 </ng-template>
 
 <ng-template #timePanel let-date="date" let-isRight="isRight">
-    @if (finalConfig().range && finalConfig().theme !== 'fullpanel') {
-    <div class="laydate-time-header">
-        {{ (isRight ? i18n().endTime : i18n().startTime) }} [ {{ digit(date.hours) }}:{{ digit(date.minutes)
-        }}:{{
-        digit(date.seconds) }} ]
-    </div>
-    }
     <ul class="layui-laydate-list laydate-time-list">
         @if (timeColumnVisibility().h) {
         <li>
