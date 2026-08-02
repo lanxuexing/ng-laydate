@@ -40,11 +40,11 @@ body {
 /* Header with Apple Aesthetics */
 header {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 
   h1 {
     font-family: 'Outfit', -apple-system, sans-serif;
-    font-size: 3.75rem;
+    font-size: clamp(2.2rem, 6.5vw, 3.75rem);
     font-weight: 700;
     margin: 0 0 12px 0;
     background: var(--primary-gradient);
@@ -56,7 +56,7 @@ header {
   }
 
   .subtitle-cn {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
     font-weight: 500;
     color: var(--text-main);
     margin: 0 0 6px 0;
@@ -64,7 +64,7 @@ header {
   }
 
   .subtitle-en {
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
     color: var(--text-muted);
     font-weight: 400;
     margin: 0 0 28px 0;
@@ -78,6 +78,7 @@ header {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .lang-switch-segmented {
@@ -88,6 +89,17 @@ header {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   button {
     border: none;
@@ -99,6 +111,7 @@ header {
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
 
     &.active {
       background: #ffffff;
@@ -203,7 +216,7 @@ header {
 
 .demo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
 }
 
@@ -267,31 +280,6 @@ header {
   }
 }
 
-/* Horizontal scroll demo refinement */
-.demo-grid.scroll-x {
-  display: flex !important;
-  overflow-x: auto;
-  gap: 20px;
-  padding: 4px 4px 16px 4px;
-
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .layui-inline {
-    flex: 0 0 290px;
-  }
-}
-
 /* Buttons and helper tags */
 .layui-btn-hint {
   height: 44px;
@@ -338,16 +326,60 @@ header {
   letter-spacing: 0.05em;
 }
 
+/* Mobile & Responsive Breakpoints (Apple Design Guidelines) */
 @media (max-width: 768px) {
   .laydate-demo-container {
     padding: 32px 16px 60px 16px;
   }
 
-  header h1 {
-    font-size: 2.75rem;
+  .demo-section {
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .laydate-demo-container {
+    padding: 24px 12px 48px 12px;
   }
 
   .demo-section {
-    padding: 24px 20px;
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.15rem;
+    }
+  }
+
+  .demo-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .demo-grid.static-gallery-grid {
+    gap: 20px !important;
+
+    > div {
+      flex: 1 1 100% !important;
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
+    .layui-laydate-static {
+      max-width: 100% !important;
+    }
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .github-star-button,
+  .angular-version-badge {
+    padding: 6px 14px;
+    font-size: 0.8rem;
   }
 }
