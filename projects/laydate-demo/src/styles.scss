@@ -366,17 +366,16 @@ header {
       width: 100% !important;
       display: flex !important;
       flex-direction: column !important;
-      align-items: flex-start !important;
+      align-items: center !important;
 
       label {
         width: 100% !important;
         margin-bottom: 8px !important;
+        text-align: left !important;
       }
 
       ng-laydate {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
+        max-width: 100% !important;
       }
     }
 
