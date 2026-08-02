@@ -1006,38 +1006,52 @@ ng-laydate.layui-laydate.laydate-theme-dark {
 
             .layui-laydate-content-side .layui-laydate-content {
                 width: 100% !important;
-                height: 180px !important;
+                height: 200px !important;
                 box-sizing: border-box !important;
+                position: relative !important;
             }
+        }
 
-            .laydate-time-list {
-                width: 100% !important;
-                display: flex !important;
+        .laydate-time-list {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            box-sizing: border-box !important;
+            position: relative !important;
+
+            > li {
+                flex: 1 1 33.33% !important;
+                width: 33.33% !important;
+                height: 100% !important;
+                min-width: 0 !important;
+                position: relative !important;
                 box-sizing: border-box !important;
+
+                p {
+                    height: 30px !important;
+                    line-height: 30px !important;
+                    text-align: center !important;
+                    margin: 0 !important;
+                    font-weight: 600 !important;
+                }
 
                 ol {
-                    flex: 1 1 33.33% !important;
-                    width: 33.33% !important;
-                    min-width: 0 !important;
-                    box-sizing: border-box !important;
+                    position: absolute !important;
+                    top: 30px !important;
+                    bottom: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    width: 100% !important;
+                    height: calc(100% - 30px) !important;
+                    overflow-y: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
 
                     li {
                         text-align: center !important;
                         padding-left: 0 !important;
                     }
                 }
-            }
-        }
-
-        .laydate-time-list {
-            width: 100% !important;
-            box-sizing: border-box !important;
-
-            ol {
-                flex: 1 1 33.33% !important;
-                width: 33.33% !important;
-                min-width: 0 !important;
-                box-sizing: border-box !important;
             }
         }
 
