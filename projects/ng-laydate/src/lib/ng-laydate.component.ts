@@ -173,7 +173,8 @@ export class NgLaydateComponent {
 
   // i18n Dictionary
   i18n = computed(() => {
-    const lang = this.finalConfig().lang || 'cn';
+    const rawLang = this.finalConfig().lang;
+    const lang = typeof rawLang === 'function' ? rawLang() : (rawLang || 'cn');
 
     if (lang === 'en') {
       return {

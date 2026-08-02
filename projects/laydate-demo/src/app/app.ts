@@ -182,6 +182,7 @@ export class App implements AfterViewInit {
     this.laydate.render({
       elem: '#ID-laydate-type-datetime',
       type: 'datetime',
+      lang: () => this.currentLang(),
       done: (value) => {
         console.log('Programmatic select:', value);
       }
@@ -686,11 +687,16 @@ export class App implements AfterViewInit {
     }
   };
 
-  displayFormatConfig = {
-    formatToDisplay: (value: string) => {
-      const date = new Date(value);
-      const weekday = date.toLocaleDateString('zh-CN', { weekday: 'long' });
-      return value ? `${value} ${weekday}` : '';
-    }
-  };
+  get displayFormatConfig() {
+    const isEn = this.currentLang() === 'en';
+    return {
+      lang: this.currentLang(),
+      formatToDisplay: (value: string) => {
+        if (!value) return '';
+        const date = new Date(value);
+        const weekday = date.toLocaleDateString(isEn ? 'en-US' : 'zh-CN', { weekday: 'long' });
+        return `${value} (${weekday})`;
+      }
+    };
+  }
 }

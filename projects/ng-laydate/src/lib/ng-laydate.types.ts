@@ -36,7 +36,7 @@ export interface LaydateConfig {
     zIndex?: number;
     showBottom?: boolean;
     btns?: string[]; // ['clear', 'now', 'confirm']
-    lang?: 'cn' | 'en';
+    lang?: 'cn' | 'en' | (() => 'cn' | 'en');
     theme?: string | string[]; // 'default', 'molv', 'grid', 'fullpanel', '#color', or ['grid', '#color']
     calendar?: boolean;
     mark?: Record<string, string> | ((ymd: { year: number; month: number; date: number }, render: (input: string | Record<string, string>) => string) => string | void);
