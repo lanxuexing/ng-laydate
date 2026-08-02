@@ -80,6 +80,39 @@ header {
   flex-wrap: wrap;
 }
 
+.lang-switch-segmented {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 3px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.active {
+      background: #ffffff;
+      color: var(--text-main);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &:hover:not(.active) {
+      color: var(--text-main);
+    }
+  }
+}
+
 .angular-version-badge {
   display: inline-flex;
   align-items: center;

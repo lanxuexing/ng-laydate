@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject } from '@angular/core';
+import { Component, AfterViewInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { NgLaydateDirective, NgLaydateComponent, NgLaydateService } from 'ng-laydate';
@@ -13,6 +13,152 @@ import { NgLaydateDirective, NgLaydateComponent, NgLaydateService } from 'ng-lay
 export class App implements AfterViewInit {
   title = 'ng-laydate';
   private laydate = inject(NgLaydateService);
+
+  // Language state (cn / en)
+  currentLang = signal<'cn' | 'en'>('cn');
+
+  setLang(lang: 'cn' | 'en') {
+    this.currentLang.set(lang);
+  }
+
+  // Reactive translation dictionary
+  t = computed(() => {
+    const lang = this.currentLang();
+    if (lang === 'en') {
+      return {
+        subtitle: 'Minimalist · Powerful · Elegant Date & Time Picker for Angular 17+',
+        sec1Title: '1. The Essentials',
+        sec1_1: 'Standard Date',
+        sec1_2: 'Molv Theme',
+        sec1_3: 'DateTime Mode',
+        sec1_4: 'English Version',
+
+        sec2Title: '2. Selection Range',
+        sec2_1: 'Date Range (-)',
+        sec2_2: 'DateTime Range',
+        sec2_3: 'Month Range (~)',
+        sec2_4: 'Linked Panels',
+        sec2_5: 'Manual Confirm',
+
+        sec3Title: '3. Constraints & Logic',
+        sec3_1: 'Date Range (2016-2080)',
+        sec3_2: 'Relative (-7 to +7 days)',
+        sec3_3: 'Time (09:30 - 17:30)',
+        sec3_4: 'Custom Disabling',
+        sec3_5: 'Disable Future',
+        sec3_6: 'Complex Time Rules',
+
+        sec4Title: '4. Aesthetics & Themes',
+        sec4_1: 'FullPanel (Side-by-Side)',
+        sec4_2: 'Dark Theme',
+        sec4_3: 'Dark + Custom Color',
+        sec4_4: 'Grid + Purple',
+        sec4_5: 'Circle + Blue',
+        sec4_6: 'Preview Hidden',
+
+        sec5Title: '5. Smart Features',
+        sec5_1: 'Custom Mark Function',
+        sec5_2: 'Cell Render (8th Circle)',
+        sec5_3: 'Built-in Festivals',
+        sec5_4: 'Holidays / Workdays',
+        sec5_5: 'Shade Overlay',
+        sec5_6: 'Programmatic Hint',
+
+        sec6Title: '6. Shortcuts Gallery',
+        sec6Desc: 'Swipe horizontally to explore various shortcut presets.',
+        sec6_1: 'Preset Dates',
+        sec6_2: 'Year Select',
+        sec6_3: 'Time Intervals',
+        sec6_4: 'Advanced Mixed',
+        sec6_5: 'Range Presets',
+        sec6_6: 'DateTime Suite',
+
+        sec7Title: '7. Integration & Developer API',
+        sec7_1: 'Reactive Form',
+        sec7_2: 'Template-driven',
+        sec7_3: 'Custom Display Filter',
+        sec7_4: 'Service-base Render',
+
+        sec8Title: '8. Static Gallery (Inline Panels)',
+        sec8_1: 'Default Panel',
+        sec8_2: 'FullPanel Mode',
+        sec8_3: 'Grid Theme',
+        sec8_4: 'Year Range',
+        sec8_5: 'Time Range',
+        sec8_6: 'Custom Annotations',
+
+        hintBtn: 'Show Hint',
+        hintText: 'This is a hint! <br> 3 seconds to close',
+        starGithub: 'Star on GitHub'
+      };
+    }
+    return {
+      subtitle: '极简 · 强大 · 高颜值的 Angular 日期时间选择器',
+      sec1Title: '1. The Essentials (核心基础)',
+      sec1_1: 'Standard Date (标准日期)',
+      sec1_2: 'Molv Theme (墨绿主题)',
+      sec1_3: 'DateTime Mode (日期时间)',
+      sec1_4: 'English Version (英文语言)',
+
+      sec2Title: '2. Selection Range (选择范围)',
+      sec2_1: 'Date Range (日期范围)',
+      sec2_2: 'DateTime Range (时间范围)',
+      sec2_3: 'Month Range (月份范围)',
+      sec2_4: 'Linked Panels (双板联动)',
+      sec2_5: 'Manual Confirm (手动确认)',
+
+      sec3Title: '3. Constraints & Logic (约束与逻辑)',
+      sec3_1: 'Date Range (指定限定 2016-2080)',
+      sec3_2: 'Relative (前后7天限定)',
+      sec3_3: 'Time (时间限定 09:30-17:30)',
+      sec3_4: 'Custom Disabling (自定义禁用)',
+      sec3_5: 'Disable Future (禁用未来日期)',
+      sec3_6: 'Complex Time Rules (复杂时分秒约束)',
+
+      sec4Title: '4. Aesthetics & Themes (视觉与主题)',
+      sec4_1: 'FullPanel (左右双面板)',
+      sec4_2: 'Dark Theme (深色模式)',
+      sec4_3: 'Dark + Custom Color (深色定制主题)',
+      sec4_4: 'Grid + Purple (网格紫色主题)',
+      sec4_5: 'Circle + Blue (圆角蓝色主题)',
+      sec4_6: 'Preview Hidden (隐藏预览栏)',
+
+      sec5Title: '5. Smart Features (智慧特性)',
+      sec5_1: 'Custom Mark Function (动态标注)',
+      sec5_2: 'Cell Render (自定义单元格渲染)',
+      sec5_3: 'Built-in Festivals (公历节日显示)',
+      sec5_4: 'Holidays / Workdays (节假日与补班标注)',
+      sec5_5: 'Shade Overlay (遮罩层 0.8)',
+      sec5_6: 'Programmatic Hint (服务式弹出 Hint)',
+
+      sec6Title: '6. Shortcuts Gallery (横向快捷键展示区)',
+      sec6Desc: '横向滑动可探索更多预设快捷键面板。',
+      sec6_1: 'Preset Dates (常用日期快捷)',
+      sec6_2: 'Year Select (年份快捷)',
+      sec6_3: 'Time Intervals (30分钟间隔)',
+      sec6_4: 'Advanced Mixed (混合类型快捷)',
+      sec6_5: 'Range Presets (范围快捷)',
+      sec6_6: 'DateTime Suite (完整日期时间快捷)',
+
+      sec7Title: '7. Integration & Developer API (集成与开发)',
+      sec7_1: 'Reactive Form (响应式表单)',
+      sec7_2: 'Template-driven (双向绑定)',
+      sec7_3: 'Custom Display Filter (显示过滤器)',
+      sec7_4: 'Service-base Render (服务式挂载)',
+
+      sec8Title: '8. Static Gallery (内嵌/静态面板展示)',
+      sec8_1: 'Default Panel (默认静态面板)',
+      sec8_2: 'FullPanel Mode (静态全面板)',
+      sec8_3: 'Grid Theme (静态网格主题)',
+      sec8_4: 'Year Range (静态年份范围)',
+      sec8_5: 'Time Range (静态时间范围)',
+      sec8_6: 'Custom Annotations (静态自定义标注)',
+
+      hintBtn: '弹出 Hint',
+      hintText: '这是一个 Hint 提示框！<br>3秒后自动关闭',
+      starGithub: 'Star on GitHub'
+    };
+  });
 
   // Responsive Form
   myForm = new FormGroup({
@@ -39,7 +185,7 @@ export class App implements AfterViewInit {
 
   showHint() {
     this.laydate.hint('test-hint', {
-      content: 'This is a hint! <br> 3 seconds to close',
+      content: this.t().hintText,
       ms: 3000
     });
   }
