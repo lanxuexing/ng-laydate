@@ -571,8 +571,8 @@ ng-laydate.layui-laydate {
     }
 
     .layui-laydate-list>li:not(.laydate-time-list li):hover {
-        background-color: #eee;
-        color: #333;
+        background-color: var(--laydate-theme-color-light, rgba(22, 183, 119, 0.1));
+        color: var(--laydate-theme-color, #16b777);
     }
 
     .laydate-month-list>li {
@@ -885,9 +885,9 @@ ng-laydate.layui-laydate.laydate-theme-dark {
             }
 
             /* Dark Theme Hover Refinement */
-            &:not(.layui-this):hover {
-                background-color: rgba(255, 255, 255, 0.08) !important;
-                color: rgba(255, 255, 255, 0.7) !important;
+            &:not(.layui-this):not(.laydate-disabled):hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: var(--laydate-theme-color, #16b777) !important;
             }
         }
     }
@@ -957,21 +957,21 @@ ng-laydate.layui-laydate.laydate-theme-dark {
 
     /* List Panel (Year/Month/Time) */
     .layui-laydate-list {
-        background-color: #333;
+        background-color: #333 !important;
         border: 1px solid #555;
 
-        li {
+        li,
+        >li:not(.laydate-time-list li) {
             color: #ccc;
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.08);
-                /* List hover */
-                color: rgba(255, 255, 255, 0.7);
+            &:not(.layui-this):hover {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: var(--laydate-theme-color, #16b777) !important;
             }
 
             &.layui-this {
-                background-color: var(--laydate-theme-color, #16b777);
-                color: #fff;
+                background-color: var(--laydate-theme-color, #16b777) !important;
+                color: #fff !important;
             }
         }
     }
