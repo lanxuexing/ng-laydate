@@ -287,102 +287,111 @@ export class App implements AfterViewInit {
 
 
   // 1. Basic Date Shortcuts
-  shortcutsDate = [
-    {
-      text: "昨天",
-      value: function () {
-        var now = new Date();
-        now.setDate(now.getDate() - 1);
-        return now;
+  get shortcutsDate() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Yesterday" : "昨天",
+        value: function () {
+          var now = new Date();
+          now.setDate(now.getDate() - 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Today" : "今天",
+        value: function () {
+          return Date.now();
+        }
+      },
+      {
+        text: isEn ? "Tomorrow" : "明天",
+        value: function () {
+          var now = new Date();
+          now.setDate(now.getDate() + 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Last Month" : "上个月",
+        value: function () {
+          var now = new Date();
+          var month = now.getMonth() - 1;
+          now.setMonth(month);
+          if (now.getMonth() !== month) now.setDate(0);
+          return [now];
+        }
+      },
+      {
+        text: isEn ? "Next Month" : "下个月",
+        value: function () {
+          var now = new Date();
+          var month = now.getMonth() + 1;
+          now.setMonth(month);
+          if (now.getMonth() !== month) now.setDate(0);
+          return [now];
+        }
+      },
+      {
+        text: isEn ? "A Day" : "某一天",
+        value: "2016-10-14"
       }
-    },
-    {
-      text: "今天",
-      value: function () {
-        return Date.now();
-      }
-    },
-    {
-      text: "明天",
-      value: function () {
-        var now = new Date();
-        now.setDate(now.getDate() + 1);
-        return now;
-      }
-    },
-    {
-      text: "上个月",
-      value: function () {
-        var now = new Date();
-        var month = now.getMonth() - 1;
-        now.setMonth(month);
-        if (now.getMonth() !== month) now.setDate(0);
-        return [now];
-      }
-    },
-    {
-      text: "下个月",
-      value: function () {
-        var now = new Date();
-        var month = now.getMonth() + 1;
-        now.setMonth(month);
-        if (now.getMonth() !== month) now.setDate(0);
-        return [now];
-      }
-    },
-    {
-      text: "某一天",
-      value: "2016-10-14"
-    }
-  ];
+    ];
+  }
 
   // 2. Year Shortcuts
-  shortcutsYear = [
-    {
-      text: "去年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() - 1);
-        return now;
+  get shortcutsYear() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Year" : "去年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() - 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Next Year" : "明年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() + 1);
+          return now;
+        }
       }
-    },
-    {
-      text: "明年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() + 1);
-        return now;
-      }
-    }
-  ];
+    ];
+  }
 
   // 3. Month Shortcuts
-  shortcutsMonth = [
-    {
-      text: "上个月",
-      value: function () {
-        var now = new Date();
-        now.setMonth(now.getMonth() - 1, 1);
-        return now;
+  get shortcutsMonth() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Month" : "上个月",
+        value: function () {
+          var now = new Date();
+          now.setMonth(now.getMonth() - 1, 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Next Month" : "下个月",
+        value: function () {
+          var now = new Date();
+          now.setMonth(now.getMonth() + 1, 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Same Month Last Year" : "去年本月",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() - 1);
+          return now;
+        }
       }
-    },
-    {
-      text: "下个月",
-      value: function () {
-        var now = new Date();
-        now.setMonth(now.getMonth() + 1, 1);
-        return now;
-      }
-    },
-    {
-      text: "去年本月",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() - 1);
-        return now;
-      }
-    }
-  ];
+    ];
+  }
 
   // 4. Time Shortcuts (Generated)
   shortcutsTime = (function () {
@@ -404,104 +413,113 @@ export class App implements AfterViewInit {
   })();
 
   // 5. DateTime Shortcuts
-  shortcutsDateTime = [
-    {
-      text: "昨天",
-      value: function () {
-        var now = new Date();
-        now.setDate(now.getDate() - 1);
-        return now;
+  get shortcutsDateTime() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Yesterday" : "昨天",
+        value: function () {
+          var now = new Date();
+          now.setDate(now.getDate() - 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Today" : "今天",
+        value: function () {
+          return Date.now();
+        }
+      },
+      {
+        text: isEn ? "Tomorrow" : "明天",
+        value: function () {
+          var now = new Date();
+          now.setDate(now.getDate() + 1);
+          return now;
+        }
+      },
+      {
+        text: isEn ? "Last Month" : "上个月",
+        value: function () {
+          var now = new Date();
+          var month = now.getMonth() - 1;
+          now.setMonth(month);
+          if (now.getMonth() !== month) now.setDate(0);
+          return [now];
+        }
+      },
+      {
+        text: isEn ? "Next Month" : "下个月",
+        value: function () {
+          var now = new Date();
+          var month = now.getMonth() + 1;
+          now.setMonth(month);
+          if (now.getMonth() !== month) now.setDate(0);
+          return [now];
+        }
+      },
+      {
+        text: isEn ? "A Day" : "某一天",
+        value: "2016-10-14 10:00:00"
       }
-    },
-    {
-      text: "今天",
-      value: function () {
-        return Date.now();
-      }
-    },
-    {
-      text: "明天",
-      value: function () {
-        var now = new Date();
-        now.setDate(now.getDate() + 1);
-        return now;
-      }
-    },
-    {
-      text: "上个月",
-      value: function () {
-        var now = new Date();
-        var month = now.getMonth() - 1;
-        now.setMonth(month);
-        if (now.getMonth() !== month) now.setDate(0);
-        return [now];
-      }
-    },
-    {
-      text: "下个月",
-      value: function () {
-        var now = new Date();
-        var month = now.getMonth() + 1;
-        now.setMonth(month);
-        if (now.getMonth() !== month) now.setDate(0);
-        return [now];
-      }
-    },
-    {
-      text: "某一天",
-      value: "2016-10-14 10:00:00"
-    }
-  ];
+    ];
+  }
 
   // 6. DateTime FullPanel Shortcuts
-  shortcutsDateTimeFull = [
-    { text: "昨天", value: function () { var now = new Date(); now.setDate(now.getDate() - 1); return now; } },
-    { text: "今天", value: Date.now() },
-    { text: "明天", value: function () { var now = new Date(); now.setDate(now.getDate() + 1); return now; } },
-    { text: "上个月", value: function () { var now = new Date(); var month = now.getMonth() - 1; now.setMonth(month); if (now.getMonth() !== month) now.setDate(0); return [now]; } },
-    { text: "下个月", value: function () { var now = new Date(); var month = now.getMonth() + 1; now.setMonth(month); if (now.getMonth() !== month) now.setDate(0); return [now]; } },
-    { text: "某一天", value: "2016-10-14 09:30:00" }
-  ];
+  get shortcutsDateTimeFull() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      { text: isEn ? "Yesterday" : "昨天", value: function () { var now = new Date(); now.setDate(now.getDate() - 1); return now; } },
+      { text: isEn ? "Today" : "今天", value: Date.now() },
+      { text: isEn ? "Tomorrow" : "明天", value: function () { var now = new Date(); now.setDate(now.getDate() + 1); return now; } },
+      { text: isEn ? "Last Month" : "上个月", value: function () { var now = new Date(); var month = now.getMonth() - 1; now.setMonth(month); if (now.getMonth() !== month) now.setDate(0); return [now]; } },
+      { text: isEn ? "Next Month" : "下个月", value: function () { var now = new Date(); var month = now.getMonth() + 1; now.setMonth(month); if (now.getMonth() !== month) now.setDate(0); return [now]; } },
+      { text: isEn ? "A Day" : "某一天", value: "2016-10-14 09:30:00" }
+    ];
+  }
 
   // 7. Range Shortcuts
-  shortcutsRange = [
-    {
-      text: "上个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month - 1, 1),
-          new Date(year, month, 0)
-        ];
+  get shortcutsRange() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Month" : "上个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month - 1, 1),
+            new Date(year, month, 0)
+          ];
+        }
+      },
+      {
+        text: isEn ? "This Month" : "这个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month, 1),
+            new Date(year, month + 1, 0)
+          ];
+        }
+      },
+      {
+        text: isEn ? "Next Month" : "下个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month + 1, 1),
+            new Date(year, month + 2, 0)
+          ];
+        }
       }
-    },
-    {
-      text: "这个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month, 1),
-          new Date(year, month + 1, 0)
-        ];
-      }
-    },
-    {
-      text: "下个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month + 1, 1),
-          new Date(year, month + 2, 0)
-        ];
-      }
-    }
-  ];
+    ];
+  }
 
   // 8. Year Range Shortcuts
   shortcutsYearRange = [
