@@ -97,7 +97,7 @@
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec1_1 }}</label>
-        <input type="text" class="layui-input" [laydate]="{lang: currentLang()}" (change)="onDateChange($event)" placeholder="Standard Date">
+        <input type="text" class="layui-input" [laydate]="{darkMode: demoDarkMode(), lang: currentLang()}" (change)="onDateChange($event)" placeholder="Standard Date">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec1_2 }}</label>
@@ -106,25 +106,25 @@
       </div>
       <div class="layui-inline">
         <label>{{ t().sec1_3 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss', darkMode: demoDarkMode(), lang: currentLang()}"
           (change)="onDateChange($event)" placeholder="YMD HMS">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec1_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{lang: 'en'}" placeholder="Language: EN">
+        <input type="text" class="layui-input" [laydate]="{darkMode: demoDarkMode(), lang: 'en'}" placeholder="Language: EN">
       </div>
       <div class="layui-inline">
         <label>Chinese Format (yyyy年MM月dd日)</label>
-        <input type="text" class="layui-input" [laydate]="{format: 'yyyy年MM月dd日', value: '2025年10月01日', lang: currentLang()}" (change)="onDateChange($event)">
+        <input type="text" class="layui-input" [laydate]="{format: 'yyyy年MM月dd日', value: '2025年10月01日', darkMode: demoDarkMode(), lang: currentLang()}" (change)="onDateChange($event)">
       </div>
       <div class="layui-inline">
         <label>Slash DateTime (yyyy/MM/dd HH:mm:ss)</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss', darkMode: demoDarkMode(), lang: currentLang()}"
           (change)="onDateChange($event)" placeholder="2025/05/20 14:30:00">
       </div>
       <div class="layui-inline">
         <label>Year-Month (format: 'yyyy-MM')</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'month', format: 'yyyy-MM', lang: currentLang()}" placeholder="2025-05">
+        <input type="text" class="layui-input" [laydate]="{type: 'month', format: 'yyyy-MM', darkMode: demoDarkMode(), lang: currentLang()}" placeholder="2025-05">
       </div>
       <div class="layui-inline">
         <label>Display Formatter (formatToDisplay)</label>
@@ -181,27 +181,27 @@
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec2_1 }}</label>
-        <input type="text" class="layui-input" [laydate]="{range: true, lang: currentLang()}" (change)="onDateChange($event)"
+        <input type="text" class="layui-input" [laydate]="{range: true, darkMode: demoDarkMode(), lang: currentLang()}" (change)="onDateChange($event)"
           placeholder="Start - End">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec2_2 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'datetime', range: true, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', range: true, darkMode: demoDarkMode(), lang: currentLang()}"
           (change)="onDateChange($event)" placeholder="Time Range">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec2_3 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'month', range: '~', format: 'yyyy-MM', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'month', range: '~', format: 'yyyy-MM', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Custom separator">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec2_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{range: true, rangeLinked: true, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{range: true, rangeLinked: true, darkMode: demoDarkMode(), lang: currentLang()}"
           (change)="onDateChange($event)" placeholder="Synchronized panels">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec2_5 }}</label>
-        <input type="text" class="layui-input" [laydate]="{autoConfirm: false, lang: currentLang()}" (change)="onDateChange($event)"
+        <input type="text" class="layui-input" [laydate]="{autoConfirm: false, darkMode: demoDarkMode(), lang: currentLang()}" (change)="onDateChange($event)"
           placeholder="autoConfirm: false">
       </div>
     </div>
@@ -256,32 +256,32 @@
       <div class="layui-inline">
         <label>{{ t().sec3_1 }}</label>
         <input type="text" class="layui-input"
-          [laydate]="{id: 'ins22', min: '2016-10-14', max: '2080-10-14', ready: onLimitReady, lang: currentLang()}"
+          [laydate]="{id: 'ins22', min: '2016-10-14', max: '2080-10-14', ready: onLimitReady, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Min/Max with Ready Hint">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec3_2 }}</label>
-        <input type="text" class="layui-input" [laydate]="{min: -7, max: 7, lang: currentLang()}" placeholder="Dynamic boundary">
+        <input type="text" class="layui-input" [laydate]="{min: -7, max: 7, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Dynamic boundary">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec3_3 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'time', min: '09:30:00', max: '17:30:00', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'time', min: '09:30:00', max: '17:30:00', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Restricted time">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec3_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDate, value: '2024-03-01', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDate, value: '2024-03-01', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Logic-based disabling">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec3_5 }}</label>
-        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDateFuture, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{disabledDate: disabledDateFuture, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Past dates only">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec3_6 }}</label>
         <input type="text" class="layui-input"
-          [laydate]="{type: 'time', range: true, disabledTime: disabledTimeComplex, lang: currentLang()}" placeholder="Hierarchical rules">
+          [laydate]="{type: 'time', range: true, disabledTime: disabledTimeComplex, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Hierarchical rules">
       </div>
     </div>
   </div>
@@ -338,7 +338,7 @@
       </div>
       <div class="layui-inline">
         <label>{{ t().sec4_1 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'datetime', theme: 'fullpanel', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', theme: 'fullpanel', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Simultaneous view">
       </div>
       <div class="layui-inline">
@@ -352,16 +352,16 @@
       </div>
       <div class="layui-inline">
         <label>{{ t().sec4_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{theme: ['grid', '#9C27B0'], lang: currentLang()}" placeholder="Combined styles">
+        <input type="text" class="layui-input" [laydate]="{theme: ['grid', '#9C27B0'], darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Combined styles">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec4_5 }}</label>
-        <input type="text" class="layui-input" [laydate]="{theme: ['circle', '#2196F3'], lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{theme: ['circle', '#2196F3'], darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Modern round style">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec4_6 }}</label>
-        <input type="text" class="layui-input" [laydate]="{isPreview: false, value: '2024-04-01', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{isPreview: false, value: '2024-04-01', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Minimal footer">
       </div>
     </div>
@@ -415,31 +415,31 @@
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec5_1 }}</label>
-        <input type="text" class="layui-input" [laydate]="{mark: markFunction, value: '2024-03-20', lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{mark: markFunction, value: '2024-03-20', darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Dynamic annotations">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec5_2 }}</label>
-        <input type="text" class="layui-input" [laydate]="{cellRender: cellRenderDemo, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{cellRender: cellRenderDemo, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Inject HTML to cells">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec5_3 }}</label>
-        <input type="text" class="layui-input" [laydate]="{calendar: true, lang: currentLang()}" placeholder="Greogrian info">
+        <input type="text" class="layui-input" [laydate]="{calendar: true, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Greogrian info">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec5_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{holidays: [['2025-1-1','2025-1-2'],['2025-1-4']], lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{holidays: [['2025-1-1','2025-1-2'],['2025-1-4']], darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Holiday markers">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec5_5 }}</label>
-        <input type="text" class="layui-input" [laydate]="{shade: 0.8, lang: currentLang()}" placeholder="Dark overlay (0.8)">
+        <input type="text" class="layui-input" [laydate]="{shade: 0.8, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Dark overlay (0.8)">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec5_6 }}</label>
         <div style="display: flex; gap: 8px;">
-          <input type="text" class="layui-input" [laydate]="{id: 'test-hint', lang: currentLang()}" placeholder="ID: test-hint">
+          <input type="text" class="layui-input" [laydate]="{id: 'test-hint', darkMode: demoDarkMode(), lang: currentLang()}" placeholder="ID: test-hint">
           <button type="button" class="layui-btn-hint" (click)="showHint()"
             (mousedown)="$event.stopPropagation()">{{ t().hintBtn }}</button>
         </div>
@@ -496,32 +496,32 @@
     <div class="demo-grid">
       <div class="layui-inline">
         <label>{{ t().sec6_1 }}</label>
-        <input type="text" class="layui-input" [laydate]="{shortcuts: shortcutsDate, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{shortcuts: shortcutsDate, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Yesterday/Today/Next">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec6_2 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'year', shortcuts: shortcutsYear, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'year', shortcuts: shortcutsYear, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Last/Next Year">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec6_3 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'time', shortcuts: shortcutsTime, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'time', shortcuts: shortcutsTime, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="30 min steps">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec6_4 }}</label>
-        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: advancedShortcuts, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: advancedShortcuts, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="String/Date/Tpl">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec6_5 }}</label>
-        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: shortcutsRange, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{range: true, shortcuts: shortcutsRange, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="This/Last Month">
       </div>
       <div class="layui-inline">
         <label>{{ t().sec6_6 }}</label>
-        <input type="text" class="layui-input" [laydate]="{type: 'datetime', shortcuts: shortcutsDateTime, lang: currentLang()}"
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', shortcuts: shortcutsDateTime, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Complex datetime">
       </div>
     </div>
@@ -575,12 +575,12 @@
     <div class="demo-grid">
       <div class="layui-inline" [formGroup]="myForm">
         <label>{{ t().sec7_1 }}</label>
-        <input type="text" class="layui-input" formControlName="date" [laydate]="{lang: currentLang()}" placeholder="ControlValueAccessor">
+        <input type="text" class="layui-input" formControlName="date" [laydate]="{darkMode: demoDarkMode(), lang: currentLang()}" placeholder="ControlValueAccessor">
         <div class="value-chip">Value: {{ myForm.value.date }}</div>
       </div>
       <div class="layui-inline">
         <label>{{ t().sec7_2 }}</label>
-        <input type="text" class="layui-input" [(ngModel)]="templateModel" [laydate]="{lang: currentLang()}" placeholder="ngModel">
+        <input type="text" class="layui-input" [(ngModel)]="templateModel" [laydate]="{darkMode: demoDarkMode(), lang: currentLang()}" placeholder="ngModel">
         <div class="value-chip">Value: {{ templateModel }}</div>
       </div>
       <div class="layui-inline">
@@ -642,28 +642,28 @@
     <div class="demo-grid static-gallery-grid">
       <div>
         <label>{{ t().sec8_1 }}</label>
-        <ng-laydate [config]="{position: 'static', lang: currentLang()}"></ng-laydate>
+        <ng-laydate [config]="{position: 'static', darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
       <div>
         <label>{{ t().sec8_2 }}</label>
-        <ng-laydate [config]="{position: 'static', type: 'datetime', theme: 'fullpanel', lang: currentLang()}"></ng-laydate>
+        <ng-laydate [config]="{position: 'static', type: 'datetime', theme: 'fullpanel', darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
       <div>
         <label>{{ t().sec8_3 }}</label>
-        <ng-laydate [config]="{position: 'static', theme: 'grid', lang: currentLang()}"></ng-laydate>
+        <ng-laydate [config]="{position: 'static', theme: 'grid', darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
       <div>
         <label>{{ t().sec8_4 }}</label>
-        <ng-laydate [config]="{position: 'static', type: 'year', range: true, lang: currentLang()}"></ng-laydate>
+        <ng-laydate [config]="{position: 'static', type: 'year', range: true, darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
       <div>
         <label>{{ t().sec8_5 }}</label>
-        <ng-laydate [config]="{position: 'static', type: 'time', range: true, lang: currentLang()}"></ng-laydate>
+        <ng-laydate [config]="{position: 'static', type: 'time', range: true, darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
       <div>
         <label>{{ t().sec8_6 }}</label>
         <ng-laydate
-          [config]="{position: 'static', mark: {'2023-01-01': 'New Year', '2023-06-01': 'Children'}, lang: currentLang()}"></ng-laydate>
+          [config]="{position: 'static', mark: {'2023-01-01': 'New Year', '2023-06-01': 'Children'}, darkMode: demoDarkMode(), lang: currentLang()}"></ng-laydate>
       </div>
     </div>
   </div>

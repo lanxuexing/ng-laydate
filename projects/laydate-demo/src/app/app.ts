@@ -24,6 +24,14 @@ export class App implements AfterViewInit {
   // Theme mode state ('system' | 'light' | 'dark')
   themeMode = signal<ThemeMode>('system');
 
+  // Computed signal for demo pickers: follows site theme mode ('dark' -> true, 'light' -> false, 'system' -> 'system')
+  demoDarkMode = computed<boolean | 'system'>(() => {
+    const mode = this.themeMode();
+    if (mode === 'dark') return true;
+    if (mode === 'light') return false;
+    return 'system';
+  });
+
   setThemeMode(mode: ThemeMode) {
     this.themeMode.set(mode);
     if (isPlatformBrowser(this.platformId)) {
@@ -1087,6 +1095,7 @@ export class AppComponent {}`;
     const isEn = this.currentLang() === 'en';
     return {
       lang: this.currentLang(),
+      darkMode: this.demoDarkMode(),
       formatToDisplay: (value: string) => {
         if (!value) return '';
         const date = new Date(value);
