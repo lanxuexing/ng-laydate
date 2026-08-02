@@ -983,25 +983,61 @@ ng-laydate.layui-laydate.laydate-theme-dark {
                 width: 100% !important;
                 max-width: 100% !important;
                 box-sizing: border-box !important;
-                display: flex !important;
-                flex-direction: column !important;
             }
 
-            .layui-laydate-header,
-            .layui-laydate-content {
+            .layui-laydate-content-container {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .layui-laydate-content-main,
+            .layui-laydate-content-side {
                 width: 100% !important;
                 max-width: 100% !important;
+                box-sizing: border-box !important;
+                border-left: none !important;
+            }
+
+            .layui-laydate-content-side {
+                border-top: 1px solid #f2f2f2 !important;
+            }
+
+            .layui-laydate-content-side .layui-laydate-content {
+                width: 100% !important;
+                height: 180px !important;
                 box-sizing: border-box !important;
             }
 
             .laydate-time-list {
                 width: 100% !important;
+                display: flex !important;
                 box-sizing: border-box !important;
 
                 ol {
+                    flex: 1 1 33.33% !important;
                     width: 33.33% !important;
+                    min-width: 0 !important;
                     box-sizing: border-box !important;
+
+                    li {
+                        text-align: center !important;
+                        padding-left: 0 !important;
+                    }
                 }
+            }
+        }
+
+        .laydate-time-list {
+            width: 100% !important;
+            box-sizing: border-box !important;
+
+            ol {
+                flex: 1 1 33.33% !important;
+                width: 33.33% !important;
+                min-width: 0 !important;
+                box-sizing: border-box !important;
             }
         }
 
