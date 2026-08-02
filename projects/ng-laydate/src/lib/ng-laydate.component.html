@@ -25,7 +25,10 @@
 
     <!-- Single Mode: One Panel (or Full Panel) -->
     @if (!finalConfig().range) {
-    <div class="layui-laydate-main" [class.laydate-theme-fullpanel]="finalConfig().theme === 'fullpanel'">
+    <div class="layui-laydate-main"
+        [class.laydate-theme-fullpanel]="finalConfig().theme === 'fullpanel'"
+        [class.laydate-ym-show]="finalConfig().theme !== 'fullpanel' && (view() === 'year' || view() === 'month')"
+        [class.laydate-time-show]="finalConfig().theme !== 'fullpanel' && view() === 'time'">
         <ng-container
             *ngTemplateOutlet="calendarPanel; context: { data: calendarData(), date: currentDate(), isRight: false, currView: view(), yearList: yearList() }"></ng-container>
     </div>

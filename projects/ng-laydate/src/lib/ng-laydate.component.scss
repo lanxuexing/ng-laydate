@@ -723,9 +723,9 @@ ng-laydate.layui-laydate {
         display: none !important;
     }
 
-    &.laydate-time-show .layui-laydate-header .layui-icon,
-    &.laydate-time-show .laydate-set-ym span[lay-type="year"],
-    &.laydate-time-show .laydate-set-ym span[lay-type="month"] {
+    &:not(.laydate-theme-fullpanel).laydate-time-show .layui-laydate-header .layui-icon,
+    &:not(.laydate-theme-fullpanel).laydate-time-show .laydate-set-ym span[lay-type="year"],
+    &:not(.laydate-theme-fullpanel).laydate-time-show .laydate-set-ym span[lay-type="month"] {
         display: none !important;
     }
 
