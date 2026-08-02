@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, AfterViewInit, inject, signal, computed, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { NgLaydateDirective, NgLaydateComponent, NgLaydateService } from 'ng-laydate';
 
@@ -13,9 +13,18 @@ import { NgLaydateDirective, NgLaydateComponent, NgLaydateService } from 'ng-lay
 export class App implements AfterViewInit {
   title = 'ng-laydate';
   private laydate = inject(NgLaydateService);
+  private platformId = inject(PLATFORM_ID);
 
-  // Language state (cn / en)
-  currentLang = signal<'cn' | 'en'>('cn');
+  private detectInitialLang(): 'cn' | 'en' {
+    if (isPlatformBrowser(this.platformId)) {
+      const browserLang = (navigator.language || (navigator as any).userLanguage || '').toLowerCase();
+      return browserLang.startsWith('zh') ? 'cn' : 'en';
+    }
+    return 'cn';
+  }
+
+  // Language state (cn / en) initialized by browser language
+  currentLang = signal<'cn' | 'en'>(this.detectInitialLang());
 
   setLang(lang: 'cn' | 'en') {
     this.currentLang.set(lang);
