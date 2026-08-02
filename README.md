@@ -38,13 +38,14 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 - 🔗 **Range Selection**: Simple or linked range selection (consecutive months).
 - ⚡ **Shortcuts**: Customizable quick-selection buttons (sidebar or footer).
 - 🎨 **Rich Themes**: Includes `default`, `molv` (teal), `grid`, `circle`, `dark`, and a special `fullpanel` (side-by-side) theme.
+- 🌓 **System Dark Mode & Reactive Getter**: Native support for `darkMode: 'system'` / `'auto'` (auto-following OS theme) and dynamic Reactive Getter functions (`() => boolean | 'system'`).
+- 🎨 **Dynamic Theme Color System**: Dividers, grid lines, cell borders, footer buttons, and hover states adapt seamlessly to custom theme colors (`--laydate-theme-color`) and dark themes.
 - 🕒 **Precision Control**: Intelligent H:M:S column visibility and auto-scrolling.
 - 🌏 **Global i18n**: Out-of-the-box support for 8 major international languages (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`), with automatic browser locale detection and zero-refresh reactive language switching.
 - 🚩 **Special Days**: Built-in Gregorian festivals and customizable Holiday/Workday markers.
 - 🖋️ **Custom Content**: Flexible cell rendering via `cellRender` or `mark` functions.
 - ⚡ **Performance**: Optimized rendering engine with smart diffing and `requestAnimationFrame` for smooth 60fps interactions.
 - 🖥️ **SSR Ready**: Fully compatible with Angular Universal / Server-Side Rendering (SSR).
-- 🌓 **Dark Mode**: Premium dark theme support.
 - 📝 **Form Support**: Full two-way binding support for Template-driven and Reactive Forms (`ControlValueAccessor`).
 
 ## 📦 Installation
@@ -132,7 +133,7 @@ Use the component directly for static or embedded pickers.
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | Footer buttons to display and their order. |
 | `lang` | `SupportedLang \| (() => SupportedLang)` | Auto / `'cn'` | International language toggle (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`). Supports reactive getters & auto browser locale detection. |
 | `weekStart` | `number` | `0` | Start of the week (0-6, 0 is Sunday). |
-| `darkMode` | `boolean` | `false` | Force enable dark mode regardless of theme. |
+| `darkMode` | `boolean \| 'system' \| 'auto' \| (() => boolean \| 'system' \| 'auto')` | `false` | Dark mode toggle. Supports `true`, `false`, `'system'`/`'auto'` (follow OS dark mode), and dynamic Reactive Getter functions. |
 | `show` | `boolean` | `false` | Whether to show the picker immediately on render. |
 | `showBottom` | `boolean` | `true` | Whether to display the footer. |
 | `isPreview` | `boolean` | `true` | Show the live selection preview in the footer. |
@@ -160,10 +161,11 @@ Use the component directly for static or embedded pickers.
 
 The component supports a variety of visual styles to match your application:
 
-- **Dark**: Deep dark mode for professional dashboards.
-
-> [!TIP]
-> **Custom Colors**: Pass any hex color to `theme` (e.g., `{theme: '#722ed1'}`) to instantly brand the component to match your application.
+- **FullPanel**: Wide side-by-side date and time selection layout.
+- **Molv**: Classic teal theme.
+- **Dark**: Dark mode for low-light environments, with full `'system'` OS dark mode support.
+- **Grid / Circle**: Minimalist grid and circular cell styling.
+- **Custom Theme Colors**: Pass any hex color (e.g., `{theme: '#722ed1'}`) or combination (e.g., `{theme: ['grid', '#9C27B0']}`) to automatically brand cell highlights, dividers, and buttons.
 
 ## 🛠 Development
 

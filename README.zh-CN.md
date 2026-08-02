@@ -38,13 +38,14 @@
 - 🔗 **范围选择**: 支持普通范围选择或面板联动 (`rangeLinked`) 选择。
 - ⚡ **快捷选项**: 可自定义快捷选择按钮，支持侧边栏或页脚展示。
 - 🎨 **丰富主题**: 内置 `default`、`molv` (墨绿)、`grid` (格子)、`circle` (圆形)、`dark` (深色) 以及特色 `fullpanel` (左右联动全面板) 主题。
+- 🌓 **跟随系统与深色模式**: 支持 `darkMode: 'system'` / `'auto'` 原生自动感知系统深色模式，支持动态 Reactive Getter 函数 (`() => boolean | 'system'`) 随全局主题即时秒切。
+- 🎨 **动态主题配色系统**: 控件分割线、网格线、标示框、页脚按钮与 Hover 状态全量响应主题配色 (`--laydate-theme-color`) 与沉浸式暗黑视觉。
 - 🕒 **精准控制**: 智能时分秒列显隐控制，支持自动滚动定位。
 - 🌏 **多语言国际化**: 原生支持全球 8 大主流语言（`cn` 简中、`en` 英文、`tw` 繁中、`ja` 日语、`ko` 韩语、`es` 西班牙语、`de` 德语、`fr` 法语），支持浏览器语言智能自动检测与零刷新响应式秒切。
 - 🚩 **节日与假勤**: 内置公历节日显示，支持自定义节假日/加班标记。
 - 🖋️ **自定义渲染**: 提供灵活的 `cellRender` 或 `mark` 函数，支持在单元格内插入自定义 HTML。
 - ⚡ **极致性能**: 深度优化的渲染引擎，配合 `requestAnimationFrame` 实现丝滑的 60fps 交互体验。
 - 🖥️ **SSR 支持**: 完美兼容 Angular Universal / 服务端渲染 (SSR) 场景。
-- 🌓 **深色模式**: 高质量的深色主题支持。
 - 📝 **表单支持**: 完美支持模板驱动表单 (Template-driven) 和响应式表单 (Reactive Forms) 的**双向绑定** (`ControlValueAccessor`)。
 
 ## 📦 安装
@@ -78,6 +79,9 @@ export class MyComponent {}
 ```html
 <!-- 基础日期选择 -->
 <input type="text" laydate placeholder="请选择日期">
+
+<!-- 跟随系统深色模式 -->
+<input type="text" [laydate]="{ darkMode: 'system' }" placeholder="自动跟随系统深色模式">
 
 <!-- 日期时间范围选择 -->
 <input type="text" [laydate]="{
@@ -132,7 +136,7 @@ export class MyComponent {}
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | 页脚显示的按钮及其顺序。 |
 | `lang` | `SupportedLang \| (() => SupportedLang)` | 自动 / `'cn'` | 语言切换（支持 `cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr` 8 种语言）。支持传入动态 Getter 函数及浏览器语言自动感知。 |
 | `weekStart` | `number` | `0` | 星期起始日（0-6，0 代表周日）。 |
-| `darkMode` | `boolean` | `false` | 是否强制开启深色模式。 |
+| `darkMode` | `boolean \| 'system' \| 'auto' \| (() => boolean \| 'system' \| 'auto')` | `false` | 深色模式配置。支持 `true`, `false`, `'system'`/`'auto'`（自动跟随系统 OS 主题），以及传入动态 Reactive Getter 函数。 |
 | `show` | `boolean` | `false` | 是否在初始化完成后立即显示选择器。 |
 | `showBottom` | `boolean` | `true` | 是否显示页脚。 |
 | `isPreview` | `boolean` | `true` | 是否在页脚显示实时选择结果的预览。 |
@@ -162,14 +166,9 @@ export class MyComponent {}
 
 - **FullPanel (全面板)**: 高端的大宽度布局，日期和时间选择器并排显示，交互更直接。
 - **Molv (墨绿)**: 经典的 Layui 墨绿风格，现代感十足。
-- **Dark (深色)**: 精心调校的暗黑模式，适合弱光环境使用。
-- **自定义颜色**: 向 `theme` 传入任何十六进制颜色（如 `{theme: '#722ed1'}`），组件主色调将即刻改变。
-
-- **Circle**: 极简圆形化风格。
-- **Dark**: 专业的暗黑模式。
-
-> [!TIP]
-> **自定义配色**: 您可以向 `theme` 传递任何十六进制颜色值（例如 `{theme: '#722ed1'}`），让组件瞬间适配您的应用品牌色。
+- **Dark (深色)**: 精心调校的暗黑模式，完美支持跟随系统 (`darkMode: 'system'`)。
+- **Grid / Circle (网格/圆形)**: 极简网格与圆形化视觉风格。
+- **自定义主题色**: 向 `theme` 传入任何十六进制颜色（如 `{theme: '#722ed1'}`）或组合（如 `{theme: ['grid', '#9C27B0']}`），组件主色调、分割线、单元格高亮及按钮将全量自适应。
 
 ## 🛠 开发指南
 
