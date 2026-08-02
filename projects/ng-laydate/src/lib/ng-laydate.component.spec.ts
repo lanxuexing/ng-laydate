@@ -136,4 +136,15 @@ describe('NgLaydateComponent', () => {
     fixture.detectChanges();
     expect(component.i18n().tools.confirm).toBe('決定');
   });
+
+  it('should support darkMode: "system" or "auto" to follow OS color scheme', async () => {
+    component.systemDarkMode.set(true);
+    fixture.componentRef.setInput('config', { darkMode: 'system' });
+    fixture.detectChanges();
+    expect(component.isDarkMode()).toBe(true);
+
+    component.systemDarkMode.set(false);
+    fixture.detectChanges();
+    expect(component.isDarkMode()).toBe(false);
+  });
 });

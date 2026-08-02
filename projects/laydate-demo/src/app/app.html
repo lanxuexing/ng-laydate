@@ -316,6 +316,10 @@
 
     <div class="demo-grid">
       <div class="layui-inline">
+        <label>System Auto Theme (跟随系统暗黑模式)</label>
+        <input type="text" class="layui-input" [laydate]="{darkMode: 'system', lang: currentLang()}" placeholder="darkMode: 'system'">
+      </div>
+      <div class="layui-inline">
         <label>{{ t().sec4_1 }}</label>
         <input type="text" class="layui-input" [laydate]="{type: 'datetime', theme: 'fullpanel', lang: currentLang()}"
           placeholder="Simultaneous view">

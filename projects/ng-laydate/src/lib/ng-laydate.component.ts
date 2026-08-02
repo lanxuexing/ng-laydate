@@ -22,7 +22,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     '[class.laydate-theme-grid]': 'parsedTheme().base === "grid"',
     '[class.laydate-theme-circle]': 'parsedTheme().base === "circle"',
     '[class.laydate-theme-fullpanel]': 'parsedTheme().base === "fullpanel"',
-    '[class.laydate-theme-dark]': 'parsedTheme().base === "dark" || !!finalConfig().darkMode',
+    '[class.laydate-theme-dark]': 'isDarkMode()',
     '[class.laydate-ym-show]': '!finalConfig().range && (view() === "year" || view() === "month")',
     '[class.laydate-time-show]': '!finalConfig().range && view() === "time"',
     '[style.--laydate-theme-color]': 'parsedTheme().color',
@@ -36,6 +36,9 @@ export class NgLaydateComponent {
   @ViewChildren('timeOl_hours') hoursOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_minutes') minutesOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_seconds') secondsOls!: QueryList<ElementRef<HTMLOListElement>>;
+
+  // System Theme Reactive Signal
+  systemDarkMode = signal<boolean>(false);
 
   config = input<LaydateConfig>({});
   select = output<string>();
@@ -169,6 +172,18 @@ export class NgLaydateComponent {
   themeColorLight = computed(() => {
     const color = this.parsedTheme().color;
     return this.service.hexToRgba(color || '#16b777', 0.1);
+  });
+
+  isDarkMode = computed(() => {
+    const cfg = this.finalConfig();
+    const themeBase = this.parsedTheme().base;
+    if (themeBase === 'dark') return true;
+
+    const dm = cfg.darkMode;
+    if (dm === 'system' || dm === 'auto' || cfg.theme === 'system' || cfg.theme === 'auto') {
+      return this.systemDarkMode();
+    }
+    return !!dm;
   });
 
   // i18n Dictionary
@@ -450,6 +465,16 @@ export class NgLaydateComponent {
   private hintTimer: any = null;
 
   constructor() {
+    if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      if (mediaQuery) {
+        this.systemDarkMode.set(mediaQuery.matches);
+        mediaQuery.addEventListener?.('change', (e) => {
+          this.systemDarkMode.set(e.matches);
+        });
+      }
+    }
+
     // Initialize Logic
     effect(() => {
       const cfg = this.config();

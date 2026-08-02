@@ -368,10 +368,13 @@ export class AppComponent {
 }`;
 
   // Section 4 Snippets
-  sec4CodeHtml = `<!-- FULLPANEL Side-by-Side Date & Time View -->
+  sec4CodeHtml = `<!-- Follow OS System Theme (Auto Dark/Light Mode) -->
+<input [laydate]="{ darkMode: 'system' }">
+
+<!-- FULLPANEL Side-by-Side Date & Time View -->
 <input [laydate]="{ type: 'datetime', theme: 'fullpanel' }">
 
-<!-- Dark Theme -->
+<!-- Explicit Dark Theme -->
 <input [laydate]="{ darkMode: true }">
 
 <!-- Custom Hex Accent Color + Dark Mode -->
@@ -387,8 +390,13 @@ export class AppComponent {
 
 @Component({...})
 export class AppComponent {
-  // Reactive configuration signal
-  config = {
+  // Follow OS System Dark Theme automatically
+  systemThemeConfig = {
+    darkMode: 'system' // or 'auto'
+  };
+
+  // Explicit Dark Mode
+  darkModeConfig = {
     type: 'datetime',
     theme: 'fullpanel',
     darkMode: true
