@@ -15,6 +15,10 @@ export class NgLaydateService {
 
     // Instance Registry
     private instances = new Map<string, NgLaydateComponent>();
+    // Track active panel refs by element
+    private activePanels = new Map<HTMLElement, ComponentRef<NgLaydateComponent>>();
+    // Track elements that already have event listeners attached
+    private boundElements = new WeakSet<HTMLElement>();
     // Track event listeners and timers for cleanup
     private documentClickListeners = new Map<ComponentRef<any>, any>();
     private documentClickTimers = new Map<ComponentRef<any>, any>();
@@ -76,11 +80,43 @@ export class NgLaydateService {
             return null;
         }
 
+        // If position is static, render immediately
+        if (config.position === 'static') {
+            return this.openPanel(config, elem);
+        }
+
+        // Bind click & focus listeners to target element if not already bound
+        if (!this.boundElements.has(elem)) {
+            this.boundElements.add(elem);
+
+            const triggerHandler = () => {
+                if (!this.activePanels.get(elem)) {
+                    this.openPanel(config, elem);
+                }
+            };
+
+            elem.addEventListener('click', triggerHandler);
+            elem.addEventListener('focus', triggerHandler);
+        }
+
+        // Render panel if not currently open
+        if (!this.activePanels.get(elem)) {
+            return this.openPanel(config, elem);
+        }
+
+        return this.activePanels.get(elem) || null;
+    }
+
+    private openPanel(config: LaydateConfig, elem: HTMLElement): ComponentRef<NgLaydateComponent> {
         // Create component
         const componentRef = createComponent(NgLaydateComponent, {
             environmentInjector: this.envInjector,
             hostElement: undefined
         });
+
+        if (config.position !== 'static') {
+            this.activePanels.set(elem, componentRef);
+        }
 
         // Set inputs correctly
         componentRef.setInput('config', config);
@@ -220,6 +256,14 @@ export class NgLaydateService {
     }
 
     private destroy(ref: ComponentRef<NgLaydateComponent>, shadeEl?: HTMLElement | null) {
+        // Remove from activePanels map
+        for (const [elem, activeRef] of this.activePanels.entries()) {
+            if (activeRef === ref) {
+                this.activePanels.delete(elem);
+                break;
+            }
+        }
+
         // Clear pending timers
         const clickTimer = this.documentClickTimers.get(ref);
         if (clickTimer) {
