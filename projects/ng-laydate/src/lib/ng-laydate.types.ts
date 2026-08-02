@@ -1,128 +1,128 @@
 /**
- * 日期时间对象，包含完整的年月日时分秒信息
+ * Represents a complete date and time object with year, month, date, hours, minutes, and seconds.
  */
 export interface DateObject {
-    /** 年份 (如 2026) */
+    /** Year (e.g., 2026) */
     year: number;
-    /** 月份 (1-12) */
+    /** Month index (0-11 for Jan-Dec) */
     month: number;
-    /** 日期 (1-31) */
+    /** Day of the month (1-31) */
     date: number;
-    /** 小时 (0-23) */
+    /** Hours (0-23) */
     hours: number;
-    /** 分钟 (0-59) */
+    /** Minutes (0-59) */
     minutes: number;
-    /** 秒数 (0-59) */
+    /** Seconds (0-59) */
     seconds: number;
 }
 
 /**
- * 日历面板单元格数据结构
+ * Represents a single date cell structure on the calendar grid.
  */
 export interface CalendarDay {
-    /** 单元格所属类型 ('prev' 上月, 'current' 当月, 'next' 下月) */
+    /** Belongs to previous month, current month, or next month */
     type: 'prev' | 'current' | 'next';
-    /** 当月几号 (1-31) */
+    /** Day number of the month (1-31) */
     day: number;
-    /** 月份 (1-12) */
+    /** Month index (0-11) */
     month: number;
-    /** 年份 (如 2026) */
+    /** Year (e.g., 2026) */
     year: number;
-    /** 是否已被禁用 */
+    /** Whether the date cell is disabled */
     disabled: boolean;
-    /** 标注自定义提示文本或节日名称 */
+    /** Custom badge or festival marker label */
     mark: string;
-    /** 节假日或加班标记 ('休' | '班') */
+    /** Holiday badge ('休' for holiday, '班' for workday) */
     holiday?: '休' | '班';
-    /** 单元格自定义 HTML 内容 */
+    /** Custom injected HTML content */
     customContent?: string;
 }
 
-/** 支持的国际化语言标识 */
+/** Supported international language codes */
 export type SupportedLang = 'cn' | 'en' | 'tw' | 'ja' | 'ko' | 'es' | 'de' | 'fr';
 
 /**
- * NgLaydate 配置参数接口
+ * NgLaydate configuration options interface.
  */
 export interface LaydateConfig {
-    /** 绑定目标的选择器或 DOM 元素 */
+    /** Target element reference or selector string */
     elem?: any;
-    /** 选择器实例的自定义 ID */
+    /** Custom unique ID for the picker instance */
     id?: string;
-    /** 选择器类型 ('year' | 'month' | 'date' | 'time' | 'datetime')，默认 'date' */
+    /** Picker selection type ('year' | 'month' | 'date' | 'time' | 'datetime'), defaults to 'date' */
     type?: 'year' | 'month' | 'date' | 'time' | 'datetime';
-    /** 开启范围选择。指定 true（默认分隔符 '-'）或自定义分隔符字符串（如 ' ~ '） */
+    /** Enable range selection. Can be true (default separator '-') or custom separator string (e.g., ' ~ ') */
     range?: boolean | string;
-    /** 是否开启左右面板月份连续联动，默认 false */
+    /** Whether to link left and right panel months continuously, defaults to false */
     rangeLinked?: boolean;
-    /** 日期输出格式（如 'yyyy-MM-dd HH:mm:ss'） */
+    /** Date output formatting template (e.g., 'yyyy-MM-dd HH:mm:ss') */
     format?: string;
-    /** 初始值，支持符合格式的字符串或 Date 对象 */
+    /** Initial value as formatted string or Date object */
     value?: string | Date;
-    /** 是否自动向输入框填充初始值，默认 true */
+    /** Whether to automatically populate initial value into the input element, defaults to true */
     isInitValue?: boolean;
-    /** 最小可选日期，支持格式字符串、Date 对象或相对天数偏移 (如 -7) */
+    /** Minimum selectable date as string, Date, or relative day offset (e.g., -7) */
     min?: string | Date | number;
-    /** 最大可选日期，支持格式字符串、Date 对象或相对天数偏移 (如 7) */
+    /** Maximum selectable date as string, Date, or relative day offset (e.g., 7) */
     max?: string | Date | number;
-    /** 呼出选择器的事件类型（如 'click', 'focus'） */
+    /** Event type that triggers the picker panel (e.g., 'click', 'focus') */
     trigger?: string;
-    /** 暗黑模式开关。支持 true, false, 'system'/'auto'（自动感知 OS 深色主题），或动态 Getter 函数 */
+    /** Dark mode toggle: true, false, 'system'/'auto' (follow OS dark mode), or dynamic reactive getter function */
     darkMode?: boolean | number | 'system' | 'auto' | (() => boolean | number | 'system' | 'auto');
-    /** 是否在初始化完成后立即显示选择器面板 */
+    /** Whether to display the picker panel immediately after initialization */
     show?: boolean;
-    /** 组件定位策略 ('absolute' | 'fixed' | 'static') */
+    /** Positioning strategy ('absolute' | 'fixed' | 'static') */
     position?: 'absolute' | 'fixed' | 'static';
-    /** 选择器面板的 CSS z-index 值 */
+    /** CSS z-index for the picker panel overlay */
     zIndex?: number;
-    /** 是否显示底部操作栏，默认 true */
+    /** Whether to display the bottom footer bar, defaults to true */
     showBottom?: boolean;
-    /** 底部工具按钮组及其显示顺序，默认 ['clear', 'now', 'confirm'] */
+    /** List and order of footer buttons to display, defaults to ['clear', 'now', 'confirm'] */
     btns?: string[];
-    /** 国际化语言设定，支持传入动态 Reactive Getter 函数及浏览器语言自动感知 */
+    /** Language configuration. Supports reactive getter function and automatic browser locale detection */
     lang?: SupportedLang | (() => SupportedLang);
-    /** 主题风格（'default', 'molv', 'grid', 'circle', 'fullpanel', 'dark'）或十六进制主色调（如 '#16b777' / ['grid', '#9C27B0']） */
+    /** Visual theme name ('default', 'molv', 'grid', 'circle', 'fullpanel', 'dark') or Hex color (e.g., '#16b777' or ['grid', '#9C27B0']) */
     theme?: string | string[];
-    /** 是否显示公历节日（如：清明、情人节等） */
+    /** Whether to show solar terms and festivals on the calendar grid */
     calendar?: boolean;
-    /** 标注特定日期及其文本（如 {'0-0-15': '月中'}）或函数 */
+    /** Custom date markers map (e.g., {'0-0-15': 'Mid'}) or marker generator function */
     mark?: Record<string, string> | ((ymd: { year: number; month: number; date: number }, render: (input: string | Record<string, string>) => string) => string | void);
-    /** 简单快捷键键值对 (如 {'yesterday': '2024-01-01'}) */
+    /** Simple shorthand key-value pairs (e.g., {'yesterday': '2024-01-01'}) */
     shorthand?: Record<string, string>;
-    /** 节假日与加班标记配置 [[节假日数组], [加班日数组]] */
+    /** Holiday and workday date badges [[holidays], [workdays]] */
     holidays?: [string[], string[]];
-    /** 遮罩层配置，支持指定遮罩透明度数值或 true/false */
+    /** Background overlay configuration, supports boolean or opacity number (0.5) */
     shade?: boolean | number;
-    /** 高级快捷选项组配置，支持侧边栏/页脚联动 */
+    /** Advanced shortcut buttons for quick date ranges and presets */
     shortcuts?: { text: string; value: any | (() => any) }[];
-    /** 单选模式下选择完成后是否自动确认并关闭面板，默认 true */
+    /** Automatically confirm and close panel upon selection (single mode only), defaults to true */
     autoConfirm?: boolean;
-    /** 是否在底部栏显示实时选择结果的预览文本 */
+    /** Whether to display live selection preview text in the footer bar */
     isPreview?: boolean;
-    /** 星期起始日（0-6，0 代表周日，1 代表周一），默认 0 */
+    /** Start day of the week (0-6, 0 for Sunday, 1 for Monday), defaults to 0 */
     weekStart?: number;
-    /** 禁用特定日期的回调函数，返回 true 表示禁用该日期 */
+    /** Callback function to disable specific dates. Returns true to disable */
     disabledDate?: (date: Date, type?: string) => boolean;
-    /** 禁用特定时分秒的回调函数 */
+    /** Callback function to disable specific hours, minutes, or seconds */
     disabledTime?: (date: Date, type?: string) => { hours?: () => number[]; minutes?: (h: number) => number[]; seconds?: (h: number, m: number) => number[] };
-    /** 单元格自定义 HTML 渲染回调函数 */
+    /** Custom renderer for date cell HTML content */
     cellRender?: (ymd: { year: number; month: number; date: number }, render: (content: string) => void, info: { type: string }) => void;
-    /** 仅用于输入框展示文本的格式化回调函数，不影响实际控件绑定值 */
+    /** Display formatter for input box text only without affecting model value */
     formatToDisplay?: (value: string) => string;
 
-    // 回调事件
-    /** 控件渲染完成时触发 */
+    // Callbacks
+    /** Triggered when the picker panel completes rendering */
     ready?: (date: DateObject) => void;
-    /** 值改变时触发 */
+    /** Triggered whenever selection value changes */
     change?: (value: string, date: DateObject, endDate?: DateObject) => void;
-    /** 点击确认或完成选择时触发 */
+    /** Triggered when selection is confirmed or completed */
     done?: (value: string, date: DateObject, endDate?: DateObject) => void;
-    /** 选择器面板关闭时触发 */
+    /** Triggered when the picker panel is closed */
     close?: () => void;
-    /** 点击确认按钮时触发 */
+    /** Triggered when the "Confirm" button is clicked */
     onConfirm?: (value: string, date: DateObject, endDate?: DateObject) => void;
-    /** 点击“现在”按钮时触发 */
+    /** Triggered when the "Now" button is clicked */
     onNow?: (value: string, date: DateObject, endDate?: DateObject) => void;
-    /** 点击“清空”按钮时触发 */
+    /** Triggered when the "Clear" button is clicked */
     onClear?: (value: string, date: DateObject, endDate?: DateObject) => void;
 }

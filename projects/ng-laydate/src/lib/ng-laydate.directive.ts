@@ -5,19 +5,19 @@ import { LaydateConfig } from './ng-laydate.types';
 import { NgLaydateService } from './ng-laydate.service';
 
 /**
- * NgLaydate 指令
- * 
- * 可在任意 input 元素上快捷绑定日期时间选择器，支持模板驱动与响应式表单。
+ * NgLaydate Directive
+ *
+ * Attaches an elegant date/time picker to any HTML input element with Angular Forms integration.
  *
  * @example
  * ```html
- * <!-- 基础日期选择 -->
- * <input type="text" laydate placeholder="请选择日期">
+ * <!-- Basic Usage -->
+ * <input type="text" laydate placeholder="Select Date">
  *
- * <!-- 深度配置与跟随系统暗黑模式 -->
+ * <!-- Custom Configuration & System Dark Mode -->
  * <input type="text" [laydate]="{ type: 'datetime', range: true, darkMode: 'system' }">
  *
- * <!-- 双向表单绑定 -->
+ * <!-- Two-Way Form Binding -->
  * <input type="text" laydate [(ngModel)]="dateValue">
  * ```
  */
@@ -37,23 +37,23 @@ import { NgLaydateService } from './ng-laydate.service';
 })
 export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     /**
-     * Laydate 配置参数输入信号 (指令别名 `laydate`)
+     * Laydate configuration input signal (directive alias `laydate`).
      */
     configInput = input<LaydateConfig | '' | undefined | null>('', { alias: 'laydate' });
 
-    /** 选择器值改变时触发的回调事件 */
+    /** Emitted whenever a new value is selected */
     @Output() change = new EventEmitter<string>();
-    /** 选择器面板渲染完成时触发的回调事件 */
+    /** Emitted when the picker panel completes rendering */
     @Output() ready = new EventEmitter<any>();
-    /** 点击确认或完成选择时触发的回调事件 */
+    /** Emitted when selection is confirmed or completed */
     @Output() done = new EventEmitter<any>();
-    /** 点击“确定”按钮时触发的回调事件 */
+    /** Emitted when the "Confirm" button is clicked */
     @Output() onConfirm = new EventEmitter<any>();
-    /** 点击“现在”按钮时触发的回调事件 */
+    /** Emitted when the "Now" button is clicked */
     @Output() onNow = new EventEmitter<any>();
-    /** 点击“清空”按钮时触发的回调事件 */
+    /** Emitted when the "Clear" button is clicked */
     @Output() onClear = new EventEmitter<any>();
-    /** 选择器面板关闭时触发的回调事件 */
+    /** Emitted when the picker panel is closed */
     @Output() closeEvent = new EventEmitter<void>();
 
     private componentRef: ComponentRef<NgLaydateComponent> | null = null;
@@ -79,7 +79,7 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     }
 
     /**
-     * ControlValueAccessor 接口实现：写入表单初始值
+     * ControlValueAccessor interface: writes initial or updated value to the element.
      */
     writeValue(obj: any): void {
         this._value = obj || '';
@@ -92,28 +92,28 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     }
 
     /**
-     * ControlValueAccessor 接口实现：注册值变动回调
+     * ControlValueAccessor interface: registers onChange callback.
      */
     registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
     /**
-     * ControlValueAccessor 接口实现：注册 Touch 状态回调
+     * ControlValueAccessor interface: registers onTouched callback.
      */
     registerOnTouched(fn: any): void {
         this.onTouched = fn;
     }
 
     /**
-     * ControlValueAccessor 接口实现：设置表单禁用状态
+     * ControlValueAccessor interface: sets disabled state.
      */
     setDisabledState?(isDisabled: boolean): void {
         this.el.nativeElement.disabled = isDisabled;
     }
 
     /**
-     * 原生 input 事件句柄
+     * Native input event handler for manual typing.
      */
     onInput(event: Event) {
         const val = (event.target as HTMLInputElement).value;
@@ -122,7 +122,7 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     }
 
     /**
-     * 手动呼出并打开日期时间选择器面板
+     * Programmatically opens the date/time picker panel.
      */
     open() {
         if (this.el.nativeElement) {
@@ -209,7 +209,7 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     }
 
     /**
-     * 手动关闭日期时间选择器面板
+     * Programmatically closes the date/time picker panel.
      */
     close() {
         if (this.componentRef) {

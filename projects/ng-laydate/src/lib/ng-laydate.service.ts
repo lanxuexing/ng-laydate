@@ -4,7 +4,9 @@ import { DateObject, LaydateConfig, CalendarDay } from './ng-laydate.types';
 import { NgLaydateComponent } from './ng-laydate.component';
 
 /**
- * NgLaydate 服务，提供命令式/服务化渲染选择器、动态 Hint 消息提醒以及日期计算工具函数
+ * NgLaydate Service
+ *
+ * Provides programmatic rendering of date/time pickers, dynamic hint notifications, and date math utility functions.
  */
 @Injectable({
     providedIn: 'root'
@@ -31,9 +33,9 @@ export class NgLaydateService {
     private subscriptionsMap = new Map<ComponentRef<any>, { unsubscribe: () => void }[]>();
 
     /**
-     * 将十六进制颜色值转为带指定透明度的 RGBA 字符串
-     * @param hex 十六进制颜色值 (如 '#16b777' 或 '#fff')
-     * @param opacity 透明度 (0-1)
+     * Converts a Hex color code string into an RGBA string with the given opacity.
+     * @param hex Hex color code string (e.g., '#16b777' or '#fff')
+     * @param opacity Opacity value between 0 and 1
      */
     hexToRgba(hex: string, opacity: number): string {
         if (!hex) return `rgba(22, 183, 119, ${opacity})`; // Default green
@@ -52,7 +54,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 注册组件实例句柄
+     * Registers a component instance handle by custom ID.
      */
     register(id: string, component: NgLaydateComponent) {
         if (id) {
@@ -61,7 +63,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 注销组件实例句柄
+     * Unregisters a component instance handle by custom ID.
      */
     unregister(id: string) {
         if (id) {
@@ -70,9 +72,9 @@ export class NgLaydateService {
     }
 
     /**
-     * 静态 Hint 气泡提示 API，向指定 ID 的控件弹出一个自定义提示消息
-     * @param id 目标控件注册的 ID
-     * @param opts 提示参数，包含 content 消息文本及 ms 持续展示毫秒数
+     * Static hint API that displays a temporary toast/hint message on a registered picker instance.
+     * @param id Registered picker instance ID
+     * @param opts Hint configuration with content string and display duration in ms
      */
     hint(id: string, opts: { content: string; ms?: number }) {
         const inst = this.instances.get(id);
@@ -84,16 +86,16 @@ export class NgLaydateService {
     }
 
     /**
-     * 设置渲染的目标 ViewContainerRef 视图容器
+     * Sets the default ViewContainerRef container for dynamic component rendering.
      */
     setContainer(vcr: ViewContainerRef) {
         this.defaultVcr = vcr;
     }
 
     /**
-     * 动态更新目标 DOM 元素绑定的 Laydate 配置参数
-     * @param elem 目标 HTML 元素
-     * @param config 最新 LaydateConfig 配置
+     * Dynamically updates the LaydateConfig configuration bound to a target element.
+     * @param elem Target HTML element
+     * @param config Updated LaydateConfig object
      */
     updateConfig(elem: HTMLElement, config: LaydateConfig) {
         this.elementConfigs.set(elem, config);
@@ -104,9 +106,9 @@ export class NgLaydateService {
     }
 
     /**
-     * 服务化渲染入口：在指定 target 元素上动态命令式创建并弹出 Laydate 控件
-     * @param config Laydate 完整配置对象 (必须包含 elem 目标元素或 Selector 字符串)
-     * @returns 返回生成的 ComponentRef 组件引用指针 (SSR 场景下返回 null)
+     * Programmatically renders and attaches a Laydate picker panel onto the specified target element.
+     * @param config Full LaydateConfig object (must include target elem or selector string)
+     * @returns Created ComponentRef handle, or null in SSR environments
      */
     render(config: LaydateConfig): ComponentRef<NgLaydateComponent> | null {
         // SSR Guard: Do not render dynamic components accessing DOM in Server
@@ -358,14 +360,14 @@ export class NgLaydateService {
     }
 
     /**
-     * 判断指定年份是否为闰年
+     * Checks if a given year is a leap year.
      */
     isLeap(year: number): boolean {
         return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
     }
 
     /**
-     * 数字补零补齐指定位数 (默认 2 位)
+     * Pads numbers with leading zeros to the specified target length (defaults to 2).
      */
     digit(num: number | string, length: number = 2): string {
         let str = String(num);
@@ -376,9 +378,9 @@ export class NgLaydateService {
     }
 
     /**
-     * 将 DateObject 格式化为对应格式的日期字符串
-     * @param date DateObject 格式对象
-     * @param formatStr 格式化字符串 (默认 'yyyy-MM-dd')
+     * Formats a DateObject into a date string according to the format template.
+     * @param date Source DateObject
+     * @param formatStr Format template string (defaults to 'yyyy-MM-dd')
      */
     format(date: DateObject, formatStr: string = 'yyyy-MM-dd'): string {
         const yyyy = this.digit(date.year, 4);
@@ -410,14 +412,14 @@ export class NgLaydateService {
     }
 
     /**
-     * 将 DateObject 日期对象转为毫秒时间戳用于对比运算
+     * Converts a DateObject into a epoch millisecond timestamp for date comparison.
      */
     getTime(date: DateObject): number {
         return new Date(date.year, date.month, date.date, date.hours, date.minutes, date.seconds).getTime();
     }
 
     /**
-     * 获取指定年份与月份的总天数
+     * Returns total number of days in a specific month for a given year.
      */
     totalDay(year: number, month: number): number {
         const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -426,7 +428,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 获取系统当前时间或指定 Date 对象的 DateObject 数据结构
+     * Converts a Date object or current date to a standard DateObject structure.
      */
     systemDate(newDate?: Date): DateObject {
         const thisDate = newDate || new Date();
@@ -441,7 +443,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 将字符串、Date 对象或数值解析为 DateObject 标准数据结构
+     * Parses string, Date, or numeric relative day offsets into a standard DateObject structure.
      */
     parse(value: string | Date | number, format: string = 'yyyy-MM-dd'): DateObject {
         if (typeof value === 'number') {
@@ -505,7 +507,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 生成并计算用于日历面板渲染的 42 格单元格数据 (含上月余日、当月天数、下月填补天数)
+     * Generates a 42-cell CalendarDay array for rendering the month grid.
      */
     getCalendarData(year: number, month: number, config?: LaydateConfig): CalendarDay[] {
         const startDay = new Date(year, month, 1).getDay(); // 0 is Sunday
@@ -689,7 +691,7 @@ export class NgLaydateService {
     }
 
     /**
-     * 校验并约束 DateObject 年月日时分秒的有效取值范围，防止合法性越界
+     * Validates and clamps DateObject values to ensure year, month, and time numbers stay within valid boundaries.
      */
     checkDate(date: DateObject): DateObject {
         const LIMIT_YEAR = [100, 200000];
