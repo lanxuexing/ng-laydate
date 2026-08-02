@@ -552,8 +552,13 @@ ng-laydate.layui-laydate {
     }
 
     .laydate-time-list {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0 !important;
         display: flex;
-        padding-bottom: 0;
         overflow: hidden;
     }
 
@@ -570,15 +575,18 @@ ng-laydate.layui-laydate {
 
     .laydate-time-list p {
         position: relative;
-        top: -4px;
+        top: 0;
         margin: 0;
         line-height: 29px;
         text-align: center;
+        font-weight: 600;
     }
 
     .laydate-time-list ol {
-        height: 181px;
-        overflow: hidden;
+        height: calc(100% - 30px);
+        min-height: 170px;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
         border: 1px solid #e2e2e2;
         border-left-width: 0;
     }
