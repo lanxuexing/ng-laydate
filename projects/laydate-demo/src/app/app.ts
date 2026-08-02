@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, inject, signal, computed, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang } from 'ng-laydate';
 
 @Component({
@@ -14,6 +15,7 @@ export class App implements AfterViewInit {
   title = 'ng-laydate';
   private laydate = inject(NgLaydateService);
   private platformId = inject(PLATFORM_ID);
+  private sanitizer = inject(DomSanitizer);
 
   private detectInitialLang(): SupportedLang {
     if (isPlatformBrowser(this.platformId)) {
@@ -57,6 +59,38 @@ export class App implements AfterViewInit {
         console.error('Failed to copy code', err);
       }
     }
+  }
+
+  // Code Syntax Highlighter
+  getHighlightedCode(code: string): SafeHtml {
+    if (!code) return '';
+
+    // 1. Escape HTML special characters
+    let html = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // 2. Comments
+    html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="hl-comment">$1</span>');
+    html = html.replace(/(\/\/[^\n]*)/g, '<span class="hl-comment">$1</span>');
+
+    // 3. String Literals
+    html = html.replace(/(["'`])(.*?)\1/g, '<span class="hl-string">$1$2$1</span>');
+
+    // 4. Angular Bindings & Directives
+    html = html.replace(/(\[[a-zA-Z0-9_-]+\]|\([a-zA-Z0-9_-]+\)|formControlName)=/g, '<span class="hl-binding">$1</span>=');
+
+    // 5. HTML Attributes before '='
+    html = html.replace(/\b([a-zA-Z0-9_-]+)=/g, '<span class="hl-attr">$1</span>=');
+
+    // 6. HTML Tags
+    html = html.replace(/&lt;(\/?[a-zA-Z0-9_-]+)/g, '&lt;<span class="hl-tag">$1</span>');
+
+    // 7. TS Keywords
+    html = html.replace(/\b(import|export|class|new|const|let|var|return|from|inject|signal|computed|standalone)\b/g, '<span class="hl-keyword">$1</span>');
+
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   // Reactive translation dictionary

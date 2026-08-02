@@ -354,6 +354,15 @@ header {
   code {
     font-family: inherit;
     white-space: pre;
+
+    /* VS Code Dark+ Syntax Highlighting */
+    .hl-comment { color: #6a9955; font-style: italic; }
+    .hl-tag { color: #569cd6; font-weight: 500; }
+    .hl-attr { color: #9cdcfe; }
+    .hl-binding { color: #dcdcaa; font-weight: 500; }
+    .hl-string { color: #ce9178; }
+    .hl-keyword { color: #c586c0; font-weight: 600; }
+    .hl-delimiter { color: #808080; }
   }
 }
 
