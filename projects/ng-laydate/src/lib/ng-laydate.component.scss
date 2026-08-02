@@ -978,8 +978,17 @@ ng-laydate.layui-laydate.laydate-theme-dark {
     ng-laydate.layui-laydate {
         max-width: calc(100vw - 24px) !important;
         box-sizing: border-box !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
+
+        .layui-laydate-main {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .layui-laydate-content th,
+        .layui-laydate-content td {
+            width: auto !important;
+        }
 
         &.layui-laydate-range {
             width: calc(100vw - 24px) !important;
