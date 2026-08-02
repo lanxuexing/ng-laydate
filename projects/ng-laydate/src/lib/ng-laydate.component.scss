@@ -657,9 +657,9 @@ ng-laydate.layui-laydate {
         box-sizing: border-box !important;
     }
 
-    .laydate-time-list ol li:hover {
-        background-color: #eee;
-        color: #333;
+    .laydate-time-list ol li:not(.layui-this):not(.laydate-disabled):hover {
+        background-color: var(--laydate-theme-color-light, rgba(22, 183, 119, 0.1));
+        color: var(--laydate-theme-color, #16b777);
     }
 
     /* 快捷栏 */
@@ -1006,8 +1006,8 @@ ng-laydate.layui-laydate.laydate-theme-dark {
         }
 
         &:not(.layui-this):not(.laydate-disabled):hover {
-            background-color: rgba(255, 255, 255, 0.08) !important;
-            color: rgba(255, 255, 255, 0.9) !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--laydate-theme-color, #16b777) !important;
         }
     }
 }
