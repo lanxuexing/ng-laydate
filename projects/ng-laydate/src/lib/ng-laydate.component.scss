@@ -509,6 +509,26 @@ ng-laydate.layui-laydate {
         margin: 0 0 0 -1px;
         border-radius: 0px;
         white-space: nowrap;
+        background-color: #fff;
+        color: #666;
+        border: 1px solid #C9C9C9;
+        transition: all .3s;
+
+        &:hover {
+            color: var(--laydate-theme-color, #16b777);
+            border-color: var(--laydate-theme-color, #16b777);
+        }
+
+        &[lay-type="confirm"],
+        &.laydate-btns-confirm {
+            background-color: var(--laydate-theme-color, #16b777) !important;
+            color: #fff !important;
+            border-color: var(--laydate-theme-color, #16b777) !important;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
     }
 
     .laydate-footer-btns span:first-child {
@@ -873,24 +893,26 @@ ng-laydate.layui-laydate.laydate-theme-dark {
     }
 
     .layui-laydate-footer {
-        border-top-color: #555;
-        background-color: #333;
+        border-top-color: var(--laydate-border-color, #555) !important;
+        background-color: #333 !important;
 
-        span {
-            color: #eee;
-            background-color: transparent;
-            border-color: #555;
+        span,
+        .laydate-footer-btns span {
+            color: #eee !important;
+            background-color: transparent !important;
+            border-color: #555 !important;
 
             &:hover {
-                color: var(--laydate-theme-color, #16b777);
-                border-color: var(--laydate-theme-color, #16b777);
+                color: var(--laydate-theme-color, #16b777) !important;
+                border-color: var(--laydate-theme-color, #16b777) !important;
             }
 
             /* Confirm button style */
-            &[lay-type="confirm"] {
-                background-color: var(--laydate-theme-color, #16b777);
-                color: #fff;
-                border-color: var(--laydate-theme-color, #16b777);
+            &[lay-type="confirm"],
+            &.laydate-btns-confirm {
+                background-color: var(--laydate-theme-color, #16b777) !important;
+                color: #fff !important;
+                border-color: var(--laydate-theme-color, #16b777) !important;
 
                 &:hover {
                     opacity: 0.9;
