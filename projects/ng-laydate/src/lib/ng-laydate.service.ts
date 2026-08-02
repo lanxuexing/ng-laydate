@@ -99,8 +99,8 @@ export class NgLaydateService {
             elem.addEventListener('focus', triggerHandler);
         }
 
-        // Render panel if not currently open
-        if (!this.activePanels.get(elem)) {
+        // Only open panel immediately on render if explicitly set in config.show === true
+        if (config.show === true && !this.activePanels.get(elem)) {
             return this.openPanel(config, elem);
         }
 
