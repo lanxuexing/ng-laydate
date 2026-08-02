@@ -985,6 +985,18 @@ ng-laydate.layui-laydate.laydate-theme-dark {
             box-sizing: border-box !important;
         }
 
+        .layui-laydate-content {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .laydate-time-header {
+            width: 100% !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+        }
+
         .layui-laydate-content th,
         .layui-laydate-content td {
             width: auto !important;
