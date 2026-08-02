@@ -443,13 +443,16 @@ ng-laydate.layui-laydate {
     }
 
     .layui-laydate-footer {
+        flex: 0 0 100%;
+        width: 100%;
+        box-sizing: border-box;
         position: relative;
         z-index: 11;
         /* 确保在列表之上 */
         height: 46px;
         line-height: 26px;
         padding: 10px;
-        border-top: 1px solid #e2e2e2;
+        border-top: 1px solid var(--laydate-border-color, #e2e2e2);
         background-color: #fff;
     }
 
@@ -495,11 +498,17 @@ ng-laydate.layui-laydate {
         position: absolute;
         right: 10px;
         top: 10px;
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        white-space: nowrap;
     }
 
     .laydate-footer-btns span {
+        display: inline-block;
         margin: 0 0 0 -1px;
         border-radius: 0px;
+        white-space: nowrap;
     }
 
     .laydate-footer-btns span:first-child {
