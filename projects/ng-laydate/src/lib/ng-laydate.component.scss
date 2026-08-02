@@ -591,7 +591,7 @@ ng-laydate.layui-laydate {
         padding: 0 !important;
         font-weight: 600 !important;
         background: #fafafa !important;
-        border-bottom: 1px solid #e2e2e2 !important;
+        border-bottom: 1px solid var(--laydate-border-color, #e2e2e2) !important;
         z-index: 2 !important;
     }
 
@@ -609,12 +609,12 @@ ng-laydate.layui-laydate {
         margin: 0 !important;
         padding: 0 !important;
         list-style: none !important;
-        border-right: 1px solid #e2e2e2 !important;
+        border-right: 1px solid var(--laydate-border-color, #e2e2e2) !important;
         box-sizing: border-box !important;
     }
 
     .laydate-time-list>li:first-child ol {
-        border-left: 1px solid #e2e2e2 !important;
+        border-left: 1px solid var(--laydate-border-color, #e2e2e2) !important;
     }
 
     .laydate-time-list ol li {
@@ -638,7 +638,7 @@ ng-laydate.layui-laydate {
         flex: 0 0 90px;
         height: 276px;
         padding: 5px 0;
-        border-right: 1px solid #e2e2e2;
+        border-right: 1px solid var(--laydate-border-color, #e2e2e2);
         background-color: #fff;
         overflow-y: auto;
         box-sizing: border-box;
