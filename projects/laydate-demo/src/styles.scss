@@ -343,26 +343,76 @@ header {
 
 .code-content {
   margin: 0;
-  padding: 16px 20px;
+  padding: 18px 24px;
   overflow-x: auto;
   font-family: 'SF Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
   font-size: 0.85rem;
-  line-height: 1.6;
-  color: #e2e8f0;
+  line-height: 1.65;
+  color: #abb2bf;
   background: transparent;
 
   code {
     font-family: inherit;
     white-space: pre;
 
-    /* VS Code Dark+ Syntax Highlighting */
-    .hl-comment { color: #6a9955; font-style: italic; }
-    .hl-tag { color: #569cd6; font-weight: 500; }
-    .hl-attr { color: #9cdcfe; }
-    .hl-binding { color: #dcdcaa; font-weight: 500; }
-    .hl-string { color: #ce9178; }
-    .hl-keyword { color: #c586c0; font-weight: 600; }
-    .hl-delimiter { color: #808080; }
+    /* Prism Token Highlighting Colors (One Dark Pro) */
+    .token.comment,
+    .token.block-comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: #5c6370;
+      font-style: italic;
+    }
+
+    .token.punctuation {
+      color: #abb2bf;
+    }
+
+    .token.tag,
+    .token.name,
+    .token.namespace,
+    .token.deleted {
+      color: #e06c75;
+      font-weight: 600;
+    }
+
+    .token.attr-name,
+    .token.attribute {
+      color: #d19a66;
+      font-weight: 500;
+    }
+
+    .token.attr-value,
+    .token.string,
+    .token.char,
+    .token.inserted {
+      color: #98c379;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url {
+      color: #56b6c2;
+    }
+
+    .token.keyword,
+    .token.property,
+    .token.boolean,
+    .token.number,
+    .token.constant {
+      color: #c678dd;
+      font-weight: 600;
+    }
+
+    .token.function,
+    .token.class-name {
+      color: #61afef;
+    }
+
+    .token.variable {
+      color: #e06c75;
+    }
   }
 }
 

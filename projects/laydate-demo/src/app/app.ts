@@ -3,6 +3,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang } from 'ng-laydate';
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-typescript';
 
 @Component({
   selector: 'app-root',
@@ -61,36 +63,18 @@ export class App implements AfterViewInit {
     }
   }
 
-  // Code Syntax Highlighter
-  getHighlightedCode(code: string): SafeHtml {
+  // Professional Prism.js Code Syntax Highlighter
+  getHighlightedCode(code: string, lang: string = 'markup'): SafeHtml {
     if (!code) return '';
-
-    // 1. Escape HTML special characters
-    let html = code
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-
-    // 2. Comments
-    html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="hl-comment">$1</span>');
-    html = html.replace(/(\/\/[^\n]*)/g, '<span class="hl-comment">$1</span>');
-
-    // 3. String Literals
-    html = html.replace(/(["'`])(.*?)\1/g, '<span class="hl-string">$1$2$1</span>');
-
-    // 4. Angular Bindings & Directives
-    html = html.replace(/(\[[a-zA-Z0-9_-]+\]|\([a-zA-Z0-9_-]+\)|formControlName)=/g, '<span class="hl-binding">$1</span>=');
-
-    // 5. HTML Attributes before '='
-    html = html.replace(/\b([a-zA-Z0-9_-]+)=/g, '<span class="hl-attr">$1</span>=');
-
-    // 6. HTML Tags
-    html = html.replace(/&lt;(\/?[a-zA-Z0-9_-]+)/g, '&lt;<span class="hl-tag">$1</span>');
-
-    // 7. TS Keywords
-    html = html.replace(/\b(import|export|class|new|const|let|var|return|from|inject|signal|computed|standalone)\b/g, '<span class="hl-keyword">$1</span>');
-
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    try {
+      const grammar = (lang === 'typescript' || lang === 'ts')
+        ? (Prism.languages['typescript'] || Prism.languages['javascript'])
+        : Prism.languages['markup'];
+      const highlighted = Prism.highlight(code, grammar, lang);
+      return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+    } catch {
+      return this.sanitizer.bypassSecurityTrustHtml(code);
+    }
   }
 
   // Reactive translation dictionary
@@ -248,87 +232,87 @@ export class App implements AfterViewInit {
     };
   });
 
-  // Code Snippets for Demo Sections
+  // Clean Code Snippets
   sec1Code = `<!-- 1. The Essentials -->
-<!-- Standard Date -->
-<input type="text" class="layui-input" [laydate]="{ lang: 'cn' }">
+<!-- Standard Date Picker -->
+<input [laydate]="{ lang: 'cn' }">
 
-<!-- Theme: Molv -->
-<input type="text" class="layui-input" [laydate]="{ value: '2023-10-01', theme: 'molv' }">
+<!-- Theme: Molv (Ink Green) -->
+<input [laydate]="{ value: '2023-10-01', theme: 'molv' }">
 
-<!-- DateTime Mode -->
-<input type="text" class="layui-input" [laydate]="{ type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss' }">
+<!-- DateTime Mode (yyyy-MM-dd HH:mm:ss) -->
+<input [laydate]="{ type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss' }">
 
 <!-- English i18n -->
-<input type="text" class="layui-input" [laydate]="{ lang: 'en' }">`;
+<input [laydate]="{ lang: 'en' }">`;
 
   sec2Code = `<!-- 2. Selection Range -->
 <!-- Date Range -->
-<input type="text" class="layui-input" [laydate]="{ range: true }">
+<input [laydate]="{ range: true }">
 
 <!-- DateTime Range -->
-<input type="text" class="layui-input" [laydate]="{ type: 'datetime', range: true }">
+<input [laydate]="{ type: 'datetime', range: true }">
 
-<!-- Month Range with Custom Separator -->
-<input type="text" class="layui-input" [laydate]="{ type: 'month', range: '~', format: 'yyyy-MM' }">
+<!-- Custom Separator (~ Month Range) -->
+<input [laydate]="{ type: 'month', range: '~', format: 'yyyy-MM' }">
 
 <!-- Synchronized Linked Panels -->
-<input type="text" class="layui-input" [laydate]="{ range: true, rangeLinked: true }">
+<input [laydate]="{ range: true, rangeLinked: true }">
 
 <!-- Manual Confirm -->
-<input type="text" class="layui-input" [laydate]="{ autoConfirm: false }">`;
+<input [laydate]="{ autoConfirm: false }">`;
 
   sec3Code = `<!-- 3. Constraints & Logic -->
-<!-- Min/Max Bounds (2016-01-01 to 2080-12-31) -->
-<input type="text" class="layui-input" [laydate]="{ min: '2016-01-01', max: '2080-12-31' }">
+<!-- Min/Max Boundary (2016-10-14 to 2080-10-14) -->
+<input [laydate]="{ min: '2016-10-14', max: '2080-10-14' }">
 
-<!-- Relative Bounds (-7 to +7 days) -->
-<input type="text" class="layui-input" [laydate]="{ min: -7, max: 7 }">
+<!-- Relative Days Boundary (-7 to +7 days) -->
+<input [laydate]="{ min: -7, max: 7 }">
 
-<!-- Time Bounds (09:30:00 to 17:30:00) -->
-<input type="text" class="layui-input" [laydate]="{ type: 'time', min: '09:30:00', max: '17:30:00' }">
+<!-- Restricted Time Range (09:30:00 to 17:30:00) -->
+<input [laydate]="{ type: 'time', min: '09:30:00', max: '17:30:00' }">
 
-<!-- Disable Future Dates -->
-<input type="text" class="layui-input" [laydate]="{ max: 0 }">`;
+<!-- Logic-Based Disabling Function -->
+<input [laydate]="{ disabledDate: disabledDateFn }">`;
 
   sec4Code = `<!-- 4. Aesthetics & Themes -->
-<!-- FullPanel Mode (Side-by-Side Date & Time) -->
-<input type="text" class="layui-input" [laydate]="{ type: 'datetime', theme: 'fullpanel' }">
+<!-- FULLPANEL Side-by-Side Mode -->
+<input [laydate]="{ type: 'datetime', theme: 'fullpanel' }">
 
 <!-- Dark Theme -->
-<input type="text" class="layui-input" [laydate]="{ theme: 'dark' }">
+<input [laydate]="{ darkMode: true }">
 
-<!-- Dark Theme + Custom Accent Color -->
-<input type="text" class="layui-input" [laydate]="{ theme: '#ff5722', themeMode: 'dark' }">
+<!-- Custom Accent Color + Dark Mode -->
+<input [laydate]="{ darkMode: true, theme: '#FF5722' }">
 
-<!-- Grid Style + Purple Accent -->
-<input type="text" class="layui-input" [laydate]="{ theme: '#7c3aed', themeStyle: 'grid' }">
+<!-- Grid Style + Accent Color -->
+<input [laydate]="{ theme: ['grid', '#9C27B0'] }">
 
-<!-- Circle Style + Blue Accent -->
-<input type="text" class="layui-input" [laydate]="{ theme: '#2563eb', themeStyle: 'circle' }">`;
+<!-- Circle Style + Accent Color -->
+<input [laydate]="{ theme: ['circle', '#2196F3'] }">`;
 
   sec5Code = `<!-- 5. Smart Features -->
-<!-- Custom Mark Function -->
-<input type="text" class="layui-input" [laydate]="{ mark: markFunction }">
+<!-- Dynamic Annotations / Marks -->
+<input [laydate]="{ mark: markFunction }">
 
 <!-- Custom Cell Render Callback -->
-<input type="text" class="layui-input" [laydate]="{ cellRender: cellRenderDemo }">
+<input [laydate]="{ cellRender: cellRenderDemo }">
 
-<!-- Built-in Festivals & Holidays -->
-<input type="text" class="layui-input" [laydate]="{ calendar: true, holidays: ['2024-01-01', '2024-10-01'] }">
+<!-- Gregorian Festivals & Holiday Markers -->
+<input [laydate]="{ calendar: true, holidays: ['2025-01-01', '2025-10-01'] }">
 
 <!-- Programmatic Service Hint -->
-<button (click)="laydate.hint(inputEl, 'Custom Hint Message!')">Show Hint</button>`;
+<button (click)="laydate.hint(inputEl, 'Custom Hint!')">Show Hint</button>`;
 
   sec6Code = `<!-- 6. Shortcuts Gallery -->
-<!-- Preset Dates -->
-<input type="text" class="layui-input" [laydate]="{ shortcuts: presetShortcuts }">
+<!-- Preset Date Shortcuts -->
+<input [laydate]="{ shortcuts: presetShortcuts }">
 
 <!-- Year Select Shortcuts -->
-<input type="text" class="layui-input" [laydate]="{ type: 'year', shortcuts: yearShortcuts }">
+<input [laydate]="{ type: 'year', shortcuts: yearShortcuts }">
 
 <!-- 30-Minute Time Interval Steps -->
-<input type="text" class="layui-input" [laydate]="{ type: 'time', shortcuts: timeShortcuts }">`;
+<input [laydate]="{ type: 'time', shortcuts: timeShortcuts }">`;
 
   sec7Code = `// 7. Integration & Developer API
 import { Component } from '@angular/core';
@@ -338,13 +322,10 @@ import { NgLaydateDirective } from 'ng-laydate';
 @Component({
   imports: [ReactiveFormsModule, NgLaydateDirective],
   template: \`
-    <!-- Reactive Form Control -->
+    <!-- Reactive Form Integration -->
     <form [formGroup]="myForm">
-      <input type="text" class="layui-input" formControlName="birthday" [laydate]="{ lang: 'cn' }">
+      <input formControlName="birthday" [laydate]="{ lang: 'cn' }">
     </form>
-
-    <!-- Custom Display Filter -->
-    <input type="text" class="layui-input" [laydate]="displayFormatConfig">
   \`
 })
 export class AppComponent {
@@ -354,13 +335,13 @@ export class AppComponent {
 }`;
 
   sec8Code = `<!-- 8. Static Gallery (Inline Components) -->
-<!-- Default Inline Static Panel -->
+<!-- Default Static Inline Panel -->
 <ng-laydate [config]="{ position: 'static', lang: 'cn' }"></ng-laydate>
 
-<!-- Inline Static FullPanel -->
+<!-- Static Inline FullPanel Mode -->
 <ng-laydate [config]="{ position: 'static', type: 'datetime', theme: 'fullpanel' }"></ng-laydate>
 
-<!-- Inline Static Grid Style -->
+<!-- Static Inline Grid Theme -->
 <ng-laydate [config]="{ position: 'static', theme: 'grid' }"></ng-laydate>`;
 
   // Responsive Form
