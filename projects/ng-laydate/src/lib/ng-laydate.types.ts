@@ -1,18 +1,36 @@
+/**
+ * 日期时间对象，包含完整的年月日时分秒信息
+ */
 export interface DateObject {
+    /** 年份 (如 2026) */
     year: number;
+    /** 月份 (1-12) */
     month: number;
+    /** 日期 (1-31) */
     date: number;
+    /** 小时 (0-23) */
     hours: number;
+    /** 分钟 (0-59) */
     minutes: number;
+    /** 秒数 (0-59) */
     seconds: number;
 }
 
+/**
+ * 日历面板单元格数据结构
+ */
 export interface CalendarDay {
+    /** 单元格所属类型 ('prev' 上月, 'current' 当月, 'next' 下月) */
     type: 'prev' | 'current' | 'next';
+    /** 当月几号 (1-31) */
     day: number;
+    /** 月份 (1-12) */
     month: number;
+    /** 年份 (如 2026) */
     year: number;
+    /** 是否已被禁用 */
     disabled: boolean;
+    /** 标注自定义提示文本或节日名称 */
     mark: string;
     /** 节假日或加班标记 ('休' | '班') */
     holiday?: '休' | '班';
