@@ -292,16 +292,45 @@ export class App implements AfterViewInit {
 <input [laydate]="{ type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss' }">
 
 <!-- English i18n -->
-<input [laydate]="{ lang: 'en' }">`;
+<input [laydate]="{ lang: 'en' }">
+
+<!-- Chinese Date Format (yyyy年MM月dd日) -->
+<input [laydate]="{ format: 'yyyy年MM月dd日', value: '2025年10月01日' }">
+
+<!-- Slash DateTime Format (yyyy/MM/dd HH:mm:ss) -->
+<input [laydate]="{ type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss' }">
+
+<!-- Year-Month Format (yyyy-MM) -->
+<input [laydate]="{ type: 'month', format: 'yyyy-MM' }">
+
+<!-- Custom Display Formatter Function (formatToDisplay) -->
+<input [laydate]="displayFormatConfig">`;
 
   sec1CodeTs = `import { Component } from '@angular/core';
-import { NgLaydateDirective } from 'ng-laydate';
 
-@Component({
-  imports: [NgLaydateDirective],
-  template: \`<input [laydate]="{ lang: 'cn' }">\`
-})
-export class AppComponent {}`;
+@Component({...})
+export class AppComponent {
+  // Essentials & Format Configurations
+  standardFormat = { format: 'yyyy-MM-dd' };
+  molvTheme = { value: '2023-10-01', theme: 'molv' };
+  dateTimeFormat = { type: 'datetime', format: 'yyyy-MM-dd HH:mm:ss' };
+  englishLang = { lang: 'en' };
+
+  cnFormat = { format: 'yyyy年MM月dd日' };
+  slashDateTimeFormat = { type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss' };
+  yearMonthFormat = { type: 'month', format: 'yyyy-MM' };
+
+  // Custom Display Formatter Callback (formatToDisplay)
+  displayFormatConfig = {
+    lang: 'cn',
+    formatToDisplay: (value: string) => {
+      if (!value) return '';
+      const date = new Date(value);
+      const weekday = date.toLocaleDateString('zh-CN', { weekday: 'long' });
+      return \`\${value} (\${weekday})\`;
+    }
+  };
+}`;
 
   // Section 2 Snippets
   sec2CodeHtml = `<!-- Date Range -->

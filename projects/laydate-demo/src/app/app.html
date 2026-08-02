@@ -113,6 +113,23 @@
         <label>{{ t().sec1_4 }}</label>
         <input type="text" class="layui-input" [laydate]="{lang: 'en'}" placeholder="Language: EN">
       </div>
+      <div class="layui-inline">
+        <label>Chinese Format (yyyy年MM月dd日)</label>
+        <input type="text" class="layui-input" [laydate]="{format: 'yyyy年MM月dd日', value: '2025年10月01日', lang: currentLang()}" (change)="onDateChange($event)">
+      </div>
+      <div class="layui-inline">
+        <label>Slash DateTime (yyyy/MM/dd HH:mm:ss)</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss', lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="2025/05/20 14:30:00">
+      </div>
+      <div class="layui-inline">
+        <label>Year-Month (format: 'yyyy-MM')</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'month', format: 'yyyy-MM', lang: currentLang()}" placeholder="2025-05">
+      </div>
+      <div class="layui-inline">
+        <label>Display Formatter (formatToDisplay)</label>
+        <input type="text" class="layui-input" [laydate]="displayFormatConfig" placeholder="Value vs Display">
+      </div>
     </div>
   </div>
 
