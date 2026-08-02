@@ -3,6 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { DateObject, LaydateConfig, CalendarDay } from './ng-laydate.types';
 import { NgLaydateComponent } from './ng-laydate.component';
 
+/**
+ * NgLaydate 服务，提供命令式/服务化渲染选择器、动态 Hint 消息提醒以及日期计算工具函数
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -27,6 +30,11 @@ export class NgLaydateService {
     private shadeClickTimers = new Map<ComponentRef<any>, any>();
     private subscriptionsMap = new Map<ComponentRef<any>, { unsubscribe: () => void }[]>();
 
+    /**
+     * 将十六进制颜色值转为带指定透明度的 RGBA 字符串
+     * @param hex 十六进制颜色值 (如 '#16b777' 或 '#fff')
+     * @param opacity 透明度 (0-1)
+     */
     hexToRgba(hex: string, opacity: number): string {
         if (!hex) return `rgba(22, 183, 119, ${opacity})`; // Default green
         if (!hex.startsWith('#')) return hex;
@@ -43,19 +51,29 @@ export class NgLaydateService {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     }
 
+    /**
+     * 注册组件实例句柄
+     */
     register(id: string, component: NgLaydateComponent) {
         if (id) {
             this.instances.set(id, component);
         }
     }
 
+    /**
+     * 注销组件实例句柄
+     */
     unregister(id: string) {
         if (id) {
             this.instances.delete(id);
         }
     }
 
-    // Static-like hint API
+    /**
+     * 静态 Hint 气泡提示 API，向指定 ID 的控件弹出一个自定义提示消息
+     * @param id 目标控件注册的 ID
+     * @param opts 提示参数，包含 content 消息文本及 ms 持续展示毫秒数
+     */
     hint(id: string, opts: { content: string; ms?: number }) {
         const inst = this.instances.get(id);
         if (inst) {
@@ -65,11 +83,18 @@ export class NgLaydateService {
         }
     }
 
-    // Set a default container for rendering (usually from the root component or a central place)
+    /**
+     * 设置渲染的目标 ViewContainerRef 视图容器
+     */
     setContainer(vcr: ViewContainerRef) {
         this.defaultVcr = vcr;
     }
 
+    /**
+     * 动态更新目标 DOM 元素绑定的 Laydate 配置参数
+     * @param elem 目标 HTML 元素
+     * @param config 最新 LaydateConfig 配置
+     */
     updateConfig(elem: HTMLElement, config: LaydateConfig) {
         this.elementConfigs.set(elem, config);
         const activeRef = this.activePanels.get(elem);
@@ -78,6 +103,11 @@ export class NgLaydateService {
         }
     }
 
+    /**
+     * 服务化渲染入口：在指定 target 元素上动态命令式创建并弹出 Laydate 控件
+     * @param config Laydate 完整配置对象 (必须包含 elem 目标元素或 Selector 字符串)
+     * @returns 返回生成的 ComponentRef 组件引用指针 (SSR 场景下返回 null)
+     */
     render(config: LaydateConfig): ComponentRef<NgLaydateComponent> | null {
         // SSR Guard: Do not render dynamic components accessing DOM in Server
         if (!isPlatformBrowser(this.platformId)) {
@@ -327,12 +357,16 @@ export class NgLaydateService {
         ref.destroy();
     }
 
-    // Check if leap year
+    /**
+     * 判断指定年份是否为闰年
+     */
     isLeap(year: number): boolean {
         return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
     }
 
-    // Add leading zero
+    /**
+     * 数字补零补齐指定位数 (默认 2 位)
+     */
     digit(num: number | string, length: number = 2): string {
         let str = String(num);
         while (str.length < length) {
@@ -341,7 +375,11 @@ export class NgLaydateService {
         return str;
     }
 
-    // Format date object to string
+    /**
+     * 将 DateObject 格式化为对应格式的日期字符串
+     * @param date DateObject 格式对象
+     * @param formatStr 格式化字符串 (默认 'yyyy-MM-dd')
+     */
     format(date: DateObject, formatStr: string = 'yyyy-MM-dd'): string {
         const yyyy = this.digit(date.year, 4);
         const y = String(date.year);
@@ -371,19 +409,25 @@ export class NgLaydateService {
             .replace(/s/g, s);
     }
 
-    // Convert DateObject to timestamp for comparison
+    /**
+     * 将 DateObject 日期对象转为毫秒时间戳用于对比运算
+     */
     getTime(date: DateObject): number {
         return new Date(date.year, date.month, date.date, date.hours, date.minutes, date.seconds).getTime();
     }
 
-    // Get days in a month
+    /**
+     * 获取指定年份与月份的总天数
+     */
     totalDay(year: number, month: number): number {
         const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         const m = ((month % 12) + 12) % 12;
         return this.isLeap(year) && m === 1 ? 29 : days[m];
     }
 
-    // System date helper
+    /**
+     * 获取系统当前时间或指定 Date 对象的 DateObject 数据结构
+     */
     systemDate(newDate?: Date): DateObject {
         const thisDate = newDate || new Date();
         return {
@@ -396,7 +440,9 @@ export class NgLaydateService {
         };
     }
 
-    // Parse string to date object
+    /**
+     * 将字符串、Date 对象或数值解析为 DateObject 标准数据结构
+     */
     parse(value: string | Date | number, format: string = 'yyyy-MM-dd'): DateObject {
         if (typeof value === 'number') {
             const d = new Date();
@@ -458,7 +504,9 @@ export class NgLaydateService {
         return this.systemDate(d);
     }
 
-    // Get surrounding dates for calendar view
+    /**
+     * 生成并计算用于日历面板渲染的 42 格单元格数据 (含上月余日、当月天数、下月填补天数)
+     */
     getCalendarData(year: number, month: number, config?: LaydateConfig): CalendarDay[] {
         const startDay = new Date(year, month, 1).getDay(); // 0 is Sunday
         const weekStart = config?.weekStart || 0;
@@ -640,7 +688,9 @@ export class NgLaydateService {
         return list;
     }
 
-    // Check and constrain date validity
+    /**
+     * 校验并约束 DateObject 年月日时分秒的有效取值范围，防止合法性越界
+     */
     checkDate(date: DateObject): DateObject {
         const LIMIT_YEAR = [100, 200000];
 

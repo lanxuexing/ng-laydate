@@ -4,6 +4,23 @@ import { NgLaydateComponent } from './ng-laydate.component';
 import { LaydateConfig } from './ng-laydate.types';
 import { NgLaydateService } from './ng-laydate.service';
 
+/**
+ * NgLaydate 指令
+ * 
+ * 可在任意 input 元素上快捷绑定日期时间选择器，支持模板驱动与响应式表单。
+ *
+ * @example
+ * ```html
+ * <!-- 基础日期选择 -->
+ * <input type="text" laydate placeholder="请选择日期">
+ *
+ * <!-- 深度配置与跟随系统暗黑模式 -->
+ * <input type="text" [laydate]="{ type: 'datetime', range: true, darkMode: 'system' }">
+ *
+ * <!-- 双向表单绑定 -->
+ * <input type="text" laydate [(ngModel)]="dateValue">
+ * ```
+ */
 @Directive({
     selector: '[laydate]',
     standalone: true,
@@ -19,16 +36,24 @@ import { NgLaydateService } from './ng-laydate.service';
     }
 })
 export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
-    // Input alias 'laydate'
+    /**
+     * Laydate 配置参数输入信号 (指令别名 `laydate`)
+     */
     configInput = input<LaydateConfig | '' | undefined | null>('', { alias: 'laydate' });
 
-    // Outputs corresponding to Laydate callbacks
+    /** 选择器值改变时触发的回调事件 */
     @Output() change = new EventEmitter<string>();
+    /** 选择器面板渲染完成时触发的回调事件 */
     @Output() ready = new EventEmitter<any>();
+    /** 点击确认或完成选择时触发的回调事件 */
     @Output() done = new EventEmitter<any>();
+    /** 点击“确定”按钮时触发的回调事件 */
     @Output() onConfirm = new EventEmitter<any>();
+    /** 点击“现在”按钮时触发的回调事件 */
     @Output() onNow = new EventEmitter<any>();
+    /** 点击“清空”按钮时触发的回调事件 */
     @Output() onClear = new EventEmitter<any>();
+    /** 选择器面板关闭时触发的回调事件 */
     @Output() closeEvent = new EventEmitter<void>();
 
     private componentRef: ComponentRef<NgLaydateComponent> | null = null;
@@ -53,7 +78,9 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
         });
     }
 
-    // ControlValueAccessor Interface
+    /**
+     * ControlValueAccessor 接口实现：写入表单初始值
+     */
     writeValue(obj: any): void {
         this._value = obj || '';
         let displayValue = this._value;
@@ -62,31 +89,41 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             displayValue = config.formatToDisplay(this._value);
         }
         this.el.nativeElement.value = displayValue;
-        if (this.componentRef) {
-            // If panel is open, we might need to update it? 
-            // Usually panel reads from config or element on init.
-            // Ideally we pass value to component instance if possible.
-        }
     }
 
+    /**
+     * ControlValueAccessor 接口实现：注册值变动回调
+     */
     registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
+    /**
+     * ControlValueAccessor 接口实现：注册 Touch 状态回调
+     */
     registerOnTouched(fn: any): void {
         this.onTouched = fn;
     }
 
+    /**
+     * ControlValueAccessor 接口实现：设置表单禁用状态
+     */
     setDisabledState?(isDisabled: boolean): void {
         this.el.nativeElement.disabled = isDisabled;
     }
 
+    /**
+     * 原生 input 事件句柄
+     */
     onInput(event: Event) {
         const val = (event.target as HTMLInputElement).value;
         this._value = val;
         this.onChange(val);
     }
 
+    /**
+     * 手动呼出并打开日期时间选择器面板
+     */
     open() {
         if (this.el.nativeElement) {
             this.el.nativeElement.setAttribute('autocomplete', 'off');
@@ -122,7 +159,6 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             if (origDone) origDone(value, date, end);
         };
 
-        // Other output proxies...
         const origReady = config.ready;
         config.ready = (date) => {
             this.ready.emit(date);
@@ -131,10 +167,6 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
 
         const origChange = config.change;
         config.change = (value, date, end) => {
-            // Note: change event in laydate might trigger on every selection (if not range/datetime?)
-            // Usually 'done' is the final commit. 
-            // If user wants real-time updates:
-            // this.onChange(value); 
             this.change.emit(value);
             if (origChange) origChange(value, date, end);
         };
@@ -153,7 +185,6 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
 
         const origClear = config.onClear;
         config.onClear = (value, date, end) => {
-            // Clear value
             this._value = '';
             this.onChange('');
 
@@ -177,6 +208,9 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
         }
     }
 
+    /**
+     * 手动关闭日期时间选择器面板
+     */
     close() {
         if (this.componentRef) {
             this.componentRef.destroy();
