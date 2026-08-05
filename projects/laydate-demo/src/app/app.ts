@@ -1088,7 +1088,7 @@ export class AppComponent {}`;
   cellRenderDemo = (ymd: any, render: any, info: any) => {
     // Custom render for the 8th of every month
     if (info.type === 'date' && ymd.date === 8) {
-      render(`<span style="color: #16b777; font-weight: bold; border: 1px solid #16b777; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; display: inline-block;">${ymd.date}</span>`);
+      render(`<span style="color: #16b777; font-weight: normal; border: 1px solid #16b777; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">${ymd.date}</span>`);
     }
   };
 

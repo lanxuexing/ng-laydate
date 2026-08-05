@@ -298,8 +298,8 @@ export class NgLaydateComponent {
         weeks: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
         time: ['Horas', 'Minutos', 'Segundos'],
-        timeTips: 'Seleccionar Hora',
-        backToDate: 'Volver a Fecha',
+        timeTips: 'Hora',
+        backToDate: 'Fecha',
         hint: 'Vista previa',
         startTime: 'Hora inicio',
         endTime: 'Hora fin',
@@ -307,7 +307,7 @@ export class NgLaydateComponent {
         monthTips: 'Seleccionar Mes',
         yearTips: 'Seleccionar Año',
         duration: 'Duración',
-        tools: { confirm: 'Confirmar', clear: 'Limpiar', now: 'Ahora' },
+        tools: { confirm: 'Confirmar', clear: 'Limpiar', now: 'Hoy' },
         formatYear: (year: number) => `${year}`,
         formatMonth: (month: number) => ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'][month],
         invalidRange: 'Rango de fechas permitido <br> {min} - {max}',
@@ -321,8 +321,8 @@ export class NgLaydateComponent {
         weeks: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         months: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
         time: ['Stunden', 'Minuten', 'Sekunden'],
-        timeTips: 'Zeit wählen',
-        backToDate: 'Zurück zum Datum',
+        timeTips: 'Zeit',
+        backToDate: 'Datum',
         hint: 'Vorschau',
         startTime: 'Startzeit',
         endTime: 'Endzeit',
@@ -330,7 +330,7 @@ export class NgLaydateComponent {
         monthTips: 'Monat wählen',
         yearTips: 'Jahr wählen',
         duration: 'Dauer',
-        tools: { confirm: 'Bestätigen', clear: 'Löschen', now: 'Jetzt' },
+        tools: { confirm: 'Bestätigen', clear: 'Löschen', now: 'Heute' },
         formatYear: (year: number) => `${year}`,
         formatMonth: (month: number) => ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'][month],
         invalidRange: 'Gültiger Datumsbereich <br> {min} - {max}',
@@ -344,8 +344,8 @@ export class NgLaydateComponent {
         weeks: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
         months: ['Janv', 'Févr', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
         time: ['Heures', 'Minutes', 'Secondes'],
-        timeTips: "Choisir l'heure",
-        backToDate: 'Retour à la date',
+        timeTips: 'Heure',
+        backToDate: 'Date',
         hint: 'Aperçu',
         startTime: 'Heure de début',
         endTime: 'Heure de fin',
@@ -353,7 +353,7 @@ export class NgLaydateComponent {
         monthTips: 'Choisir le mois',
         yearTips: "Choisir l'année",
         duration: 'Durée',
-        tools: { confirm: 'Valider', clear: 'Effacer', now: "Aujourd'hui" },
+        tools: { confirm: 'Valider', clear: 'Effacer', now: 'Auj.' },
         formatYear: (year: number) => `${year}`,
         formatMonth: (month: number) => ['Janv', 'Févr', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'][month],
         invalidRange: 'Plage de dates autorisée <br> {min} - {max}',
@@ -1258,8 +1258,8 @@ export class NgLaydateComponent {
     const scroll = (ols: QueryList<ElementRef<HTMLOListElement>>, val: number | ((idx: number) => number)) => {
       ols.forEach((ol, i) => {
         const v = typeof val === 'function' ? val(i) : val;
-        // Laydate original formula: 30 * (val - 2) to center the selected item
-        ol.nativeElement.scrollTop = (v - 2) * 30;
+        // Formula: 33 * (val - 2) to center the selected item (6 rows of 33px)
+        ol.nativeElement.scrollTop = (v - 2) * 33;
       });
     };
 
