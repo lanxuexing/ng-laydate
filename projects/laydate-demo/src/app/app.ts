@@ -404,7 +404,7 @@ export class AppComponent {
   };
 
   // Complex hierarchical time rules (Hours/Minutes/Seconds constraint)
-  disabledTimeComplex = (type: 'hours' | 'minutes' | 'seconds', date: Date) => {
+  disabledTimeComplex = (type: string, date: Date) => {
     if (type === 'hours') return [0, 1, 2, 3, 4, 5, 6, 22, 23]; // Disable early/late hours
     return [];
   };
