@@ -380,7 +380,13 @@ export class AppComponent {
 <input [laydate]="{ type: 'time', min: '09:30:00', max: '17:30:00' }">
 
 <!-- Logic-Based Custom Disabling -->
-<input [laydate]="{ disabledDate: disabledDateFn }">`;
+<input [laydate]="{ disabledDate: disabledDateFn }">
+
+<!-- Disable Future Dates Only -->
+<input [laydate]="{ disabledDate: disabledDateFuture }">
+
+<!-- Hierarchical Complex Time Rules -->
+<input [laydate]="{ type: 'time', range: true, disabledTime: disabledTimeComplex }">`;
 
   sec3CodeTs = `import { Component } from '@angular/core';
 
@@ -421,7 +427,10 @@ export class AppComponent {
 <input [laydate]="{ theme: ['grid', '#9C27B0'] }">
 
 <!-- Circle Style + Accent Color -->
-<input [laydate]="{ theme: ['circle', '#2196F3'] }">`;
+<input [laydate]="{ theme: ['circle', '#2196F3'] }">
+
+<!-- Hide Preview Bar -->
+<input [laydate]="{ isPreview: false, value: '2024-04-01' }">`;
 
   sec4CodeTs = `import { Component } from '@angular/core';
 
@@ -447,11 +456,18 @@ export class AppComponent {
 <!-- Custom Cell Render Callback -->
 <input [laydate]="{ cellRender: cellRenderDemo }">
 
-<!-- Gregorian Festivals & Holiday Markers -->
-<input [laydate]="{ calendar: true, holidays: [['2025-1-1','2025-1-2'],['2025-1-4']] }">
+<!-- Gregorian Festivals & Solar Terms -->
+<input [laydate]="{ calendar: true }">
+
+<!-- Custom Holiday Markers -->
+<input [laydate]="{ holidays: [['2025-1-1','2025-1-2'],['2025-1-4']] }">
+
+<!-- Dark Overlay Shade Mask (0.8) -->
+<input [laydate]="{ shade: 0.8 }">
 
 <!-- Programmatic Service Hint -->
-<button (click)="showHint(inputEl)">Show Hint</button>`;
+<input id="test-hint" [laydate]="{}">
+<button (click)="showHint()">Show Hint</button>`;
 
   sec5CodeTs = `import { Component, inject } from '@angular/core';
 import { NgLaydateService } from 'ng-laydate';
@@ -469,13 +485,16 @@ export class AppComponent {
   // Custom Cell HTML Injector
   cellRenderDemo = (ymd: any, render: Function, info: any) => {
     if (info.type === 'date' && ymd.date === 8) {
-      render(\`<span style="color:#16b777;font-weight:bold;border:1px solid #16b777;border-radius:50%;padding:2px 6px;">\${ymd.date}</span>\`);
+      render(\`<span style="color:#16b777;display:inline-flex;align-items:center;justify-content:center;border:1px solid #16b777;border-radius:50%;width:22px;height:22px;">\${ymd.date}</span>\`);
     }
   };
 
   // Programmatic Hint Call
-  showHint(targetEl: HTMLElement) {
-    this.laydateService.hint(targetEl, 'Custom Hint Message! <br> Auto close in 3s');
+  showHint() {
+    this.laydateService.hint('test-hint', {
+      content: 'Custom Hint Message! <br> Auto close in 3s',
+      ms: 3000
+    });
   }
 }`;
 
@@ -487,7 +506,16 @@ export class AppComponent {
 <input [laydate]="{ type: 'year', shortcuts: shortcutsYear }">
 
 <!-- 30-Minute Interval Steps Shortcuts -->
-<input [laydate]="{ type: 'time', shortcuts: shortcutsTime }">`;
+<input [laydate]="{ type: 'time', shortcuts: shortcutsTime }">
+
+<!-- Flexible Value Types Range Shortcuts -->
+<input [laydate]="{ range: true, shortcuts: advancedShortcuts }">
+
+<!-- Date Range Shortcuts -->
+<input [laydate]="{ range: true, shortcuts: shortcutsRange }">
+
+<!-- DateTime Range Shortcuts -->
+<input [laydate]="{ type: 'datetime', shortcuts: shortcutsDateTime }">`;
 
   sec6CodeTs = `import { Component } from '@angular/core';
 
@@ -510,26 +538,31 @@ export class AppComponent {
 }`;
 
   // Section 7 Snippets
-  sec7CodeHtml = `<!-- Reactive Form Control -->
+  sec7CodeHtml = `<!-- Reactive Form Control (ControlValueAccessor) -->
 <form [formGroup]="myForm">
-  <input formControlName="date" [laydate]="{ lang: 'cn' }">
+  <input formControlName="date" [laydate]="{}">
 </form>
 
 <!-- Template-driven [(ngModel)] -->
-<input [(ngModel)]="templateModel" [laydate]="{ lang: 'cn' }">
+<input [(ngModel)]="templateModel" [laydate]="{}">
 
-<!-- Custom Display Filter Config -->
-<input [laydate]="displayFormatConfig">`;
+<!-- Custom Display Formatter Config -->
+<input [laydate]="displayFormatConfig">
 
-  sec7CodeTs = `import { Component } from '@angular/core';
+<!-- Attached via NgLaydateService.render() -->
+<input id="ID-laydate-type-datetime" placeholder="Attached via Service">`;
+
+  sec7CodeTs = `import { Component, inject, ElementRef } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { NgLaydateDirective } from 'ng-laydate';
+import { NgLaydateDirective, NgLaydateService } from 'ng-laydate';
 
 @Component({
   imports: [ReactiveFormsModule, NgLaydateDirective],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  private laydate = inject(NgLaydateService);
+
   // Reactive Form Integration
   myForm = new FormGroup({
     date: new FormControl('2024-05-20')
@@ -537,27 +570,31 @@ export class AppComponent {
 
   templateModel = '2024-06-01';
 
-  // Custom Display Filter Config
-  displayFormatConfig = {
-    lang: 'cn',
-    formatToDisplay: (value: string) => {
-      if (!value) return '';
-      const date = new Date(value);
-      const weekday = date.toLocaleDateString('zh-CN', { weekday: 'long' });
-      return \`\${value} (\${weekday})\`;
-    }
-  };
+  ngAfterViewInit() {
+    // Attach datepicker programmatically via Service
+    this.laydate.render({
+      elem: '#ID-laydate-type-datetime',
+      type: 'datetime',
+      done: (value) => console.log('Selected:', value)
+    });
+  }
 }`;
 
   // Section 8 Snippets
   sec8CodeHtml = `<!-- Default Static Inline Panel -->
-<ng-laydate [config]="{ position: 'static', lang: 'cn' }"></ng-laydate>
+<ng-laydate [config]="{ position: 'static' }"></ng-laydate>
 
 <!-- Static Inline FullPanel Mode -->
 <ng-laydate [config]="{ position: 'static', type: 'datetime', theme: 'fullpanel' }"></ng-laydate>
 
 <!-- Static Inline Grid Theme -->
-<ng-laydate [config]="{ position: 'static', theme: 'grid' }"></ng-laydate>`;
+<ng-laydate [config]="{ position: 'static', theme: 'grid' }"></ng-laydate>
+
+<!-- Static Inline Year Range Panel -->
+<ng-laydate [config]="{ position: 'static', type: 'year', range: true }"></ng-laydate>
+
+<!-- Static Inline Time Range Panel -->
+<ng-laydate [config]="{ position: 'static', type: 'time', range: true }"></ng-laydate>`;
 
   sec8CodeTs = `import { Component } from '@angular/core';
 import { NgLaydateComponent } from 'ng-laydate';
