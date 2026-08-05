@@ -594,7 +594,10 @@ export class AppComponent {
 <ng-laydate [config]="{ position: 'static', type: 'year', range: true }"></ng-laydate>
 
 <!-- Static Inline Time Range Panel -->
-<ng-laydate [config]="{ position: 'static', type: 'time', range: true }"></ng-laydate>`;
+<ng-laydate [config]="{ position: 'static', type: 'time', range: true }"></ng-laydate>
+
+<!-- Static Inline Annotations & Marks -->
+<ng-laydate [config]="{ position: 'static', mark: {'2023-01-01': 'New Year', '2023-06-01': 'Children'} }"></ng-laydate>`;
 
   sec8CodeTs = `import { Component } from '@angular/core';
 import { NgLaydateComponent } from 'ng-laydate';
