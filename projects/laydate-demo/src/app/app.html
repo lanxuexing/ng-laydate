@@ -130,6 +130,26 @@
         <label>Display Formatter (formatToDisplay)</label>
         <input type="text" class="layui-input" [laydate]="displayFormatConfig" placeholder="Value vs Display">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec1_5 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'year', darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Select Year">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec1_6 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'month', darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Select Month">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec1_7 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'time', darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Select Time">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec1_8 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Select DateTime">
+      </div>
     </div>
   </div>
 

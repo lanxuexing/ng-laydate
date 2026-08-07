@@ -159,6 +159,10 @@ export class App implements AfterViewInit {
         sec1_2: 'Molv Theme',
         sec1_3: 'DateTime Mode',
         sec1_4: 'English Version',
+        sec1_5: 'Year Picker (type: year)',
+        sec1_6: 'Year-Month Picker (type: month)',
+        sec1_7: 'Time Picker (type: time)',
+        sec1_8: 'DateTime Picker (type: datetime)',
 
         sec2Title: '2. Selection Range',
         sec2_1: 'Date Range (-)',
@@ -235,6 +239,10 @@ export class App implements AfterViewInit {
       sec1_2: 'Molv Theme (墨绿主题)',
       sec1_3: 'DateTime Mode (日期时间)',
       sec1_4: 'English Version (英文语言)',
+      sec1_5: 'Year Picker (年选择器)',
+      sec1_6: 'Year-Month Picker (年月选择器)',
+      sec1_7: 'Time Picker (时间选择器)',
+      sec1_8: 'DateTime Picker (日期时间选择器)',
 
       sec2Title: '2. Selection Range (选择范围)',
       sec2_1: 'Date Range (日期范围)',
@@ -326,6 +334,18 @@ export class App implements AfterViewInit {
 
 <!-- Year-Month Format (yyyy-MM) -->
 <input [laydate]="{ type: 'month', format: 'yyyy-MM' }">
+
+<!-- Core Type: Year Picker -->
+<input [laydate]="{ type: 'year' }">
+
+<!-- Core Type: Year-Month Picker -->
+<input [laydate]="{ type: 'month' }">
+
+<!-- Core Type: Time Picker -->
+<input [laydate]="{ type: 'time' }">
+
+<!-- Core Type: DateTime Picker -->
+<input [laydate]="{ type: 'datetime' }">
 
 <!-- Custom Display Formatter Function (formatToDisplay) -->
 <input [laydate]="displayFormatConfig">`;
