@@ -364,6 +364,12 @@ export class AppComponent {
   slashDateTimeFormat = { type: 'datetime', format: 'yyyy/MM/dd HH:mm:ss' };
   yearMonthFormat = { type: 'month', format: 'yyyy-MM' };
 
+  // Core Type Selectors
+  yearPicker = { type: 'year' };
+  yearMonthPicker = { type: 'month' };
+  timePicker = { type: 'time' };
+  datetimePicker = { type: 'datetime' };
+
   // Custom Display Formatter Callback (formatToDisplay)
   displayFormatConfig = {
     lang: 'cn',
@@ -403,9 +409,30 @@ import { NgLaydateDirective } from 'ng-laydate';
 
 @Component({
   imports: [NgLaydateDirective],
-  template: \`<input [laydate]="{ range: true, rangeLinked: true }">\`
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
+  // Date Range
+  dateRange = { range: true };
+
+  // DateTime Range
+  datetimeRange = { type: 'datetime', range: true };
+
+  // Month Range (~ Separator)
+  monthRange = { type: 'month', range: '~', format: 'yyyy-MM' };
+
+  // Synchronized Linked Range Panels
+  linkedRange = { range: true, rangeLinked: true };
+
+  // Manual Confirm Button Required
+  manualConfirm = { autoConfirm: false };
+
+  // Year Range
+  yearRange = { type: 'year', range: true };
+
+  // Pure Time Range (HH:mm:ss)
+  timeRange = { type: 'time', range: true };
+
   onDateChange(event: any) {
     console.log('Selected Range:', event.target.value);
   }
@@ -437,6 +464,11 @@ export class AppComponent {
 
 @Component({...})
 export class AppComponent {
+  // Boundary constraints
+  dateLimit = { min: '2016-10-14', max: '2080-10-14' };
+  relativeLimit = { min: -7, max: 7 };
+  timeLimit = { type: 'time', min: '09:30:00', max: '17:30:00' };
+
   // Logic-based date disabling (Disable weekends)
   disabledDateFn = (date: Date) => {
     const day = date.getDay();
@@ -448,9 +480,12 @@ export class AppComponent {
     return date.getTime() > Date.now();
   };
 
+  // Hours/Minutes only (HH:mm without seconds)
+  hoursMinutesConfig = { type: 'time', format: 'HH:mm', value: '09:30' };
+
   // Complex hierarchical time rules (Hours/Minutes/Seconds constraint)
   disabledTimeComplex = (type: string, date: Date) => {
-    if (type === 'hours') return [0, 1, 2, 3, 4, 5, 6, 22, 23]; // Disable early/late hours
+    if (type === 'hours') return [0, 1, 2, 3, 4, 5, 6, 22, 23];
     return [];
   };
 }`;
@@ -581,7 +616,7 @@ export class AppComponent {
 
 @Component({...})
 export class AppComponent {
-  // Preset Date Shortcuts Definition
+  // 1. Preset Date Shortcuts Definition
   shortcutsDate = [
     { text: 'Yesterday', value: () => new Date(Date.now() - 86400000) },
     { text: 'Today', value: () => new Date() },
@@ -589,12 +624,61 @@ export class AppComponent {
     { text: 'Last 7 Days', value: () => [new Date(Date.now() - 7 * 86400000), new Date()] }
   ];
 
-  // 30-Minute Step Shortcuts Definition
+  // 2. Year Select Shortcuts
+  shortcutsYear = [
+    { text: 'Last Year', value: () => new Date(new Date().getFullYear() - 1, 0) },
+    { text: 'Next Year', value: () => new Date(new Date().getFullYear() + 1, 0) }
+  ];
+
+  // 3. 30-Minute Step Shortcuts Definition
   shortcutsTime = Array.from({ length: 48 }, (_, i) => {
     const h = String(Math.floor(i / 2)).padStart(2, '0');
     const m = i % 2 === 0 ? '00' : '30';
     return { text: \`\${h}:\${m}:00\`, value: \`\${h}:\${m}:00\` };
   });
+
+  // 4. Date Range Shortcuts
+  shortcutsRange = [
+    { text: 'This Month', value: [new Date(new Date().setDate(1)), new Date()] },
+    { text: 'Last Month', value: [new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1), new Date(new Date().getFullYear(), new Date().getMonth(), 0)] }
+  ];
+
+  // 5. DateTime Suite Shortcuts
+  shortcutsDateTime = [
+    { text: 'Yesterday', value: () => new Date(Date.now() - 86400000) },
+    { text: 'Today', value: () => new Date() },
+    { text: 'Tomorrow', value: () => new Date(Date.now() + 86400000) }
+  ];
+
+  // 6. Year-Month Shortcuts
+  shortcutsMonth = [
+    { text: 'This Month', value: () => new Date() },
+    { text: 'Last Month', value: () => new Date(new Date().setMonth(new Date().getMonth() - 1)) },
+    { text: 'Next Month', value: () => new Date(new Date().setMonth(new Date().getMonth() + 1)) }
+  ];
+
+  // 7. Pure Time Range Shortcuts
+  shortcutsTimeRange = [
+    { text: 'Morning (09:00 - 11:30)', value: ['09:00:00', '11:30:00'] },
+    { text: 'Afternoon (13:00 - 17:30)', value: ['13:00:00', '17:30:00'] }
+  ];
+
+  // 8. Year Range Shortcuts
+  shortcutsYearRange = [
+    { text: 'Last Year', value: [new Date(new Date().getFullYear() - 1, 0), new Date()] },
+    { text: 'Last 3 Years', value: [new Date(new Date().getFullYear() - 3, 0), new Date()] }
+  ];
+
+  // 9. Month Range Shortcuts
+  shortcutsMonthRange = [
+    { text: 'Last Year All Months', value: [new Date(new Date().getFullYear() - 1, 0), new Date(new Date().getFullYear() - 1, 11)] }
+  ];
+
+  // 10. DateTime Range Shortcuts
+  shortcutsDateTimeRange = [
+    { text: 'Last Month', value: [new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1), new Date(new Date().getFullYear(), new Date().getMonth(), 0, 23, 59, 59)] },
+    { text: 'This Month', value: [new Date(new Date().setDate(1)), new Date()] }
+  ];
 }`;
 
   // Section 7 Snippets
