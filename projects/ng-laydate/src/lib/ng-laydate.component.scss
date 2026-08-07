@@ -902,6 +902,9 @@ ng-laydate.layui-laydate {
 /* Dark Theme (Variable Aware) */
 ng-laydate.layui-laydate.laydate-theme-dark {
     --laydate-border-color: #555;
+    --laydate-shortcut-bg: #333;
+    --laydate-shortcut-item-bg: rgba(255, 255, 255, 0.1);
+    --laydate-shortcut-item-color: #eee;
     border-color: var(--laydate-border-color, #555);
     background-color: #333;
     color: #fff;
@@ -993,20 +996,20 @@ ng-laydate.layui-laydate.laydate-theme-dark {
     }
 
     .layui-laydate-shortcut {
-        border-right-color: #555;
-        background-color: #333;
+        border-right-color: var(--laydate-border-color, #555) !important;
+        border-bottom-color: var(--laydate-border-color, #555) !important;
+        background-color: var(--laydate-shortcut-bg, #333) !important;
+        background: var(--laydate-shortcut-bg, #333) !important;
 
         li {
-            color: #eee;
+            color: var(--laydate-shortcut-item-color, #eee) !important;
+            background: var(--laydate-shortcut-item-bg, rgba(255, 255, 255, 0.08)) !important;
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.08);
-                /* Shortcut hover */
-            }
-
+            &:hover,
+            &:active,
             &.layui-this {
-                background-color: var(--laydate-theme-color, #16b777);
-                color: #fff;
+                background: var(--laydate-theme-color, #16b777) !important;
+                color: #fff !important;
             }
         }
 
@@ -1283,25 +1286,26 @@ ng-laydate.layui-laydate.laydate-theme-dark {
                 gap: 6px 8px !important;
                 padding: 8px 12px !important;
                 border-right: none !important;
-                border-bottom: 1px solid #f2f2f2 !important;
+                border-bottom: 1px solid var(--laydate-border-color, #f2f2f2) !important;
                 box-sizing: border-box !important;
-                background: #fafafa !important;
+                background: var(--laydate-shortcut-bg, #fafafa) !important;
 
                 li {
                     flex: 0 0 auto !important;
                     height: 26px !important;
                     line-height: 26px !important;
                     padding: 0 10px !important;
-                    background: rgba(22, 183, 119, 0.08) !important;
-                    color: #16b777 !important;
+                    background: var(--laydate-shortcut-item-bg, var(--laydate-theme-color-light, rgba(22, 183, 119, 0.08))) !important;
+                    color: var(--laydate-shortcut-item-color, var(--laydate-theme-color, #16b777)) !important;
                     border-radius: 13px !important;
                     font-size: 12px !important;
                     font-weight: 500 !important;
                     white-space: nowrap !important;
                     cursor: pointer !important;
 
-                    &:active {
-                        background: #16b777 !important;
+                    &:active,
+                    &.layui-this {
+                        background: var(--laydate-theme-color, #16b777) !important;
                         color: #fff !important;
                     }
                 }
