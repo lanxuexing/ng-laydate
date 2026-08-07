@@ -175,19 +175,11 @@ ng-laydate.layui-laydate {
                     flex-direction: column;
                     box-sizing: border-box !important;
 
-                    &:nth-child(1) {
-                        flex: 0 0 91px !important;
-                        width: 91px !important;
-                    }
-
-                    &:nth-child(2) {
-                        flex: 0 0 91px !important;
-                        width: 91px !important;
-                    }
-
+                    &:nth-child(1),
+                    &:nth-child(2),
                     &:nth-child(3) {
-                        flex: 0 0 90px !important;
-                        width: 90px !important;
+                        flex: 1 1 0% !important;
+                        width: auto !important;
                     }
 
                     &:last-child {
@@ -664,19 +656,11 @@ ng-laydate.layui-laydate {
         border-left: none !important;
         border-right: 1px solid var(--laydate-border-color, #e2e2e2) !important;
 
-        &:nth-child(1) {
-            flex: 0 0 91px !important;
-            width: 91px !important;
-        }
-
-        &:nth-child(2) {
-            flex: 0 0 91px !important;
-            width: 91px !important;
-        }
-
+        &:nth-child(1),
+        &:nth-child(2),
         &:nth-child(3) {
-            flex: 0 0 90px !important;
-            width: 90px !important;
+            flex: 1 1 0% !important;
+            width: auto !important;
         }
 
         &:last-child {
