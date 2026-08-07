@@ -166,6 +166,8 @@ export class App implements AfterViewInit {
         sec2_3: 'Month Range (~)',
         sec2_4: 'Linked Panels',
         sec2_5: 'Manual Confirm',
+        sec2_6: 'Year Range',
+        sec2_7: 'Time Range (HH:mm:ss)',
 
         sec3Title: '3. Constraints & Logic',
         sec3_1: 'Date Range (2016-2080)',
@@ -200,6 +202,7 @@ export class App implements AfterViewInit {
         sec6_4: 'Advanced Mixed',
         sec6_5: 'Range Presets',
         sec6_6: 'DateTime Suite',
+        sec6_7: 'Month Select (Year-Month)',
 
         sec7Title: '7. Integration & Developer API',
         sec7_1: 'Reactive Form',
@@ -235,6 +238,8 @@ export class App implements AfterViewInit {
       sec2_3: 'Month Range (月份范围)',
       sec2_4: 'Linked Panels (双板联动)',
       sec2_5: 'Manual Confirm (手动确认)',
+      sec2_6: 'Year Range (年份范围)',
+      sec2_7: 'Time Range (纯时间范围)',
 
       sec3Title: '3. Constraints & Logic (约束与逻辑)',
       sec3_1: 'Date Range (指定限定 2016-2080)',
@@ -269,6 +274,7 @@ export class App implements AfterViewInit {
       sec6_4: 'Advanced Mixed (混合类型快捷)',
       sec6_5: 'Range Presets (范围快捷)',
       sec6_6: 'DateTime Suite (完整日期时间快捷)',
+      sec6_7: 'Month Select (年月快捷)',
 
       sec7Title: '7. Integration & Developer API (集成与开发)',
       sec7_1: 'Reactive Form (响应式表单)',
@@ -356,7 +362,13 @@ export class AppComponent {
 <input [laydate]="{ range: true, rangeLinked: true }">
 
 <!-- Manual Confirm Button Required -->
-<input [laydate]="{ autoConfirm: false }">`;
+<input [laydate]="{ autoConfirm: false }">
+
+<!-- Year Range -->
+<input [laydate]="{ type: 'year', range: true }">
+
+<!-- Pure Time Range (HH:mm:ss) -->
+<input [laydate]="{ type: 'time', range: true }">`;
 
   sec2CodeTs = `import { Component } from '@angular/core';
 import { NgLaydateDirective } from 'ng-laydate';
@@ -520,7 +532,10 @@ export class AppComponent {
 <input [laydate]="{ range: true, shortcuts: shortcutsRange }">
 
 <!-- DateTime Range Shortcuts -->
-<input [laydate]="{ type: 'datetime', shortcuts: shortcutsDateTime }">`;
+<input [laydate]="{ type: 'datetime', shortcuts: shortcutsDateTime }">
+
+<!-- Year-Month Shortcuts -->
+<input [laydate]="{ type: 'month', shortcuts: shortcutsMonth }">`;
 
   sec6CodeTs = `import { Component } from '@angular/core';
 

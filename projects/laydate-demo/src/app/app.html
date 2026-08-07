@@ -204,6 +204,16 @@
         <input type="text" class="layui-input" [laydate]="{autoConfirm: false, darkMode: demoDarkMode(), lang: currentLang()}" (change)="onDateChange($event)"
           placeholder="autoConfirm: false">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec2_6 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'year', range: true, darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Start Year - End Year">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec2_7 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'time', range: true, darkMode: demoDarkMode(), lang: currentLang()}"
+          (change)="onDateChange($event)" placeholder="Start Time - End Time">
+      </div>
     </div>
   </div>
 
@@ -528,6 +538,11 @@
         <label>{{ t().sec6_6 }}</label>
         <input type="text" class="layui-input" [laydate]="{type: 'datetime', shortcuts: shortcutsDateTime, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Complex datetime">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec6_7 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'month', shortcuts: shortcutsMonth, darkMode: demoDarkMode(), lang: currentLang()}"
+          placeholder="This/Last Month">
       </div>
     </div>
   </div>
