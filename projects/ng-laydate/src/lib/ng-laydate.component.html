@@ -65,7 +65,7 @@
 <ng-template #calendarPanel let-data="data" let-date="date" let-isRight="isRight" let-currView="currView"
     let-yearList="yearList">
     <div class="layui-laydate-header">
-        @if (!isLinked() || !isRight) {
+        @if (currView !== 'time' && (!isLinked() || !isRight)) {
         <i class="layui-icon laydate-icon laydate-prev-y" (click)="prevYear(isRight)">&#xe65a;</i>
         }
         @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || !isRight)) {
@@ -88,7 +88,7 @@
         @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || isRight)) {
         <i class="layui-icon laydate-icon laydate-next-m" (click)="nextMonth(isRight)">&#xe602;</i>
         }
-        @if (!isLinked() || isRight) {
+        @if (currView !== 'time' && (!isLinked() || isRight)) {
         <i class="layui-icon laydate-icon laydate-next-y" (click)="nextYear(isRight)">&#xe65b;</i>
         }
     </div>

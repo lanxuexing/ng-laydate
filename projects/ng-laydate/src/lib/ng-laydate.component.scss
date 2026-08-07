@@ -845,13 +845,18 @@ ng-laydate.layui-laydate {
 
     /* 辅助样式 */
     &.laydate-ym-show .laydate-prev-m,
-    &.laydate-ym-show .laydate-next-m {
+    &.laydate-ym-show .laydate-next-m,
+    .laydate-ym-show .laydate-prev-m,
+    .laydate-ym-show .laydate-next-m {
         display: none !important;
     }
 
     &:not(.laydate-theme-fullpanel).laydate-time-show .layui-laydate-header .layui-icon,
+    &:not(.laydate-theme-fullpanel) .laydate-time-show .layui-laydate-header .layui-icon,
     &:not(.laydate-theme-fullpanel).laydate-time-show .laydate-set-ym span[lay-type="year"],
-    &:not(.laydate-theme-fullpanel).laydate-time-show .laydate-set-ym span[lay-type="month"] {
+    &:not(.laydate-theme-fullpanel) .laydate-time-show .laydate-set-ym span[lay-type="year"],
+    &:not(.laydate-theme-fullpanel).laydate-time-show .laydate-set-ym span[lay-type="month"],
+    &:not(.laydate-theme-fullpanel) .laydate-time-show .laydate-set-ym span[lay-type="month"] {
         display: none !important;
     }
 
@@ -1152,7 +1157,7 @@ ng-laydate.layui-laydate.laydate-theme-dark {
                 width: 100% !important;
                 float: none !important;
                 border-right: none !important;
-                border-bottom: 1px solid #f2f2f2 !important;
+                border-bottom: 1px solid var(--laydate-border-color, #e2e2e2) !important;
             }
 
             .layui-laydate-footer span.layui-laydate-preview {
@@ -1195,7 +1200,7 @@ ng-laydate.layui-laydate.laydate-theme-dark {
                 height: 200px !important;
                 box-sizing: border-box !important;
                 border-left: none !important;
-                border-top: 1px solid #f2f2f2 !important;
+                border-top: 1px solid var(--laydate-border-color, #e2e2e2) !important;
             }
 
             .layui-laydate-content-side .layui-laydate-content {
@@ -1208,26 +1213,36 @@ ng-laydate.layui-laydate.laydate-theme-dark {
 
         .laydate-time-list {
             width: 100% !important;
-            height: 100% !important;
+            height: 231px !important;
+            min-height: 231px !important;
             display: flex !important;
             flex-direction: row !important;
             box-sizing: border-box !important;
             position: relative !important;
 
-            > li {
-                flex: 1 1 33.33% !important;
-                width: 33.33% !important;
+            > li,
+            > li:nth-child(1),
+            > li:nth-child(2),
+            > li:nth-child(3) {
+                flex: 1 1 0% !important;
+                width: auto !important;
                 height: 100% !important;
                 min-width: 0 !important;
                 position: relative !important;
                 box-sizing: border-box !important;
 
                 p {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    width: 100% !important;
                     height: 33px !important;
                     line-height: 33px !important;
                     text-align: center !important;
                     margin: 0 !important;
                     font-weight: 600 !important;
+                    box-sizing: border-box !important;
                 }
 
                 ol {
@@ -1240,6 +1255,19 @@ ng-laydate.layui-laydate.laydate-theme-dark {
                     height: calc(100% - 33px) !important;
                     overflow-y: auto !important;
                     -webkit-overflow-scrolling: touch !important;
+                    box-sizing: border-box !important;
+                    scrollbar-width: thin;
+
+                    &::-webkit-scrollbar {
+                        width: 3px;
+                    }
+                    &::-webkit-scrollbar-track {
+                        background: transparent;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 3px;
+                    }
 
                     li {
                         text-align: center !important;
