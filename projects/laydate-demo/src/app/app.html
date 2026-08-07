@@ -283,6 +283,11 @@
         <input type="text" class="layui-input"
           [laydate]="{type: 'time', range: true, disabledTime: disabledTimeComplex, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Hierarchical rules">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec3_7 }}</label>
+        <input type="text" class="layui-input"
+          [laydate]="{type: 'time', format: 'HH:mm', value: '09:30', darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Hours & Minutes (HH:mm)">
+      </div>
     </div>
   </div>
 

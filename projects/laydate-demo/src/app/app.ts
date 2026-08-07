@@ -174,6 +174,7 @@ export class App implements AfterViewInit {
         sec3_4: 'Custom Disabling',
         sec3_5: 'Disable Future',
         sec3_6: 'Complex Time Rules',
+        sec3_7: 'Hours & Minutes (HH:mm)',
 
         sec4Title: '4. Aesthetics & Themes',
         sec4_1: 'FullPanel (Side-by-Side)',
@@ -242,6 +243,7 @@ export class App implements AfterViewInit {
       sec3_4: 'Custom Disabling (自定义禁用)',
       sec3_5: 'Disable Future (禁用未来日期)',
       sec3_6: 'Complex Time Rules (复杂时分秒约束)',
+      sec3_7: 'Hours & Minutes (时分选择 HH:mm)',
 
       sec4Title: '4. Aesthetics & Themes (视觉与主题)',
       sec4_1: 'FullPanel (左右双面板)',
@@ -386,7 +388,10 @@ export class AppComponent {
 <input [laydate]="{ disabledDate: disabledDateFuture }">
 
 <!-- Hierarchical Complex Time Rules -->
-<input [laydate]="{ type: 'time', range: true, disabledTime: disabledTimeComplex }">`;
+<input [laydate]="{ type: 'time', range: true, disabledTime: disabledTimeComplex }">
+
+<!-- Hours & Minutes Only (HH:mm without seconds) -->
+<input [laydate]="{ type: 'time', format: 'HH:mm', value: '09:30' }">`;
 
   sec3CodeTs = `import { Component } from '@angular/core';
 
