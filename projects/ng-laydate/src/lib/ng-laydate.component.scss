@@ -1211,10 +1211,11 @@ ng-laydate.layui-laydate.laydate-theme-dark {
             }
         }
 
-        .laydate-time-list {
+        .laydate-time-list,
+        .layui-laydate-content-side .laydate-time-list {
             width: 100% !important;
-            height: 231px !important;
-            min-height: 231px !important;
+            height: 100% !important;
+            min-height: 200px !important;
             display: flex !important;
             flex-direction: row !important;
             box-sizing: border-box !important;
