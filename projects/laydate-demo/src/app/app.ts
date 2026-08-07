@@ -203,6 +203,7 @@ export class App implements AfterViewInit {
         sec6_5: 'Range Presets',
         sec6_6: 'DateTime Suite',
         sec6_7: 'Month Select (Year-Month)',
+        sec6_8: 'Time Range (HH:mm:ss)',
 
         sec7Title: '7. Integration & Developer API',
         sec7_1: 'Reactive Form',
@@ -275,6 +276,7 @@ export class App implements AfterViewInit {
       sec6_5: 'Range Presets (范围快捷)',
       sec6_6: 'DateTime Suite (完整日期时间快捷)',
       sec6_7: 'Month Select (年月快捷)',
+      sec6_8: 'Time Range (纯时间范围快捷)',
 
       sec7Title: '7. Integration & Developer API (集成与开发)',
       sec7_1: 'Reactive Form (响应式表单)',
@@ -535,7 +537,10 @@ export class AppComponent {
 <input [laydate]="{ type: 'datetime', shortcuts: shortcutsDateTime }">
 
 <!-- Year-Month Shortcuts -->
-<input [laydate]="{ type: 'month', shortcuts: shortcutsMonth }">`;
+<input [laydate]="{ type: 'month', shortcuts: shortcutsMonth }">
+
+<!-- Pure Time Range Shortcuts -->
+<input [laydate]="{ type: 'time', range: true, shortcuts: shortcutsTimeRange }">`;
 
   sec6CodeTs = `import { Component } from '@angular/core';
 

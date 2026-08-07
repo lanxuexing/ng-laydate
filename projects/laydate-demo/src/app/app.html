@@ -544,6 +544,11 @@
         <input type="text" class="layui-input" [laydate]="{type: 'month', shortcuts: shortcutsMonth, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="This/Last Month">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec6_8 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'time', range: true, shortcuts: shortcutsTimeRange, darkMode: demoDarkMode(), lang: currentLang()}"
+          placeholder="Shift Presets">
+      </div>
     </div>
   </div>
 
