@@ -200,10 +200,13 @@ export class App implements AfterViewInit {
         sec6_2: 'Year Select',
         sec6_3: 'Time Intervals',
         sec6_4: 'Advanced Mixed',
-        sec6_5: 'Range Presets',
+        sec6_5: 'Date Range Presets',
         sec6_6: 'DateTime Suite',
         sec6_7: 'Month Select (Year-Month)',
         sec6_8: 'Time Range (HH:mm:ss)',
+        sec6_9: 'Year Range Presets',
+        sec6_10: 'Month Range Presets',
+        sec6_11: 'DateTime Range Presets',
 
         sec7Title: '7. Integration & Developer API',
         sec7_1: 'Reactive Form',
@@ -273,10 +276,13 @@ export class App implements AfterViewInit {
       sec6_2: 'Year Select (年份快捷)',
       sec6_3: 'Time Intervals (30分钟间隔)',
       sec6_4: 'Advanced Mixed (混合类型快捷)',
-      sec6_5: 'Range Presets (范围快捷)',
+      sec6_5: 'Date Range (日期范围快捷)',
       sec6_6: 'DateTime Suite (完整日期时间快捷)',
       sec6_7: 'Month Select (年月快捷)',
       sec6_8: 'Time Range (纯时间范围快捷)',
+      sec6_9: 'Year Range (年份范围快捷)',
+      sec6_10: 'Month Range (年月范围快捷)',
+      sec6_11: 'DateTime Range (日期时间范围快捷)',
 
       sec7Title: '7. Integration & Developer API (集成与开发)',
       sec7_1: 'Reactive Form (响应式表单)',
@@ -540,7 +546,16 @@ export class AppComponent {
 <input [laydate]="{ type: 'month', shortcuts: shortcutsMonth }">
 
 <!-- Pure Time Range Shortcuts -->
-<input [laydate]="{ type: 'time', range: true, shortcuts: shortcutsTimeRange }">`;
+<input [laydate]="{ type: 'time', range: true, shortcuts: shortcutsTimeRange }">
+
+<!-- Year Range Shortcuts -->
+<input [laydate]="{ type: 'year', range: true, shortcuts: shortcutsYearRange }">
+
+<!-- Month Range Shortcuts -->
+<input [laydate]="{ type: 'month', range: true, shortcuts: shortcutsMonthRange }">
+
+<!-- DateTime Range Shortcuts -->
+<input [laydate]="{ type: 'datetime', range: true, shortcuts: shortcutsDateTimeRange }">`;
 
   sec6CodeTs = `import { Component } from '@angular/core';
 
@@ -1002,130 +1017,128 @@ export class AppComponent {}`;
   }
 
   // 8. Year Range Shortcuts
-  shortcutsYearRange = [
-    {
-      text: "过去一年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() - 1);
-        return [now, new Date()];
+  get shortcutsYearRange() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Year" : "过去一年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() - 1);
+          return [now, new Date()];
+        }
+      },
+      {
+        text: isEn ? "Next Year" : "未来一年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() + 1);
+          return [new Date(), now];
+        }
+      },
+      {
+        text: isEn ? "Last 3 Years" : "近三年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() - 3);
+          return [now, new Date()];
+        }
       }
-    },
-    {
-      text: "未来一年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() + 1);
-        return [new Date(), now];
-      }
-    },
-    {
-      text: "近三年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() - 3);
-        return [now, new Date()];
-      }
-    }
-  ];
+    ];
+  }
 
   // 9. Month Range Shortcuts
-  shortcutsMonthRange = [
-    {
-      text: "去年",
-      value: function () {
-        var now = new Date();
-        var year = now.getFullYear() - 1;
-        return [
-          new Date(year, 0),
-          new Date(year, 11)
-        ];
+  get shortcutsMonthRange() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Year" : "去年全月",
+        value: function () {
+          var now = new Date();
+          var year = now.getFullYear() - 1;
+          return [new Date(year, 0), new Date(year, 11)];
+        }
+      },
+      {
+        text: isEn ? "Next Year" : "明年全月",
+        value: function () {
+          var now = new Date();
+          var year = now.getFullYear() + 1;
+          return [new Date(year, 0), new Date(year, 11)];
+        }
+      },
+      {
+        text: isEn ? "Last 3 Years" : "近三年",
+        value: function () {
+          var now = new Date();
+          now.setFullYear(now.getFullYear() - 3);
+          return [now, new Date()];
+        }
       }
-    },
-    {
-      text: "明年",
-      value: function () {
-        var now = new Date();
-        var year = now.getFullYear() + 1;
-        return [
-          new Date(year, 0),
-          new Date(year, 11)
-        ];
-      }
-    },
-    {
-      text: "近三年",
-      value: function () {
-        var now = new Date();
-        now.setFullYear(now.getFullYear() - 3);
-        return [now, new Date()];
-      }
-    }
-  ];
+    ];
+  }
 
   // 10. Time Range Shortcuts
-  shortcutsTimeRange = [
-    {
-      text: '09:30 <p style="text-align: center;">到</p> 11:30',
-      value: (function () {
-        var date1 = new Date();
-        date1.setHours(9, 0, 0, 0);
-        var date2 = new Date();
-        date2.setHours(11, 30, 0, 0);
-        return [date1, date2];
-      })
-    },
-    {
-      text: '13:00 <p style="text-align: center;">到</p> 15:00',
-      value: (function () {
-        var date1 = new Date();
-        date1.setHours(13, 0, 0, 0);
-        var date2 = new Date();
-        date2.setHours(15, 0, 0, 0);
-        return [date1, date2];
-      })
-    }
-  ];
+  get shortcutsTimeRange() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Morning (09:00 - 11:30)" : "上午班 (09:00 - 11:30)",
+        value: ['09:00:00', '11:30:00']
+      },
+      {
+        text: isEn ? "Afternoon (13:00 - 17:30)" : "下午班 (13:00 - 17:30)",
+        value: ['13:00:00', '17:30:00']
+      },
+      {
+        text: isEn ? "Full Day (09:00 - 18:00)" : "全天值班 (09:00 - 18:00)",
+        value: ['09:00:00', '18:00:00']
+      }
+    ];
+  }
 
   // 11. DateTime Range Shortcuts
-  shortcutsDateTimeRange = [
-    {
-      text: "上个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month - 1, 1),
-          new Date(year, month, 0, 23, 59, 59)
-        ];
+  get shortcutsDateTimeRange() {
+    const isEn = this.currentLang() === 'en';
+    return [
+      {
+        text: isEn ? "Last Month" : "上个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month - 1, 1),
+            new Date(year, month, 0, 23, 59, 59)
+          ];
+        }
+      },
+      {
+        text: isEn ? "This Month" : "这个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month, 1),
+            new Date(year, month + 1, 0, 23, 59, 59)
+          ];
+        }
+      },
+      {
+        text: isEn ? "Next Month" : "下个月",
+        value: function () {
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          return [
+            new Date(year, month + 1, 1),
+            new Date(year, month + 2, 0, 23, 59, 59)
+          ];
+        }
       }
-    },
-    {
-      text: "这个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month, 1),
-          new Date(year, month + 1, 0, 23, 59, 59)
-        ];
-      }
-    },
-    {
-      text: "下个月",
-      value: function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        return [
-          new Date(year, month + 1, 1),
-          new Date(year, month + 2, 0, 23, 59, 59)
-        ];
-      }
-    }
-  ];
+    ];
+  }
 
   range(start: number, end: number) {
     const result = [];

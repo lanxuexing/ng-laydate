@@ -549,6 +549,21 @@
         <input type="text" class="layui-input" [laydate]="{type: 'time', range: true, shortcuts: shortcutsTimeRange, darkMode: demoDarkMode(), lang: currentLang()}"
           placeholder="Shift Presets">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec6_9 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'year', range: true, shortcuts: shortcutsYearRange, darkMode: demoDarkMode(), lang: currentLang()}"
+          placeholder="Last 3 Years">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec6_10 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'month', range: true, shortcuts: shortcutsMonthRange, darkMode: demoDarkMode(), lang: currentLang()}"
+          placeholder="Last/Next Year">
+      </div>
+      <div class="layui-inline">
+        <label>{{ t().sec6_11 }}</label>
+        <input type="text" class="layui-input" [laydate]="{type: 'datetime', range: true, shortcuts: shortcutsDateTimeRange, darkMode: demoDarkMode(), lang: currentLang()}"
+          placeholder="This/Last Month">
+      </div>
     </div>
   </div>
 
