@@ -998,14 +998,18 @@ ng-laydate.layui-laydate.laydate-theme-dark {
     .layui-laydate-shortcut {
         border-right-color: var(--laydate-border-color, #555) !important;
         border-bottom-color: var(--laydate-border-color, #555) !important;
-        background-color: var(--laydate-shortcut-bg, #333) !important;
-        background: var(--laydate-shortcut-bg, #333) !important;
+        background-color: #333 !important;
+        background: #333 !important;
 
         li {
-            color: var(--laydate-shortcut-item-color, #eee) !important;
-            background: var(--laydate-shortcut-item-bg, rgba(255, 255, 255, 0.08)) !important;
+            color: #eee !important;
+            background: transparent !important;
 
-            &:hover,
+            &:hover {
+                background: rgba(255, 255, 255, 0.08) !important;
+                color: var(--laydate-theme-color, #16b777) !important;
+            }
+
             &:active,
             &.layui-this {
                 background: var(--laydate-theme-color, #16b777) !important;
