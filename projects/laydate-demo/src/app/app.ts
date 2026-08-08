@@ -458,7 +458,7 @@ export class AppComponent {
 <input [laydate]="{ type: 'time', range: true, disabledTime: disabledTimeComplex }">
 
 <!-- Hours & Minutes Only (HH:mm without seconds) -->
-<input [laydate]="{ type: 'time', format: 'HH:mm', value: '09:30' }">`;
+<input [laydate]="{ type: 'time', format: 'HH:mm' }">`;
 
   sec3CodeTs = `import { Component } from '@angular/core';
 
@@ -481,7 +481,7 @@ export class AppComponent {
   };
 
   // Hours/Minutes only (HH:mm without seconds)
-  hoursMinutesConfig = { type: 'time', format: 'HH:mm', value: '09:30' };
+  hoursMinutesConfig = { type: 'time', format: 'HH:mm' };
 
   // Complex hierarchical time rules (Hours/Minutes/Seconds constraint)
   disabledTimeComplex = (type: string, date: Date) => {
