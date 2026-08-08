@@ -1,6 +1,6 @@
 @if (finalConfig().shortcuts) {
 <ul class="layui-laydate-shortcut">
-    @for (item of finalConfig().shortcuts; track item.text) {
+    @for (item of finalConfig().shortcuts; track $index) {
     <li (click)="handleShortcut(item)" [innerHTML]="item.text | safeHtml"></li>
     }
 </ul>
@@ -133,7 +133,7 @@
         <table>
             <thead>
                 <tr>
-                    @for (w of weekHeaders(); track w) {
+                    @for (w of weekHeaders(); track $index) {
                     <th>{{ w }}</th>
                     }
                 </tr>
@@ -184,7 +184,7 @@
 
 <ng-template #monthGrid let-date="date" let-isRight="isRight">
     <ul class="layui-laydate-list laydate-month-list">
-        @for (m of i18n().months; track m; let i = $index) {
+        @for (m of i18n().months; track i; let i = $index) {
         <li (click)="selectMonth(i, isRight)" (mouseenter)="hoverValue({year: date.year, month: i, date: 1})"
             [class.laydate-selected]="isInRange(date.year, i, 1)"
             [class.layui-this]="isThisMonth(i, date.year, isRight)">
