@@ -50,6 +50,7 @@ export class NgLaydateComponent {
   // State
   // We initialize with a default, but effect will override based on config
   currentDate = signal<DateObject>(this.service.systemDate());
+  hasValue = signal<boolean>(false);
 
   // Range State
   startDate = signal<DateObject>(this.service.systemDate());
@@ -529,16 +530,21 @@ export class NgLaydateComponent {
             this.endDate.set(end);
             this.leftDate.set({ ...start });
             this.rightDate.set({ ...end });
+            this.hasValue.set(true);
             if (cfg.rangeLinked) {
               this.syncRightDateFromLeft();
             }
+          } else {
+            this.hasValue.set(false);
           }
         } else {
           const parsed = this.service.parse(cfg.value);
           this.currentDate.set(parsed);
           this.leftDate.set({ ...parsed });
+          this.hasValue.set(true);
         }
       } else {
+        this.hasValue.set(false);
         const now = this.service.systemDate();
 
         // If theme is fullpanel, we want to start at 00:00:00 for time selection
@@ -790,6 +796,7 @@ export class NgLaydateComponent {
     }
 
     const cfg = this.config();
+    this.hasValue.set(true);
 
     if (cfg.range) {
       const dayObj = { year: day.year, month: day.month, date: day.day, hours: 0, minutes: 0, seconds: 0 };
@@ -832,6 +839,7 @@ export class NgLaydateComponent {
   }
 
   getPreview() {
+    if (!this.hasValue()) return '';
     const d = this.currentDate();
     const cfg = this.finalConfig();
     const formatStr = this.getDateFormat();
@@ -860,6 +868,7 @@ export class NgLaydateComponent {
   }
 
   isThisDay(year: number, month: number, day: number, isRight: boolean = false) {
+    if (!this.hasValue()) return false;
     const cfg = this.finalConfig();
     if (cfg.range) {
       if (cfg.rangeLinked) {
@@ -875,6 +884,7 @@ export class NgLaydateComponent {
   }
 
   isThisYear(y: number, isRight: boolean = false) {
+    if (!this.hasValue()) return false;
     const cfg = this.finalConfig();
     const start = this.startDate();
     const end = this.endDate();
@@ -893,6 +903,7 @@ export class NgLaydateComponent {
   }
 
   isThisMonth(m: number, y: number, isRight: boolean = false) {
+    if (!this.hasValue()) return false;
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'month') {
       if (cfg.rangeLinked) {
@@ -924,6 +935,7 @@ export class NgLaydateComponent {
   isInRange(year: number, month: number, day: number, hours: number = 0, minutes: number = 0, seconds: number = 0) {
     const cfg = this.finalConfig();
     if (!cfg.range) return false;
+    if (!this.hasValue() && this.rangeState() !== 'selecting') return false;
 
     // Optimize: Use integer comparison instead of Date objects
     // This reduces GC pressure significantly during hover interaction
@@ -952,6 +964,7 @@ export class NgLaydateComponent {
   }
 
   selectYear(y: number, isRight: boolean = false) {
+    this.hasValue.set(true);
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'year') {
       const dayObj = { year: y, month: 0, date: 1 };
@@ -987,6 +1000,7 @@ export class NgLaydateComponent {
   }
 
   selectMonth(m: number, isRight: boolean = false) {
+    this.hasValue.set(true);
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'month') {
       const baseDate = isRight ? this.rightDate() : this.leftDate();
@@ -1023,6 +1037,7 @@ export class NgLaydateComponent {
   }
 
   private handleRangeSelection(day: Partial<DateObject>) {
+    this.hasValue.set(true);
     const cfg = this.finalConfig();
     if (this.rangeState() === 'none') {
       // Start picking
@@ -1052,6 +1067,7 @@ export class NgLaydateComponent {
       this.showHint(this.i18n().invalidDate);
       return;
     }
+    this.hasValue.set(true);
     const cfg = this.finalConfig();
     if (cfg.range) {
       if (isRight) {
@@ -1091,28 +1107,41 @@ export class NgLaydateComponent {
   }
 
   clear() {
-    this.clearOutput.emit();
+    this.hasValue.set(false);
+    this.rangeState.set('none');
+    this.hoverDate.set(null);
+
+    const now = this.service.systemDate();
     const cfg = this.finalConfig();
-    // Reset internal state for Time Range
-    if (cfg.type === 'time' && cfg.range) {
-      const zero = new Date();
-      zero.setHours(0, 0, 0, 0);
-      const max = new Date();
-      max.setHours(23, 59, 59, 0); // Or 00:59:59 depending on interpretation, usually 00:00:00 is default clean state.
-      // User request: 0:0:0 - 59:59:59 ?? Maybe they mean 00:59:59? 
-      // Standard Safe Default: 00:00:00 - 00:00:00
 
-      this.startDate.set({ year: zero.getFullYear(), month: zero.getMonth(), date: zero.getDate(), hours: 0, minutes: 0, seconds: 0 });
-      // Logic for end date: user requested 59:59:59, likely implying Max Time (End of Day)
-      this.endDate.set({ year: zero.getFullYear(), month: zero.getMonth(), date: zero.getDate(), hours: 23, minutes: 59, seconds: 59 });
-
-      this.leftDate.set({ ...this.startDate() });
-      this.rightDate.set({ ...this.endDate() });
-      this.autoScrollTime();
+    if (cfg.theme === 'fullpanel') {
+      now.hours = 0;
+      now.minutes = 0;
+      now.seconds = 0;
     }
+
+    this.currentDate.set({ ...now });
+    this.startDate.set({ ...now });
+    this.endDate.set({ ...now });
+    this.leftDate.set({ ...now });
+
+    const nextMonth = { ...now };
+    nextMonth.month++;
+    if (nextMonth.month > 11) { nextMonth.month = 0; nextMonth.year++; }
+    this.rightDate.set(nextMonth);
+
+    if (cfg.type === 'year') {
+      this.initYearList(now.year, 'single');
+      this.initYearList(now.year, 'left');
+      if (cfg.range) this.initYearList(nextMonth.year, 'right');
+    }
+
+    this.autoScrollTime();
+    this.clearOutput.emit();
   }
 
   now() {
+    this.hasValue.set(true);
     const now = this.service.systemDate();
     const cfg = this.finalConfig();
     if (cfg.range) {
@@ -1133,6 +1162,7 @@ export class NgLaydateComponent {
   }
 
   handleShortcut(item: any) {
+    this.hasValue.set(true);
     let value = item.value;
     const cfg = this.finalConfig();
 
