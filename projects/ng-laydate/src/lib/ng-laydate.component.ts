@@ -549,15 +549,31 @@ export class NgLaydateComponent {
           now.seconds = 0;
         }
 
-        this.currentDate.set(now);
-        this.startDate.set(now);
-        this.endDate.set(now);
-        this.leftDate.set({ ...now });
-
         const nextMonth = { ...now };
         nextMonth.month++;
         if (nextMonth.month > 11) { nextMonth.month = 0; nextMonth.year++; }
-        this.rightDate.set(nextMonth);
+
+        this.currentDate.set(now);
+        this.startDate.set(now);
+        this.leftDate.set({ ...now });
+
+        if (cfg.range) {
+          if (cfg.type === 'year') {
+            const nextYear = { ...now, year: now.year + 1 };
+            this.endDate.set(nextYear);
+            this.rightDate.set(nextYear);
+          } else if (cfg.type === 'time') {
+            const endTime = { ...now, hours: 23, minutes: 59, seconds: 59 };
+            this.endDate.set(endTime);
+            this.rightDate.set(endTime);
+          } else {
+            this.endDate.set(nextMonth);
+            this.rightDate.set(nextMonth);
+          }
+        } else {
+          this.endDate.set(now);
+          this.rightDate.set(nextMonth);
+        }
       }
 
       // Handle type
@@ -1119,15 +1135,31 @@ export class NgLaydateComponent {
       now.seconds = 0;
     }
 
-    this.currentDate.set({ ...now });
-    this.startDate.set({ ...now });
-    this.endDate.set({ ...now });
-    this.leftDate.set({ ...now });
-
     const nextMonth = { ...now };
     nextMonth.month++;
     if (nextMonth.month > 11) { nextMonth.month = 0; nextMonth.year++; }
-    this.rightDate.set(nextMonth);
+
+    this.currentDate.set({ ...now });
+    this.startDate.set({ ...now });
+    this.leftDate.set({ ...now });
+
+    if (cfg.range) {
+      if (cfg.type === 'year') {
+        const nextYear = { ...now, year: now.year + 1 };
+        this.endDate.set(nextYear);
+        this.rightDate.set(nextYear);
+      } else if (cfg.type === 'time') {
+        const endTime = { ...now, hours: 23, minutes: 59, seconds: 59 };
+        this.endDate.set(endTime);
+        this.rightDate.set(endTime);
+      } else {
+        this.endDate.set(nextMonth);
+        this.rightDate.set(nextMonth);
+      }
+    } else {
+      this.endDate.set({ ...now });
+      this.rightDate.set(nextMonth);
+    }
 
     if (cfg.type === 'year') {
       this.initYearList(now.year, 'single');
