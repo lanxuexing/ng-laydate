@@ -459,10 +459,22 @@ export class NgLaydateService {
         if (!value) {
             return this.systemDate();
         }
+        if (Array.isArray(value)) {
+            return value.length > 0 ? this.parse(value[0]) : this.systemDate();
+        }
         if (typeof value === 'object' && 'year' in value && 'month' in value && 'date' in value) {
             return { ...value } as DateObject;
         }
         if (typeof value === 'number') {
+            // Check for Unix timestamp (in milliseconds or seconds)
+            if (Math.abs(value) > 100000000) {
+                const timestamp = Math.abs(value) < 10000000000 ? value * 1000 : value;
+                const d = new Date(timestamp);
+                if (!isNaN(d.getTime())) {
+                    return this.systemDate(d);
+                }
+            }
+            // Relative day offset (e.g. -1, 1, 7)
             const d = new Date();
             d.setDate(d.getDate() + value);
             return this.systemDate(d);

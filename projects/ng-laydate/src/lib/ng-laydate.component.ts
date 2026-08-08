@@ -1193,14 +1193,30 @@ export class NgLaydateComponent {
       this.endDate.set(end);
       this.leftDate.set({ ...start });
       this.rightDate.set({ ...end });
+
+      if (cfg.type === 'year') {
+        this.initYearList(start.year, 'left');
+        this.initYearList(end.year, 'right');
+      }
+
       this.autoScrollTime();
       this.confirmRange();
     } else {
       // Single Value or Fallback
-      const resolved = resolve(value);
+      let singleVal = value;
+      if (Array.isArray(singleVal)) {
+        singleVal = singleVal.length > 0 ? singleVal[0] : '';
+      }
+      const resolved = resolve(singleVal);
       const parsed = this.service.parse(resolved);
       this.currentDate.set(parsed);
       this.leftDate.set({ ...parsed });
+
+      if (cfg.type === 'year') {
+        this.initYearList(parsed.year, 'single');
+        this.initYearList(parsed.year, 'left');
+      }
+
       this.autoScrollTime();
       this.confirm();
     }
