@@ -1119,7 +1119,7 @@ export class NgLaydateComponent {
     const now = this.service.systemDate();
     const cfg = this.finalConfig();
 
-    if (cfg.theme === 'fullpanel') {
+    if (cfg.type === 'time' || cfg.type === 'datetime' || cfg.theme === 'fullpanel') {
       now.hours = 0;
       now.minutes = 0;
       now.seconds = 0;
@@ -1143,6 +1143,10 @@ export class NgLaydateComponent {
 
     this.autoScrollTime();
     this.clearOutput.emit();
+
+    if (cfg.change) cfg.change('', {} as any, {} as any);
+    if (cfg.done) cfg.done('', {} as any, {} as any);
+    if (cfg.onClear) cfg.onClear('', {} as any, {} as any);
   }
 
   now() {
