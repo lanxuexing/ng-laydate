@@ -98,10 +98,13 @@ export class NgLaydateService {
      * @param config Updated LaydateConfig object
      */
     updateConfig(elem: HTMLElement, config: LaydateConfig) {
-        this.elementConfigs.set(elem, config);
+        const existing = this.elementConfigs.get(elem);
+        const val = config.value !== undefined ? config.value : (existing?.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined));
+        const merged = { ...existing, ...config, value: val };
+        this.elementConfigs.set(elem, merged);
         const activeRef = this.activePanels.get(elem);
         if (activeRef) {
-            activeRef.setInput('config', config);
+            activeRef.setInput('config', merged);
         }
     }
 
@@ -124,12 +127,13 @@ export class NgLaydateService {
 
         if (elem instanceof HTMLElement) {
             elem.setAttribute('autocomplete', 'off');
-            this.elementConfigs.set(elem, config);
+            this.updateConfig(elem, config);
         }
 
         // If position is static, render immediately
         if (config.position === 'static') {
-            return this.openPanel(config, elem);
+            const latestConfig = this.elementConfigs.get(elem) || config;
+            return this.openPanel(latestConfig, elem);
         }
 
         // Bind click & focus listeners to target element if not already bound
@@ -138,7 +142,9 @@ export class NgLaydateService {
 
             const triggerHandler = () => {
                 if (!this.activePanels.get(elem)) {
-                    const latestConfig = this.elementConfigs.get(elem) || config;
+                    const storedConfig = this.elementConfigs.get(elem) || config;
+                    const val = storedConfig.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined);
+                    const latestConfig = { ...storedConfig, value: val };
                     this.openPanel(latestConfig, elem);
                 }
             };
@@ -149,7 +155,9 @@ export class NgLaydateService {
 
         // Only open panel immediately on render if explicitly set in config.show === true
         if (config.show === true && !this.activePanels.get(elem)) {
-            const latestConfig = this.elementConfigs.get(elem) || config;
+            const storedConfig = this.elementConfigs.get(elem) || config;
+            const val = storedConfig.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined);
+            const latestConfig = { ...storedConfig, value: val };
             return this.openPanel(latestConfig, elem);
         }
 
@@ -195,6 +203,8 @@ export class NgLaydateService {
                     displayValue = config.formatToDisplay(value);
                 }
                 elem.value = displayValue;
+                const existingConfig = this.elementConfigs.get(elem) || config;
+                this.elementConfigs.set(elem, { ...existingConfig, value });
                 elem.dispatchEvent(new Event('input', { bubbles: true }));
                 elem.dispatchEvent(new Event('change', { bubbles: true }));
             }
@@ -445,7 +455,13 @@ export class NgLaydateService {
     /**
      * Parses string, Date, or numeric relative day offsets into a standard DateObject structure.
      */
-    parse(value: string | Date | number, format: string = 'yyyy-MM-dd'): DateObject {
+    parse(value: any): DateObject {
+        if (!value) {
+            return this.systemDate();
+        }
+        if (typeof value === 'object' && 'year' in value && 'month' in value && 'date' in value) {
+            return { ...value } as DateObject;
+        }
         if (typeof value === 'number') {
             const d = new Date();
             d.setDate(d.getDate() + value);
@@ -454,13 +470,17 @@ export class NgLaydateService {
         if (value instanceof Date) {
             return this.systemDate(value);
         }
-        // Handle time only string (simple)
-        if (typeof value === 'string' && /^\d{1,2}:\d{1,2}(:\d{1,2})?$/.test(value)) {
-            value = '1970-01-01 ' + value;
+
+        const strVal = typeof value === 'string' ? value.trim() : '';
+
+        // Handle time only string (e.g., '13:00:00' or '09:30' or '13:00')
+        let targetStr = strVal;
+        if (targetStr && /^\d{1,2}:\d{1,2}(:\d{1,2})?$/.test(targetStr)) {
+            targetStr = '1970-01-01 ' + targetStr;
         }
 
-        // Match yyyy-MM-dd HH:mm:ss or yyyy-MM-dd manually to avoid timezone issues with new Date()
-        const match = typeof value === 'string' ? value.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/) : null;
+        // Match yyyy-MM-dd HH:mm:ss or yyyy-MM-dd
+        const match = targetStr ? targetStr.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/) : null;
         if (match) {
             return {
                 year: parseInt(match[1], 10),
@@ -473,12 +493,12 @@ export class NgLaydateService {
         }
 
         // Match yyyy-MM (Month picker)
-        const matchYM = typeof value === 'string' ? value.match(/^(\d{4})[-\/](\d{1,2})$/) : null;
+        const matchYM = targetStr ? targetStr.match(/^(\d{4})[-\/](\d{1,2})$/) : null;
         if (matchYM) {
             return {
-                year: parseInt(matchYM[1]),
-                month: parseInt(matchYM[2]) - 1,
-                date: 1, // Default to 1st
+                year: parseInt(matchYM[1], 10),
+                month: parseInt(matchYM[2], 10) - 1,
+                date: 1,
                 hours: 0,
                 minutes: 0,
                 seconds: 0
@@ -486,19 +506,19 @@ export class NgLaydateService {
         }
 
         // Match yyyy (Year picker)
-        const matchY = typeof value === 'string' ? value.match(/^(\d{4})$/) : null;
+        const matchY = targetStr ? targetStr.match(/^(\d{4})$/) : null;
         if (matchY) {
             return {
-                year: parseInt(matchY[1]),
-                month: 0, // Default to Jan
-                date: 1, // Default to 1st
+                year: parseInt(matchY[1], 10),
+                month: 0,
+                date: 1,
                 hours: 0,
                 minutes: 0,
                 seconds: 0
             };
         }
 
-        const d = value ? new Date(value) : new Date();
+        const d = targetStr ? new Date(targetStr) : new Date();
         // Check for invalid date
         if (isNaN(d.getTime())) {
             return this.systemDate();

@@ -508,12 +508,23 @@ export class NgLaydateComponent {
 
       // Handle initial value
       if (cfg.value) {
-        if (cfg.range && typeof cfg.value === 'string') {
-          const separator = typeof cfg.range === 'string' ? cfg.range : ' - ';
-          const parts = cfg.value.split(separator);
+        if (cfg.range) {
+          let parts: any[] = [];
+          if (Array.isArray(cfg.value)) {
+            parts = cfg.value;
+          } else if (typeof cfg.value === 'string') {
+            const separator = typeof cfg.range === 'string' ? cfg.range : ' - ';
+            if (cfg.value.includes(separator)) {
+              parts = cfg.value.split(separator);
+            } else if (cfg.value.includes(' - ')) {
+              parts = cfg.value.split(' - ');
+            } else if (cfg.value.includes(' ~ ')) {
+              parts = cfg.value.split(' ~ ');
+            }
+          }
           if (parts.length === 2) {
-            const start = this.service.parse(parts[0]);
-            const end = this.service.parse(parts[1]);
+            const start = this.service.parse(typeof parts[0] === 'string' ? parts[0].trim() : parts[0]);
+            const end = this.service.parse(typeof parts[1] === 'string' ? parts[1].trim() : parts[1]);
             this.startDate.set(start);
             this.endDate.set(end);
             this.leftDate.set({ ...start });
@@ -1170,29 +1181,27 @@ export class NgLaydateComponent {
 
     // 3. Apply
     if (cfg.range && valArr.length === 2) {
-      const start = this.service.parse(resolve(valArr[0]));
-      const end = this.service.parse(resolve(valArr[1]));
+      let start = this.service.parse(resolve(valArr[0]));
+      let end = this.service.parse(resolve(valArr[1]));
 
       // Validate swap
       if (this.service.getTime(start) > this.service.getTime(end)) {
-        const temp = { ...start };
-        start.year = end.year; start.month = end.month; start.date = end.date;
-        end.year = temp.year; end.month = temp.month; end.date = temp.date;
+        [start, end] = [end, start];
       }
 
       this.startDate.set(start);
       this.endDate.set(end);
       this.leftDate.set({ ...start });
       this.rightDate.set({ ...end });
+      this.autoScrollTime();
       this.confirmRange();
     } else {
       // Single Value or Fallback
-      // If range but no valid array, maybe treat single val as start? or just ignore
-      // Typically shortcuts for Single Date Picker use this path
       const resolved = resolve(value);
       const parsed = this.service.parse(resolved);
       this.currentDate.set(parsed);
       this.leftDate.set({ ...parsed });
+      this.autoScrollTime();
       this.confirm();
     }
   }
