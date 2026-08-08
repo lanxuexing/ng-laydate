@@ -50,7 +50,7 @@ export class NgLaydateComponent {
   // State
   // We initialize with a default, but effect will override based on config
   currentDate = signal<DateObject>(this.service.systemDate());
-  hasValue = signal<boolean>(false);
+  isCleared = signal<boolean>(false);
 
   // Range State
   startDate = signal<DateObject>(this.service.systemDate());
@@ -530,21 +530,19 @@ export class NgLaydateComponent {
             this.endDate.set(end);
             this.leftDate.set({ ...start });
             this.rightDate.set({ ...end });
-            this.hasValue.set(true);
+            this.isCleared.set(false);
             if (cfg.rangeLinked) {
               this.syncRightDateFromLeft();
             }
-          } else {
-            this.hasValue.set(false);
           }
         } else {
           const parsed = this.service.parse(cfg.value);
           this.currentDate.set(parsed);
           this.leftDate.set({ ...parsed });
-          this.hasValue.set(true);
+          this.isCleared.set(false);
         }
       } else {
-        this.hasValue.set(false);
+        this.isCleared.set(false);
         const now = this.service.systemDate();
 
         // If theme is fullpanel, we want to start at 00:00:00 for time selection
@@ -796,7 +794,7 @@ export class NgLaydateComponent {
     }
 
     const cfg = this.config();
-    this.hasValue.set(true);
+    this.isCleared.set(false);
 
     if (cfg.range) {
       const dayObj = { year: day.year, month: day.month, date: day.day, hours: 0, minutes: 0, seconds: 0 };
@@ -839,7 +837,7 @@ export class NgLaydateComponent {
   }
 
   getPreview() {
-    if (!this.hasValue()) return '';
+    if (this.isCleared()) return '';
     const d = this.currentDate();
     const cfg = this.finalConfig();
     const formatStr = this.getDateFormat();
@@ -873,7 +871,7 @@ export class NgLaydateComponent {
   }
 
   isThisDay(year: number, month: number, day: number, isRight: boolean = false) {
-    if (!this.hasValue()) return false;
+    if (this.isCleared()) return false;
     const cfg = this.finalConfig();
     if (cfg.range) {
       if (cfg.rangeLinked) {
@@ -889,7 +887,7 @@ export class NgLaydateComponent {
   }
 
   isThisYear(y: number, isRight: boolean = false) {
-    if (!this.hasValue()) return false;
+    if (this.isCleared()) return false;
     const cfg = this.finalConfig();
     const start = this.startDate();
     const end = this.endDate();
@@ -908,7 +906,7 @@ export class NgLaydateComponent {
   }
 
   isThisMonth(m: number, y: number, isRight: boolean = false) {
-    if (!this.hasValue()) return false;
+    if (this.isCleared()) return false;
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'month') {
       if (cfg.rangeLinked) {
@@ -940,7 +938,7 @@ export class NgLaydateComponent {
   isInRange(year: number, month: number, day: number, hours: number = 0, minutes: number = 0, seconds: number = 0) {
     const cfg = this.finalConfig();
     if (!cfg.range) return false;
-    if (!this.hasValue() && this.rangeState() !== 'selecting') return false;
+    if (this.isCleared() && this.rangeState() !== 'selecting') return false;
 
     // Optimize: Use integer comparison instead of Date objects
     // This reduces GC pressure significantly during hover interaction
@@ -969,7 +967,7 @@ export class NgLaydateComponent {
   }
 
   selectYear(y: number, isRight: boolean = false) {
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'year') {
       const dayObj = { year: y, month: 0, date: 1 };
@@ -1005,7 +1003,7 @@ export class NgLaydateComponent {
   }
 
   selectMonth(m: number, isRight: boolean = false) {
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     const cfg = this.finalConfig();
     if (cfg.range && cfg.type === 'month') {
       const baseDate = isRight ? this.rightDate() : this.leftDate();
@@ -1042,7 +1040,7 @@ export class NgLaydateComponent {
   }
 
   private handleRangeSelection(day: Partial<DateObject>) {
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     const cfg = this.finalConfig();
     if (this.rangeState() === 'none') {
       // Start picking
@@ -1072,7 +1070,7 @@ export class NgLaydateComponent {
       this.showHint(this.i18n().invalidDate);
       return;
     }
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     const cfg = this.finalConfig();
     if (cfg.range) {
       if (isRight) {
@@ -1112,7 +1110,7 @@ export class NgLaydateComponent {
   }
 
   clear() {
-    this.hasValue.set(false);
+    this.isCleared.set(true);
     this.rangeState.set('none');
     this.hoverDate.set(null);
 
@@ -1150,7 +1148,7 @@ export class NgLaydateComponent {
   }
 
   now() {
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     const now = this.service.systemDate();
     const cfg = this.finalConfig();
     if (cfg.range) {
@@ -1171,7 +1169,7 @@ export class NgLaydateComponent {
   }
 
   handleShortcut(item: any) {
-    this.hasValue.set(true);
+    this.isCleared.set(false);
     let value = item.value;
     const cfg = this.finalConfig();
 
