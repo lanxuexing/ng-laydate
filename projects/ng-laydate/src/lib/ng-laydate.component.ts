@@ -177,10 +177,6 @@ export class NgLaydateComponent {
   });
 
   themeColorBorder = computed(() => {
-    const color = this.parsedTheme().color;
-    if (color) {
-      return this.service.hexToRgba(color, 0.3);
-    }
     return this.isDarkMode() ? '#444444' : '#e2e2e2';
   });
 
