@@ -145,6 +145,7 @@
                     <td (mouseenter)="hoverValue({year: day.year, month: day.month, date: day.day})"
                         (click)="selectDay(day, isRight)" [attr.lay-ymd]="day.year + '-' + day.month + '-' + day.day"
                         [class.laydate-day-prev]="day.type === 'prev'" [class.laydate-day-next]="day.type === 'next'"
+                        [class.laydate-day-now]="isToday(day.year, day.month, day.day)"
                         [class.layui-this]="!day.disabled && isThisDay(day.year, day.month, day.day, isRight)"
                         [class.laydate-disabled]="day.disabled" [class.laydate-day-mark-wrap]="day.mark"
                         [class.laydate-day-range]="isInRange(day.year, day.month, day.day)"

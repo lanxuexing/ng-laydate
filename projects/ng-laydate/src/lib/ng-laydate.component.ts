@@ -867,6 +867,11 @@ export class NgLaydateComponent {
     return d1.year === year && d1.month === month && d1.date === day;
   }
 
+  isToday(year: number, month: number, day: number) {
+    const sys = this.service.systemDate();
+    return sys.year === year && sys.month === month && sys.date === day;
+  }
+
   isThisDay(year: number, month: number, day: number, isRight: boolean = false) {
     if (!this.hasValue()) return false;
     const cfg = this.finalConfig();
