@@ -446,21 +446,8 @@ ng-laydate.layui-laydate {
     }
 
     .laydate-day-now {
-        color: #16b777;
-    }
-
-    .laydate-day-now:after {
-        content: '';
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        border: 1px solid var(--laydate-theme-color);
-        border-radius: 2px;
-        box-sizing: border-box;
-        pointer-events: none;
+        color: var(--laydate-theme-color, #16b777);
+        font-weight: 600;
     }
 
     .laydate-selected,
