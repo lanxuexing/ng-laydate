@@ -217,12 +217,21 @@ export class NgLaydateService {
             }
         });
 
-        // Handle clear (Don't close)
+        // Handle clear (Auto close for non-static panels)
         const subClear = componentRef.instance.clearOutput.subscribe(() => {
             if (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement) {
                 elem.value = '';
+                const existingConfig = this.elementConfigs.get(elem) || config;
+                this.elementConfigs.set(elem, { ...existingConfig, value: '' });
                 elem.dispatchEvent(new Event('input', { bubbles: true }));
                 elem.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            // Auto close behavior (only for non-static)
+            if (config.position !== 'static') {
+                setTimeout(() => {
+                    this.destroy(componentRef, shadeEl);
+                }, 0);
             }
         });
 
