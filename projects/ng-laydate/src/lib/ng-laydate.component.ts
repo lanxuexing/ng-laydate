@@ -1397,27 +1397,31 @@ export class NgLaydateComponent {
   private autoScrollTime() {
     const cfg = this.finalConfig();
     const scroll = (ols: QueryList<ElementRef<HTMLOListElement>>, val: number | ((idx: number) => number)) => {
+      if (!ols) return;
       ols.forEach((ol, i) => {
-        const v = typeof val === 'function' ? val(i) : val;
-        // Formula: 33 * (val - 2) to center the selected item (6 rows of 33px)
-        ol.nativeElement.scrollTop = (v - 2) * 33;
+        if (ol && ol.nativeElement) {
+          const v = typeof val === 'function' ? val(i) : val;
+          ol.nativeElement.scrollTop = Math.max(0, (v - 2) * 33);
+        }
       });
     };
 
-    // Use requestAnimationFrame for smoother UI update
+    // Use setTimeout + requestAnimationFrame to ensure Angular @if structural view renders <ol> elements
     if (isPlatformBrowser(this.platformId)) {
-      requestAnimationFrame(() => {
-        if (cfg.range) {
-          scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
-          scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
-          scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
-        } else {
-          const cur = this.currentDate();
-          scroll(this.hoursOls, cur.hours);
-          scroll(this.minutesOls, cur.minutes);
-          scroll(this.secondsOls, cur.seconds);
-        }
-      });
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          if (cfg.range) {
+            scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
+            scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
+            scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
+          } else {
+            const cur = this.currentDate();
+            scroll(this.hoursOls, cur.hours);
+            scroll(this.minutesOls, cur.minutes);
+            scroll(this.secondsOls, cur.seconds);
+          }
+        });
+      }, 50);
     }
   }
 }

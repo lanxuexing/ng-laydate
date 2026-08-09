@@ -64,6 +64,7 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
     private onChange = (_: any) => { };
     private onTouched = () => { };
     private _value: any = '';
+    private prevConfigVal: any = undefined;
 
     constructor() {
         effect(() => {
@@ -74,7 +75,8 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             }
             if (config.elem) {
                 this.laydateService.updateConfig(config.elem, config);
-                if (config.value) {
+                if (config.value !== undefined && config.value !== this.prevConfigVal) {
+                    this.prevConfigVal = config.value;
                     const strVal = Array.isArray(config.value) ? config.value.join(' - ') : String(config.value);
                     this.el.nativeElement.value = strVal;
                 }
@@ -145,11 +147,12 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             config.elem = this.el.nativeElement;
         }
 
-        // Use current model value if available
-        if (!config.value && this._value) {
+        // Current input text in DOM takes highest priority for popup sync
+        const currentInputVal = this.el.nativeElement.value?.trim();
+        if (currentInputVal) {
+            config.value = currentInputVal;
+        } else if (this._value) {
             config.value = this._value;
-        } else if (!config.value && this.el.nativeElement.value) {
-            config.value = this.el.nativeElement.value;
         }
 
         // Hook into callbacks to propogate changes
