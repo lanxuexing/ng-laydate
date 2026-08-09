@@ -157,4 +157,79 @@ describe('NgLaydateComponent', () => {
     expect(component.currentDate().month).toBe(7); // 0-indexed August
     expect(component.currentDate().date).toBe(21);
   });
+
+  it('should merge custom i18n dictionary overrides', async () => {
+    fixture.componentRef.setInput('config', {
+      i18n: {
+        invalidDate: 'Custom Invalid Date',
+        tools: { confirm: 'Submit', clear: 'Reset', now: 'Today' }
+      }
+    });
+    fixture.detectChanges();
+
+    expect(component.i18n().invalidDate).toBe('Custom Invalid Date');
+    expect(component.i18n().tools.confirm).toBe('Submit');
+    expect(component.i18n().tools.clear).toBe('Reset');
+  });
+
+  it('should accept a full custom LaydateI18n object passed directly to lang', async () => {
+    const customLang = {
+      weeks: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      months: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+      time: ['H', 'M', 'S'],
+      timeTips: 'Time',
+      backToDate: 'Back',
+      hint: 'Preview',
+      startTime: 'Start',
+      endTime: 'End',
+      dateTips: 'Date',
+      monthTips: 'Month',
+      yearTips: 'Year',
+      duration: 'Len',
+      tools: { confirm: 'OK', clear: 'Clear', now: 'Now' },
+      formatYear: (y: number) => `${y}`,
+      formatMonth: (m: number) => `M${m + 1}`,
+      invalidRange: 'Limit: {min} - {max}',
+      invalidDate: 'Unavailable',
+      invalidEndEarly: 'Early end'
+    };
+
+    fixture.componentRef.setInput('config', { lang: customLang });
+    fixture.detectChanges();
+
+    expect(component.i18n().weeks[0]).toBe('S');
+    expect(component.i18n().tools.confirm).toBe('OK');
+  });
+
+  it('should execute hintFormatter callback and support suppression by returning false', async () => {
+    let intercepted = false;
+    fixture.componentRef.setInput('config', {
+      hintFormatter: (type: string, meta: any) => {
+        intercepted = true;
+        if (type === 'invalidDate') return false; // Suppress
+        return `Format: ${meta.defaultText}`;
+      }
+    });
+    fixture.detectChanges();
+
+    component.showHint('Default Text', 3000, 'invalidDate');
+    expect(intercepted).toBe(true);
+    expect(component.hintState().visible).toBe(false); // Suppressed
+
+    component.showHint('Default Text', 3000, 'invalidRange');
+    expect(component.hintState().visible).toBe(true);
+    expect(component.hintState().content).toBe('Format: Default Text');
+  });
+
+  it('should trigger clear callbacks and reset date state when clear is called', async () => {
+    let onClearCalled = false;
+    fixture.componentRef.setInput('config', {
+      onClear: () => { onClearCalled = true; }
+    });
+    fixture.detectChanges();
+
+    component.clear();
+    expect(component.isCleared()).toBe(true);
+    expect(onClearCalled).toBe(true);
+  });
 });
