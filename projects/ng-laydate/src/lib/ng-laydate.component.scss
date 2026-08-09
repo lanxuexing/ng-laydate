@@ -460,7 +460,7 @@ ng-laydate.layui-laydate {
         color: var(--laydate-theme-color, #16b777);
     }
 
-    .layui-this {
+    .layui-laydate-content td.layui-this {
         background-color: transparent !important;
 
         > div {
@@ -609,6 +609,12 @@ ng-laydate.layui-laydate {
     .layui-laydate-list>li:not(.laydate-time-list li):hover {
         background-color: var(--laydate-theme-color-light, rgba(22, 183, 119, 0.1));
         color: var(--laydate-theme-color, #16b777);
+    }
+
+    .layui-laydate-list>li.layui-this {
+        background-color: var(--laydate-theme-color, #16b777) !important;
+        color: #fff !important;
+        border-radius: 6px;
     }
 
     .laydate-month-list>li {
