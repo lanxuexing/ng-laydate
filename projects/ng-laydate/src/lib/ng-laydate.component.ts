@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgLaydateService } from './ng-laydate.service';
 import { DateObject, LaydateConfig, CalendarDay, LaydateI18n, FullLaydateI18n } from './ng-laydate.types';
@@ -30,7 +30,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     '[style.--laydate-border-color]': 'themeColorBorder()'
   }
 })
-export class NgLaydateComponent {
+export class NgLaydateComponent implements OnDestroy {
   private service = inject(NgLaydateService);
   private el = inject(ElementRef);
   private platformId = inject(PLATFORM_ID);
@@ -1394,7 +1394,29 @@ export class NgLaydateComponent {
     return 'yyyy-MM-dd';
   }
 
+  private scrollTimer: any = null;
+  private scrollRaf: any = null;
+
+  private clearScrollTimers() {
+    if (this.scrollTimer) {
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = null;
+    }
+    if (this.scrollRaf) {
+      cancelAnimationFrame(this.scrollRaf);
+      this.scrollRaf = null;
+    }
+  }
+
+  ngOnDestroy() {
+    this.clearScrollTimers();
+  }
+
   private autoScrollTime() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.clearScrollTimers();
+
     const cfg = this.finalConfig();
     const scroll = (ols: QueryList<ElementRef<HTMLOListElement>>, val: number | ((idx: number) => number)) => {
       if (!ols) return;
@@ -1406,22 +1428,20 @@ export class NgLaydateComponent {
       });
     };
 
-    // Use setTimeout + requestAnimationFrame to ensure Angular @if structural view renders <ol> elements
-    if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          if (cfg.range) {
-            scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
-            scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
-            scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
-          } else {
-            const cur = this.currentDate();
-            scroll(this.hoursOls, cur.hours);
-            scroll(this.minutesOls, cur.minutes);
-            scroll(this.secondsOls, cur.seconds);
-          }
-        });
-      }, 50);
-    }
+    // Use task macro-queue (setTimeout 0) + micro-frame (rAF) to wait for Angular @if view DOM mounting
+    this.scrollTimer = setTimeout(() => {
+      this.scrollRaf = requestAnimationFrame(() => {
+        if (cfg.range) {
+          scroll(this.hoursOls, (i) => i === 0 ? this.startDate().hours : this.endDate().hours);
+          scroll(this.minutesOls, (i) => i === 0 ? this.startDate().minutes : this.endDate().minutes);
+          scroll(this.secondsOls, (i) => i === 0 ? this.startDate().seconds : this.endDate().seconds);
+        } else {
+          const cur = this.currentDate();
+          scroll(this.hoursOls, cur.hours);
+          scroll(this.minutesOls, cur.minutes);
+          scroll(this.secondsOls, cur.seconds);
+        }
+      });
+    }, 0);
   }
 }
