@@ -111,8 +111,8 @@ export interface LaydateConfig {
     showBottom?: boolean;
     /** List and order of footer buttons to display, defaults to ['clear', 'now', 'confirm'] */
     btns?: string[];
-    /** Language configuration. Supports reactive getter function and automatic browser locale detection */
-    lang?: SupportedLang | (() => SupportedLang);
+    /** Language configuration. Supports built-in codes ('cn'|'en'|'tw'|'ja'|'ko'|'es'|'de'|'fr'), custom lang string, or full LaydateI18n dictionary */
+    lang?: SupportedLang | (string & {}) | LaydateI18n | (() => SupportedLang | string | LaydateI18n);
     /** Visual theme name ('default', 'molv', 'grid', 'circle', 'fullpanel', 'dark') or Hex color (e.g., '#16b777' or ['grid', '#9C27B0']) */
     theme?: string | string[];
     /** Whether to show solar terms and festivals on the calendar grid */

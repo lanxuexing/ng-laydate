@@ -196,10 +196,37 @@ export class NgLaydateComponent {
   // i18n Dictionary
   i18n = computed(() => {
     const rawLang = this.finalConfig().lang;
-    const lang = typeof rawLang === 'function' ? rawLang() : (rawLang || 'cn');
+    const lang = typeof rawLang === 'function' ? (rawLang as Function)() : (rawLang || 'cn');
 
     let base: LaydateI18n;
-    if (lang === 'en') {
+    if (typeof lang === 'object' && lang !== null) {
+      const cnDefault = {
+        weeks: ['日', '一', '二', '三', '四', '五', '六'],
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        time: ['时', '分', '秒'],
+        timeTips: '选择时间',
+        backToDate: '返回日期',
+        hint: '结果预览',
+        startTime: '开始时间',
+        endTime: '结束时间',
+        dateTips: '选择日期',
+        monthTips: '选择月份',
+        yearTips: '选择年份',
+        duration: '时长',
+        tools: { confirm: '确定', clear: '清空', now: '现在' },
+        formatYear: (year: number) => `${year}年`,
+        formatMonth: (month: number) => `${month + 1}月`,
+        invalidRange: '日期可选值设定在 <br> {min} 到 {max}',
+        invalidDate: '此日期不可选',
+        invalidEndEarly: '结束时间不能早于开始时间<br>请重新选择'
+      };
+      const dict = lang as Partial<LaydateI18n>;
+      base = {
+        ...cnDefault,
+        ...dict,
+        tools: { ...cnDefault.tools, ...(dict.tools || {}) }
+      };
+    } else if (lang === 'en') {
       base = {
         weeks: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
