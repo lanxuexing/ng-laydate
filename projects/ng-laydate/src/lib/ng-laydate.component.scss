@@ -712,6 +712,11 @@ ng-laydate.layui-laydate {
         color: var(--laydate-theme-color, #16b777);
     }
 
+    .laydate-time-list ol li.layui-this {
+        background-color: var(--laydate-theme-color, #16b777) !important;
+        color: #fff !important;
+    }
+
     /* 快捷栏 */
     .layui-laydate-shortcut {
         flex: 0 0 90px;
