@@ -74,6 +74,10 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             }
             if (config.elem) {
                 this.laydateService.updateConfig(config.elem, config);
+                if (config.value) {
+                    const strVal = Array.isArray(config.value) ? config.value.join(' - ') : String(config.value);
+                    this.el.nativeElement.value = strVal;
+                }
             }
         });
     }

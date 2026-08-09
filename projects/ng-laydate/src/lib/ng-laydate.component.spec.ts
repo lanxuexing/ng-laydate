@@ -232,4 +232,53 @@ describe('NgLaydateComponent', () => {
     expect(component.isCleared()).toBe(true);
     expect(onClearCalled).toBe(true);
   });
+
+  it('should respect disabledDate function via getCalendarData', async () => {
+    const config = { disabledDate: (date: Date) => date.getDay() === 0 }; // Disable Sundays
+    const days = component['service'].getCalendarData(2026, 7, config); // Aug 2026
+
+    const sunday = days.find(d => d.day === 2 && d.type === 'current'); // Aug 2, 2026 is Sunday
+    const monday = days.find(d => d.day === 3 && d.type === 'current'); // Aug 3, 2026 is Monday
+
+    expect(sunday?.disabled).toBe(true);
+    expect(monday?.disabled).toBe(false);
+  });
+
+  it('should support hex theme color string like "#FF5722"', async () => {
+    fixture.componentRef.setInput('config', { theme: '#FF5722' });
+    fixture.detectChanges();
+
+    expect(component.themeColorLight()).toContain('rgba(');
+  });
+
+  it('should handle range date selection via selectDay and swap end before start', async () => {
+    fixture.componentRef.setInput('config', { range: true });
+    fixture.detectChanges();
+
+    const day1 = { year: 2026, month: 7, day: 20, type: 'current' as const, disabled: false, mark: '' };
+    const day2 = { year: 2026, month: 7, day: 10, type: 'current' as const, disabled: false, mark: '' };
+
+    component.selectDay(day1);
+    expect(component.startDate().date).toBe(20);
+
+    // Pick earlier end date -> should auto-swap
+    component.selectDay(day2);
+    expect(component.startDate().date).toBe(10);
+    expect(component.endDate().date).toBe(20);
+  });
+
+  it('should support function, Date array, and timestamp in shortcuts', async () => {
+    const fnShortcut = {
+      text: 'Fn Shortcut',
+      value: () => [new Date(2026, 0, 1), new Date(2026, 0, 15)]
+    };
+    fixture.componentRef.setInput('config', { range: true, shortcuts: [fnShortcut] });
+    fixture.detectChanges();
+
+    component.handleShortcut(fnShortcut);
+    expect(component.startDate().year).toBe(2026);
+    expect(component.startDate().month).toBe(0);
+    expect(component.startDate().date).toBe(1);
+    expect(component.endDate().date).toBe(15);
+  });
 });
