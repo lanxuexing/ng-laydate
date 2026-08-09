@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgLaydateService } from './ng-laydate.service';
-import { DateObject, LaydateConfig, CalendarDay, LaydateI18n } from './ng-laydate.types';
+import { DateObject, LaydateConfig, CalendarDay, LaydateI18n, FullLaydateI18n } from './ng-laydate.types';
 import { SafeHtmlPipe } from './safe-html.pipe';
 
 @Component({
@@ -194,11 +194,11 @@ export class NgLaydateComponent {
   });
 
   // i18n Dictionary
-  i18n = computed(() => {
+  i18n = computed<FullLaydateI18n>(() => {
     const rawLang = this.finalConfig().lang;
     const lang = typeof rawLang === 'function' ? (rawLang as Function)() : (rawLang || 'cn');
 
-    let base: LaydateI18n;
+    let base: FullLaydateI18n;
     if (typeof lang === 'object' && lang !== null) {
       const cnDefault = {
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
@@ -410,7 +410,7 @@ export class NgLaydateComponent {
         ...base.tools,
         ...(customI18n.tools || {})
       }
-    };
+    } as FullLaydateI18n;
   });
 
   footerBtns = computed(() => {

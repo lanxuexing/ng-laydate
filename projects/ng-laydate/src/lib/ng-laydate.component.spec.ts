@@ -172,6 +172,21 @@ describe('NgLaydateComponent', () => {
     expect(component.i18n().tools.clear).toBe('Reset');
   });
 
+  it('should merge partial i18n overrides on top of built-in English language', async () => {
+    fixture.componentRef.setInput('config', {
+      lang: 'en',
+      i18n: {
+        tools: { confirm: 'OK' }
+      }
+    });
+    fixture.detectChanges();
+
+    expect(component.i18n().months[0]).toBe('Jan'); // Preserved from English
+    expect(component.i18n().weeks[0]).toBe('Su');   // Preserved from English
+    expect(component.i18n().tools.confirm).toBe('OK'); // Overridden
+    expect(component.i18n().tools.clear).toBe('Clear'); // Preserved from English
+  });
+
   it('should accept a full custom LaydateI18n object passed directly to lang', async () => {
     const customLang = {
       weeks: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],

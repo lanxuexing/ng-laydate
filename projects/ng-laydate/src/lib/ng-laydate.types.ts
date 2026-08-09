@@ -45,6 +45,30 @@ export type SupportedLang = 'cn' | 'en' | 'tw' | 'ja' | 'ko' | 'es' | 'de' | 'fr
  * Internationalization dictionary structure for datepicker labels and messages.
  */
 export interface LaydateI18n {
+    weeks?: string[];
+    months?: string[];
+    time?: string[];
+    timeTips?: string;
+    backToDate?: string;
+    hint?: string;
+    startTime?: string;
+    endTime?: string;
+    dateTips?: string;
+    monthTips?: string;
+    yearTips?: string;
+    duration?: string;
+    tools?: { confirm?: string; clear?: string; now?: string };
+    formatYear?: (year: number) => string;
+    formatMonth?: (month: number) => string;
+    invalidRange?: string;
+    invalidDate?: string;
+    invalidEndEarly?: string;
+}
+
+/**
+ * Fully populated internal i18n dictionary after defaults merging.
+ */
+export interface FullLaydateI18n {
     weeks: string[];
     months: string[];
     time: string[];
