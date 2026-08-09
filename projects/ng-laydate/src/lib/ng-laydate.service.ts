@@ -494,14 +494,15 @@ export class NgLaydateService {
 
         const strVal = typeof value === 'string' ? value.trim() : '';
 
-        // Handle time only string (e.g., '13:00:00' or '09:30' or '13:00')
+        // Handle time only string (e.g., '13:00:00', '09:30', '13:00', '13时00分00秒')
         let targetStr = strVal;
-        if (targetStr && /^\d{1,2}:\d{1,2}(:\d{1,2})?$/.test(targetStr)) {
+        if (targetStr && /^\d{1,2}[:时]\d{1,2}(?:[:分]\d{1,2}秒?)?$/.test(targetStr)) {
+            targetStr = targetStr.replace(/时|分|秒/g, ':').replace(/:+$/, '');
             targetStr = '1970-01-01 ' + targetStr;
         }
 
-        // Match yyyy-MM-dd HH:mm:ss or yyyy-MM-dd
-        const match = targetStr ? targetStr.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/) : null;
+        // Match yyyy-MM-dd HH:mm:ss, yyyy/MM/dd, yyyy.MM.dd, yyyy年MM月dd日
+        const match = targetStr ? targetStr.match(/^(\d{4})[-/\.年](\d{1,2})[-/\.月](\d{1,2})日?(?:\s+(\d{1,2})[:时](\d{1,2})(?:[:分](\d{1,2})秒?)?)?/) : null;
         if (match) {
             return {
                 year: parseInt(match[1], 10),
@@ -513,8 +514,8 @@ export class NgLaydateService {
             };
         }
 
-        // Match yyyy-MM (Month picker)
-        const matchYM = targetStr ? targetStr.match(/^(\d{4})[-\/](\d{1,2})$/) : null;
+        // Match yyyy-MM, yyyy/MM, yyyy.MM, yyyy年MM月 (Month picker)
+        const matchYM = targetStr ? targetStr.match(/^(\d{4})[-/\.年](\d{1,2})月?$/) : null;
         if (matchYM) {
             return {
                 year: parseInt(matchYM[1], 10),
@@ -526,8 +527,8 @@ export class NgLaydateService {
             };
         }
 
-        // Match yyyy (Year picker)
-        const matchY = targetStr ? targetStr.match(/^(\d{4})$/) : null;
+        // Match yyyy or yyyy年 (Year picker)
+        const matchY = targetStr ? targetStr.match(/^(\d{4})年?$/) : null;
         if (matchY) {
             return {
                 year: parseInt(matchY[1], 10),

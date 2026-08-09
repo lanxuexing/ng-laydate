@@ -147,4 +147,14 @@ describe('NgLaydateComponent', () => {
     fixture.detectChanges();
     expect(component.isDarkMode()).toBe(false);
   });
+
+  it('should parse Chinese formatted date strings (yyyy年MM月dd日)', async () => {
+    const chineseValue = '2026年08月21日';
+    fixture.componentRef.setInput('config', { format: 'yyyy年MM月dd日', value: chineseValue });
+    fixture.detectChanges();
+
+    expect(component.currentDate().year).toBe(2026);
+    expect(component.currentDate().month).toBe(7); // 0-indexed August
+    expect(component.currentDate().date).toBe(21);
+  });
 });
