@@ -99,7 +99,8 @@ export class NgLaydateService {
      */
     updateConfig(elem: HTMLElement, config: LaydateConfig) {
         const existing = this.elementConfigs.get(elem);
-        const val = config.value !== undefined ? config.value : (existing?.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined));
+        const elemVal = (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement) ? elem.value?.trim() : undefined;
+        const val = config.value !== undefined ? config.value : (elemVal || existing?.value);
         const merged = { ...existing, ...config, value: val };
         this.elementConfigs.set(elem, merged);
         const activeRef = this.activePanels.get(elem);
@@ -143,7 +144,8 @@ export class NgLaydateService {
             const triggerHandler = () => {
                 if (!this.activePanels.get(elem)) {
                     const storedConfig = this.elementConfigs.get(elem) || config;
-                    const val = storedConfig.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined);
+                    const elemVal = (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement) ? elem.value?.trim() : undefined;
+                    const val = (elemVal !== undefined && elemVal !== '') ? elemVal : storedConfig.value;
                     const latestConfig = { ...storedConfig, value: val };
                     this.openPanel(latestConfig, elem);
                 }
@@ -156,7 +158,8 @@ export class NgLaydateService {
         // Only open panel immediately on render if explicitly set in config.show === true
         if (config.show === true && !this.activePanels.get(elem)) {
             const storedConfig = this.elementConfigs.get(elem) || config;
-            const val = storedConfig.value || (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement ? elem.value : undefined);
+            const elemVal = (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement) ? elem.value?.trim() : undefined;
+            const val = (elemVal !== undefined && elemVal !== '') ? elemVal : storedConfig.value;
             const latestConfig = { ...storedConfig, value: val };
             return this.openPanel(latestConfig, elem);
         }
