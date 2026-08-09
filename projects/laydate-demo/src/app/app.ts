@@ -2,7 +2,7 @@ import { Component, AfterViewInit, inject, signal, computed, PLATFORM_ID } from 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang } from 'ng-laydate';
+import { NgLaydateDirective, NgLaydateComponent, NgLaydateService, SupportedLang, LaydateI18n } from 'ng-laydate';
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
 
@@ -460,35 +460,51 @@ export class AppComponent {
 <input [laydate]="{ type: 'time', range: true, disabledTime: disabledTimeComplex }">
 
 <!-- Hours & Minutes Only (HH:mm without seconds) -->
-<input [laydate]="{ type: 'time', format: 'HH:mm' }">`;
+<input [laydate]="{ type: 'time', format: 'HH:mm' }">
+
+<!-- Developer Custom Russian i18n Dictionary & Hint Formatter -->
+<input [laydate]="{ lang: ruI18n, min: '2026-01-01', max: '2026-12-31', hintFormatter: hintFn }">`;
 
   sec3CodeTs = `import { Component } from '@angular/core';
+import { LaydateI18n } from 'ng-laydate';
+
+// 开发者自定义俄语词典
+const ruI18n: LaydateI18n = {
+  weeks: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+  time: ['Часы', 'Минуты', 'Секунды'],
+  timeTips: 'Выберите время',
+  backToDate: 'Назад к дате',
+  hint: 'Предпросмотр',
+  startTime: 'Время начала',
+  endTime: 'Время окончания',
+  dateTips: 'Выберите дату',
+  monthTips: 'Выберите месяц',
+  yearTips: 'Выберите год',
+  duration: 'Длительность',
+  tools: { confirm: 'ОК', clear: 'Сброс', now: 'Сейчас' },
+  formatYear: (y) => \`\${y}\`,
+  formatMonth: (m) => ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'][m],
+  invalidRange: 'Допустимый диапазон <br> {min} - {max}',
+  invalidDate: 'Дата недоступна',
+  invalidEndEarly: 'Время окончания не может быть раньше времени начала'
+};
 
 @Component({...})
 export class AppComponent {
+  ruI18n = ruI18n;
+
   // Boundary constraints
   dateLimit = { min: '2016-10-14', max: '2080-10-14' };
   relativeLimit = { min: -7, max: 7 };
   timeLimit = { type: 'time', min: '09:30:00', max: '17:30:00' };
 
-  // Logic-based date disabling (Disable weekends)
-  disabledDateFn = (date: Date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6; // true to disable
-  };
-
-  // Disable future dates
-  disabledDateFuture = (date: Date) => {
-    return date.getTime() > Date.now();
-  };
-
-  // Hours/Minutes only (HH:mm without seconds)
-  hoursMinutesConfig = { type: 'time', format: 'HH:mm' };
-
-  // Complex hierarchical time rules (Hours/Minutes/Seconds constraint)
-  disabledTimeComplex = (type: string, date: Date) => {
-    if (type === 'hours') return [0, 1, 2, 3, 4, 5, 6, 22, 23];
-    return [];
+  // Custom hint interceptor
+  hintFn = (type: string, meta: any) => {
+    if (type === 'invalidRange') {
+      return \`<span style="color: #ff5722;">🚫 Limit: \${meta.min} ~ \${meta.max}</span>\`;
+    }
+    return meta.defaultText;
   };
 }`;
 
@@ -857,6 +873,27 @@ export class AppComponent {}`;
     return date.getTime() > Date.now();
   };
 
+  ruI18n: LaydateI18n = {
+    weeks: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+    time: ['Часы', 'Минуты', 'Секунды'],
+    timeTips: 'Выберите время',
+    backToDate: 'Назад к дате',
+    hint: 'Предпросмотр',
+    startTime: 'Время начала',
+    endTime: 'Время окончания',
+    dateTips: 'Выберите дату',
+    monthTips: 'Выберите месяц',
+    yearTips: 'Выберите год',
+    duration: 'Длительность',
+    tools: { confirm: 'ОК', clear: 'Сброс', now: 'Сейчас' },
+    formatYear: (y: number) => `${y}`,
+    formatMonth: (m: number) => ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'][m],
+    invalidRange: 'Допустимый диапазон <br> {min} - {max}',
+    invalidDate: 'Дата недоступна',
+    invalidEndEarly: 'Время окончания не может быть раньше времени начала'
+  };
+
   customHintConfig = {
     min: '2026-01-01',
     max: '2026-12-31',
@@ -865,10 +902,6 @@ export class AppComponent {}`;
         return `<span style="color: #ff5722; font-weight: 600;">🚫 Range Limit: ${meta.min} ~ ${meta.max}</span>`;
       }
       return meta.defaultText;
-    },
-    i18n: {
-      invalidDate: '⚠️ Date is not available',
-      tools: { confirm: 'Done', clear: 'Reset', now: 'Today' }
     }
   };
 
