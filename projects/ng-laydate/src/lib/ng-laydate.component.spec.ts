@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 
 import { NgLaydateComponent } from './ng-laydate.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 describe('NgLaydateComponent', () => {
   let component: NgLaydateComponent;
@@ -295,5 +297,15 @@ describe('NgLaydateComponent', () => {
     expect(component.startDate().month).toBe(0);
     expect(component.startDate().date).toBe(1);
     expect(component.endDate().date).toBe(15);
+  });
+
+  it('should sanitize XSS payloads in custom html inputs while preserving safe tags', async () => {
+    const xssPayload = '<img src=x onerror=alert(1)><span style="color: red">Safe</span>';
+    const pipe = new SafeHtmlPipe(TestBed.inject(DomSanitizer));
+    const sanitized = pipe.transform(xssPayload) as string;
+
+    expect(sanitized).not.toContain('onerror');
+    expect(sanitized).not.toContain('alert');
+    expect(sanitized).toContain('Safe');
   });
 });

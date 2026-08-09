@@ -1351,8 +1351,9 @@ export class NgLaydateComponent {
       let msg = this.i18n().invalidRange;
       const minStr = cfg.min?.toString() || '';
       const maxStr = cfg.max?.toString() || '';
-      if (cfg.min) msg = msg.replace('{min}', minStr);
-      if (cfg.max) msg = msg.replace('{max}', maxStr);
+      const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      if (cfg.min) msg = msg.replace('{min}', escape(minStr));
+      if (cfg.max) msg = msg.replace('{max}', escape(maxStr));
       this.showHint(msg, 3000, 'invalidRange', { min: minStr, max: maxStr, date });
       return false;
     }
