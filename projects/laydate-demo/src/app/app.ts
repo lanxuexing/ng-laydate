@@ -181,6 +181,7 @@ export class App implements AfterViewInit {
         sec3_5: 'Disable Future',
         sec3_6: 'Complex Time Rules',
         sec3_7: 'Hours & Minutes (HH:mm)',
+        sec3_8: 'Custom Hint & i18n Overrides',
 
         sec4Title: '4. Aesthetics & Themes',
         sec4_1: 'FullPanel (Side-by-Side)',
@@ -261,6 +262,7 @@ export class App implements AfterViewInit {
       sec3_5: 'Disable Future (禁用未来日期)',
       sec3_6: 'Complex Time Rules (复杂时分秒约束)',
       sec3_7: 'Hours & Minutes (时分选择 HH:mm)',
+      sec3_8: 'Custom Hint & i18n (自定义提示与词典重写)',
 
       sec4Title: '4. Aesthetics & Themes (视觉与主题)',
       sec4_1: 'FullPanel (左右双面板)',
@@ -853,6 +855,21 @@ export class AppComponent {}`;
 
   disabledDateFuture = (date: Date, type?: string) => {
     return date.getTime() > Date.now();
+  };
+
+  customHintConfig = {
+    min: '2026-01-01',
+    max: '2026-12-31',
+    hintFormatter: (type: string, meta: any) => {
+      if (type === 'invalidRange') {
+        return `<span style="color: #ff5722; font-weight: 600;">🚫 Range Limit: ${meta.min} ~ ${meta.max}</span>`;
+      }
+      return meta.defaultText;
+    },
+    i18n: {
+      invalidDate: '⚠️ Date is not available',
+      tools: { confirm: 'Done', clear: 'Reset', now: 'Today' }
+    }
   };
 
   onLimitReady = () => {

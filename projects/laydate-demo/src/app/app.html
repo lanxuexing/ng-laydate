@@ -318,6 +318,11 @@
         <input type="text" class="layui-input"
           [laydate]="{type: 'time', format: 'HH:mm', darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Hours & Minutes (HH:mm)">
       </div>
+      <div class="layui-inline">
+        <label>{{ t().sec3_8 }}</label>
+        <input type="text" class="layui-input"
+          [laydate]="{min: '2026-01-01', max: '2026-12-31', hintFormatter: customHintConfig.hintFormatter, i18n: customHintConfig.i18n, darkMode: demoDarkMode(), lang: currentLang()}" placeholder="Custom Hint & i18n">
+      </div>
     </div>
   </div>
 

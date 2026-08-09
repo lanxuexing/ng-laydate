@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgLaydateService } from './ng-laydate.service';
-import { DateObject, LaydateConfig, CalendarDay } from './ng-laydate.types';
+import { DateObject, LaydateConfig, CalendarDay, LaydateI18n } from './ng-laydate.types';
 import { SafeHtmlPipe } from './safe-html.pipe';
 
 @Component({
@@ -198,8 +198,9 @@ export class NgLaydateComponent {
     const rawLang = this.finalConfig().lang;
     const lang = typeof rawLang === 'function' ? rawLang() : (rawLang || 'cn');
 
+    let base: LaydateI18n;
     if (lang === 'en') {
-      return {
+      base = {
         weeks: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         time: ['Hours', 'Minutes', 'Seconds'],
@@ -219,10 +220,8 @@ export class NgLaydateComponent {
         invalidDate: 'Date is unavailable',
         invalidEndEarly: 'End time cannot be earlier than start time<br>Please reselect'
       };
-    }
-
-    if (lang === 'tw') {
-      return {
+    } else if (lang === 'tw') {
+      base = {
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
         months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         time: ['時', '分', '秒'],
@@ -242,10 +241,8 @@ export class NgLaydateComponent {
         invalidDate: '此日期不可選',
         invalidEndEarly: '結束時間不能早於開始時間<br>請重新選擇'
       };
-    }
-
-    if (lang === 'ja') {
-      return {
+    } else if (lang === 'ja') {
+      base = {
         weeks: ['日', '月', '火', '水', '木', '金', '土'],
         months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         time: ['時', '分', '秒'],
@@ -265,10 +262,8 @@ export class NgLaydateComponent {
         invalidDate: '選択できない日付です',
         invalidEndEarly: '終了時間は開始時間より前には設定できません<br>再選択してください'
       };
-    }
-
-    if (lang === 'ko') {
-      return {
+    } else if (lang === 'ko') {
+      base = {
         weeks: ['일', '월', '화', '수', '목', '금', '토'],
         months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
         time: ['시', '분', '초'],
@@ -288,10 +283,8 @@ export class NgLaydateComponent {
         invalidDate: '선택할 수 없는 날짜입니다',
         invalidEndEarly: '종료 시간은 시작 시간보다 빠를 수 없습니다<br>다시 선택해 주세요'
       };
-    }
-
-    if (lang === 'es') {
-      return {
+    } else if (lang === 'es') {
+      base = {
         weeks: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
         months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
         time: ['Horas', 'Minutos', 'Segundos'],
@@ -311,10 +304,8 @@ export class NgLaydateComponent {
         invalidDate: 'Fecha no disponible',
         invalidEndEarly: 'La hora de fin no puede ser anterior a la hora de inicio'
       };
-    }
-
-    if (lang === 'de') {
-      return {
+    } else if (lang === 'de') {
+      base = {
         weeks: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         months: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
         time: ['Stunden', 'Minuten', 'Sekunden'],
@@ -334,10 +325,8 @@ export class NgLaydateComponent {
         invalidDate: 'Datum nicht verfügbar',
         invalidEndEarly: 'Endzeit darf nicht vor der Startzeit liegen'
       };
-    }
-
-    if (lang === 'fr') {
-      return {
+    } else if (lang === 'fr') {
+      base = {
         weeks: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
         months: ['Janv', 'Févr', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
         time: ['Heures', 'Minutes', 'Secondes'],
@@ -357,31 +346,43 @@ export class NgLaydateComponent {
         invalidDate: 'Date non disponible',
         invalidEndEarly: "L'heure de fin ne peut pas être antérieure à l'heure de début"
       };
+    } else {
+      base = {
+        weeks: ['日', '一', '二', '三', '四', '五', '六'],
+        months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        time: ['时', '分', '秒'],
+        timeTips: '选择时间',
+        backToDate: '返回日期',
+        hint: '结果预览',
+        startTime: '开始时间',
+        endTime: '结束时间',
+        dateTips: '选择日期',
+        monthTips: '选择月份',
+        yearTips: '选择年份',
+        duration: '时长',
+        tools: {
+          confirm: '确定',
+          clear: '清空',
+          now: '现在'
+        },
+        formatYear: (year: number) => `${year}年`,
+        formatMonth: (month: number) => `${month + 1}月`,
+        invalidRange: '日期可选值设定在 <br> {min} 到 {max}',
+        invalidDate: '此日期不可选',
+        invalidEndEarly: '结束时间不能早于开始时间<br>请重新选择'
+      };
     }
 
+    const customI18n = this.finalConfig().i18n;
+    if (!customI18n) return base;
+
     return {
-      weeks: ['日', '一', '二', '三', '四', '五', '六'],
-      months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      time: ['时', '分', '秒'],
-      timeTips: '选择时间',
-      backToDate: '返回日期',
-      hint: '结果预览',
-      startTime: '开始时间',
-      endTime: '结束时间',
-      dateTips: '选择日期',
-      monthTips: '选择月份',
-      yearTips: '选择年份',
-      duration: '时长',
+      ...base,
+      ...customI18n,
       tools: {
-        confirm: '确定',
-        clear: '清空',
-        now: '现在'
-      },
-      formatYear: (year: number) => `${year}年`,
-      formatMonth: (month: number) => `${month + 1}月`,
-      invalidRange: '日期可选值设定在 <br> {min} 到 {max}',
-      invalidDate: '此日期不可选',
-      invalidEndEarly: '结束时间不能早于开始时间<br>请重新选择'
+        ...base.tools,
+        ...(customI18n.tools || {})
+      }
     };
   });
 
@@ -630,8 +631,29 @@ export class NgLaydateComponent {
     });
   }
 
-  showHint(content: string, ms: number = 3000) {
-    this.hintState.set({ content, visible: true });
+  showHint(
+    content: string,
+    ms: number = 3000,
+    type: 'invalidRange' | 'invalidDate' | 'invalidEndEarly' | 'custom' = 'custom',
+    meta: { min?: string; max?: string; date?: DateObject } = {}
+  ) {
+    const cfg = this.finalConfig();
+    let finalContent = content;
+
+    if (cfg.hintFormatter) {
+      const formatted = cfg.hintFormatter(type, {
+        ...meta,
+        defaultText: content
+      });
+      if (formatted === false) {
+        return; // Suppress hint
+      }
+      if (typeof formatted === 'string') {
+        finalContent = formatted;
+      }
+    }
+
+    this.hintState.set({ content: finalContent, visible: true });
     if (this.hintTimer) clearTimeout(this.hintTimer);
     if (ms > 0) {
       this.hintTimer = setTimeout(() => {
@@ -792,7 +814,7 @@ export class NgLaydateComponent {
 
   selectDay(day: CalendarDay, isRight: boolean = false) {
     if (day.disabled) {
-      this.showHint(this.i18n().invalidDate);
+      this.showHint(this.i18n().invalidDate, 3000, 'invalidDate', { date: { year: day.year, month: day.month, date: day.day, hours: 0, minutes: 0, seconds: 0 } });
       return;
     }
 
@@ -1079,7 +1101,7 @@ export class NgLaydateComponent {
 
   selectTime(type: 'hours' | 'minutes' | 'seconds', val: number, isRight: boolean = false) {
     if (this.isDisabledTime(type, val, isRight)) {
-      this.showHint(this.i18n().invalidDate);
+      this.showHint(this.i18n().invalidDate, 3000, 'invalidDate');
       return;
     }
     this.isCleared.set(false);
@@ -1295,9 +1317,11 @@ export class NgLaydateComponent {
 
     if (d < min || d > max) {
       let msg = this.i18n().invalidRange;
-      if (cfg.min) msg = msg.replace('{min}', cfg.min.toString());
-      if (cfg.max) msg = msg.replace('{max}', cfg.max.toString());
-      this.showHint(msg);
+      const minStr = cfg.min?.toString() || '';
+      const maxStr = cfg.max?.toString() || '';
+      if (cfg.min) msg = msg.replace('{min}', minStr);
+      if (cfg.max) msg = msg.replace('{max}', maxStr);
+      this.showHint(msg, 3000, 'invalidRange', { min: minStr, max: maxStr, date });
       return false;
     }
     return true;
@@ -1305,7 +1329,7 @@ export class NgLaydateComponent {
 
   handleBtnClick(type: string) {
     if (type === 'confirm' && this.isConfirmDisabled()) {
-      this.showHint(this.i18n().invalidEndEarly);
+      this.showHint(this.i18n().invalidEndEarly, 3000, 'invalidEndEarly');
       return;
     }
     if (type === 'clear') this.clear();

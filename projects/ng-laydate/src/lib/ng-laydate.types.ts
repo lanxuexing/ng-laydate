@@ -42,6 +42,38 @@ export interface CalendarDay {
 export type SupportedLang = 'cn' | 'en' | 'tw' | 'ja' | 'ko' | 'es' | 'de' | 'fr';
 
 /**
+ * Internationalization dictionary structure for datepicker labels and messages.
+ */
+export interface LaydateI18n {
+    weeks: string[];
+    months: string[];
+    time: string[];
+    timeTips: string;
+    backToDate: string;
+    hint: string;
+    startTime: string;
+    endTime: string;
+    dateTips: string;
+    monthTips: string;
+    yearTips: string;
+    duration: string;
+    tools: { confirm: string; clear: string; now: string };
+    formatYear: (year: number) => string;
+    formatMonth: (month: number) => string;
+    invalidRange: string;
+    invalidDate: string;
+    invalidEndEarly: string;
+}
+
+/**
+ * Callback function to dynamically intercept, format, or suppress toast hint messages.
+ */
+export type LaydateHintFormatter = (
+    type: 'invalidRange' | 'invalidDate' | 'invalidEndEarly' | 'custom',
+    meta: { min?: string; max?: string; date?: DateObject; defaultText: string }
+) => string | false | void;
+
+/**
  * NgLaydate configuration options interface.
  */
 export interface LaydateConfig {
@@ -109,6 +141,10 @@ export interface LaydateConfig {
     cellRender?: (ymd: { year: number; month: number; date: number }, render: (content: string) => void, info: { type: string }) => void;
     /** Display formatter for input box text only without affecting model value */
     formatToDisplay?: (value: string) => string;
+    /** Custom i18n dictionary overrides */
+    i18n?: Partial<LaydateI18n>;
+    /** Custom hint message formatter or interceptor callback */
+    hintFormatter?: LaydateHintFormatter;
 
     // Callbacks
     /** Triggered when the picker panel completes rendering */
