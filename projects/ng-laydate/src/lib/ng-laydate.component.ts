@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, inject, input, output, signal, computed, effect, ChangeDetectionStrategy, WritableSignal, ViewChildren, QueryList, PLATFORM_ID, DestroyRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgLaydateService } from './ng-laydate.service';
 import { DateObject, LaydateConfig, CalendarDay, LaydateI18n, FullLaydateI18n } from './ng-laydate.types';
@@ -30,10 +30,11 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     '[style.--laydate-border-color]': 'themeColorBorder()'
   }
 })
-export class NgLaydateComponent implements OnDestroy {
+export class NgLaydateComponent {
   private service = inject(NgLaydateService);
   private el = inject(ElementRef);
   private platformId = inject(PLATFORM_ID);
+  private destroyRef = inject(DestroyRef);
   @ViewChildren('timeOl_hours') hoursOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_minutes') minutesOls!: QueryList<ElementRef<HTMLOListElement>>;
   @ViewChildren('timeOl_seconds') secondsOls!: QueryList<ElementRef<HTMLOListElement>>;
@@ -500,6 +501,8 @@ export class NgLaydateComponent implements OnDestroy {
   private hintTimer: any = null;
 
   constructor() {
+    this.destroyRef.onDestroy(() => this.clearScrollTimers());
+
     if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       if (mediaQuery) {
@@ -633,18 +636,20 @@ export class NgLaydateComponent implements OnDestroy {
     });
 
     // Scroll Effect: Whenever time view becomes active OR values change, scroll to selected values
-    effect(() => {
+    effect((onCleanup) => {
       const cfg = this.finalConfig();
       const isTimeView = this.view() === 'time' || this.leftView() === 'time' || this.rightView() === 'time' || cfg.theme === 'fullpanel';
-      // Add dependencies on the values to trigger re-scroll when they change (e.g. "Now" clicked)
       const cur = this.currentDate();
       const st = this.startDate();
       const ed = this.endDate();
 
       if (isTimeView) {
-        // Use a slight delay to ensure DOM is rendered (after signal change)
-        setTimeout(() => this.autoScrollTime(), 0);
+        this.autoScrollTime();
       }
+
+      onCleanup(() => {
+        this.clearScrollTimers();
+      });
     });
 
     // Cleanup
@@ -1406,10 +1411,6 @@ export class NgLaydateComponent implements OnDestroy {
       cancelAnimationFrame(this.scrollRaf);
       this.scrollRaf = null;
     }
-  }
-
-  ngOnDestroy() {
-    this.clearScrollTimers();
   }
 
   private autoScrollTime() {
