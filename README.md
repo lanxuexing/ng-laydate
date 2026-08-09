@@ -41,7 +41,9 @@ Check out the component in action: **[https://lanxuexing.github.io/ng-laydate/](
 - 🌓 **System Dark Mode & Reactive Getter**: Native support for `darkMode: 'system'` / `'auto'` (auto-following OS theme) and dynamic Reactive Getter functions (`() => boolean | 'system'`).
 - 🎨 **Dynamic Theme Color System**: Dividers, grid lines, cell borders, footer buttons, and hover states adapt seamlessly to custom theme colors (`--laydate-theme-color`) and dark themes.
 - 🕒 **Precision Control**: Intelligent H:M:S column visibility and auto-scrolling.
-- 🌏 **Global i18n**: Out-of-the-box support for 8 major international languages (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`), with automatic browser locale detection and zero-refresh reactive language switching.
+- 🌏 **Global i18n & Custom Dictionaries**: Out-of-the-box support for 8 major international languages (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`), with automatic browser locale detection, zero-refresh reactive language switching, and direct custom dictionary (`LaydateI18n`) object support (e.g., Russian, Arabic).
+- 💬 **Custom Toast & Hint Interceptors**: Flexible `hintFormatter` callback for customizing, formatting, or returning `false` to suppress date range / invalid date toast notifications.
+- 🇨🇳 **Rich Date & Time Parsing**: Supports Chinese date formats (`yyyy年MM月dd日`), dot separators (`yyyy.MM.dd`), and Chinese time units (`14时30分00秒`).
 - 🚩 **Special Days**: Built-in Gregorian festivals and customizable Holiday/Workday markers.
 - 🖋️ **Custom Content**: Flexible cell rendering via `cellRender` or `mark` functions.
 - ⚡ **Performance**: Optimized rendering engine with smart diffing and `requestAnimationFrame` for smooth 60fps interactions.
@@ -87,7 +89,30 @@ Just add the `[laydate]` directive to any input element.
 }" placeholder="Select DateTime Range">
 ```
 
-### 2. Forms Support (Two-way Binding)
+### 2. Custom i18n Dictionary & Toast Interceptor
+
+Pass custom dictionary objects (`LaydateI18n`) or partial overrides directly to `lang` or `i18n`.
+
+```typescript
+import { LaydateI18n } from 'ng-laydate';
+
+// Custom Russian dictionary
+const ruI18n: LaydateI18n = {
+  weeks: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+  tools: { confirm: 'ОК', clear: 'Сброс', now: 'Сейчас' }
+};
+```
+
+```html
+<!-- Custom Russian language -->
+<input [laydate]="{ lang: ruI18n }">
+
+<!-- Partial dictionary override on top of English -->
+<input [laydate]="{ lang: 'en', i18n: { tools: { confirm: 'Submit' } } }">
+```
+
+### 3. Forms Support (Two-way Binding)
 
 The component fully implements `ControlValueAccessor`, allowing you to use `ngModel` or `formControlName` seamlessly.
 
@@ -103,7 +128,7 @@ The component fully implements `ControlValueAccessor`, allowing you to use `ngMo
 </form>
 ```
 
-### 3. Component Usage
+### 4. Component Usage
 
 Use the component directly for static or embedded pickers.
 
@@ -122,7 +147,7 @@ Use the component directly for static or embedded pickers.
 | `type` | `'year'\|'month'\|'date'\|'time'\|'datetime'` | `'date'` | The type of selector to display. |
 | `range` | `boolean\|string` | `false` | Enable range selection. Can be `true` (separator `-`) or a customized string (e.g. `' ~ '`). |
 | `rangeLinked` | `boolean` | `false` | When `true`, left and right panels are linked (consecutive months). |
-| `format` | `string` | `'yyyy-MM-dd'` | The date output format (e.g., `yyyy-MM-dd HH:mm:ss`). |
+| `format` | `string` | `'yyyy-MM-dd'` | The date output format (e.g., `yyyy-MM-dd HH:mm:ss`, `yyyy年MM月dd日`). |
 | `value` | `string \| Date` | - | Initial value of the picker. |
 | `isInitValue` | `boolean` | `true` | Whether to automatically populate the initial value to the element. |
 | `min` / `max` | `string \| Date \| number` | - | Min/Max selectable date. Supports string, Date, or numeric offset (`-7` is 7 days ago). |
@@ -131,7 +156,9 @@ Use the component directly for static or embedded pickers.
 | `shortcuts` | `Array` | - | Adv shortcuts (e.g., `[{text: 'Today', value: new Date()}]`). |
 | `shorthand` | `Record<string, string>` | - | Simple shortcuts (e.g., `{'yesterday': '2024-01-01'}`). |
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | Footer buttons to display and their order. |
-| `lang` | `SupportedLang \| (() => SupportedLang)` | Auto / `'cn'` | International language toggle (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`). Supports reactive getters & auto browser locale detection. |
+| `lang` | `SupportedLang \| LaydateI18n \| (() => SupportedLang \| LaydateI18n)` | Auto / `'cn'` | Language code (`cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr`) or custom `LaydateI18n` dictionary object. |
+| `i18n` | `LaydateI18n` | - | Custom dictionary overrides (partial or full). All fields are optional. |
+| `hintFormatter` | `LaydateHintFormatter` | - | Interceptor callback to format, customize, or return `false` to suppress toast hints. |
 | `weekStart` | `number` | `0` | Start of the week (0-6, 0 is Sunday). |
 | `darkMode` | `boolean \| 'system' \| 'auto' \| (() => boolean \| 'system' \| 'auto')` | `false` | Dark mode toggle. Supports `true`, `false`, `'system'`/`'auto'` (follow OS dark mode), and dynamic Reactive Getter functions. |
 | `show` | `boolean` | `false` | Whether to show the picker immediately on render. |

@@ -41,7 +41,9 @@
 - 🌓 **跟随系统与深色模式**: 支持 `darkMode: 'system'` / `'auto'` 原生自动感知系统深色模式，支持动态 Reactive Getter 函数 (`() => boolean | 'system'`) 随全局主题即时秒切。
 - 🎨 **动态主题配色系统**: 控件分割线、网格线、标示框、页脚按钮与 Hover 状态全量响应主题配色 (`--laydate-theme-color`) 与沉浸式暗黑视觉。
 - 🕒 **精准控制**: 智能时分秒列显隐控制，支持自动滚动定位。
-- 🌏 **多语言国际化**: 原生支持全球 8 大主流语言（`cn` 简中、`en` 英文、`tw` 繁中、`ja` 日语、`ko` 韩语、`es` 西班牙语、`de` 德语、`fr` 法语），支持浏览器语言智能自动检测与零刷新响应式秒切。
+- 🌏 **多语言国际化与自定义词典**: 原生支持全球 8 大主流语言（`cn` 简中、`en` 英文、`tw` 繁中、`ja` 日语、`ko` 韩语、`es` 西班牙语、`de` 德语、`fr` 法语），支持浏览器语言智能自动检测、零刷新秒切，并支持直接传入自定义语言词典对象 `LaydateI18n`（如俄语 `ruI18n`、阿拉伯语等）或局部覆写。
+- 💬 **自定义提示与消息拦截**: 提供灵活的 `hintFormatter` 拦截器回调，支持对日期超出范围、不可选提示等 Toast 框内容进行个性化定制、格式化或返回 `false` 彻底静音隐去。
+- 🇨🇳 **丰富日期与时间解析**: 支持中文日期格式（`yyyy年MM月dd日`）、点分隔符（`yyyy.MM.dd`）以及中文时间单位（`14时30分00秒`）。
 - 🚩 **节日与假勤**: 内置公历节日显示，支持自定义节假日/加班标记。
 - 🖋️ **自定义渲染**: 提供灵活的 `cellRender` 或 `mark` 函数，支持在单元格内插入自定义 HTML。
 - ⚡ **极致性能**: 深度优化的渲染引擎，配合 `requestAnimationFrame` 实现丝滑的 60fps 交互体验。
@@ -90,7 +92,30 @@ export class MyComponent {}
 }" placeholder="请选择时间范围">
 ```
 
-### 2. 表单支持 (双向绑定)
+### 2. 自定义词典与提示拦截器 (i18n & hintFormatter)
+
+支持直接给 `lang` 属性传入自定义词典 `LaydateI18n`（如俄语），或通过 `i18n` 覆写局部字段（字段均为可选）：
+
+```typescript
+import { LaydateI18n } from 'ng-laydate';
+
+// 开发者自定义俄语词典
+const ruI18n: LaydateI18n = {
+  weeks: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  months: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+  tools: { confirm: 'ОК', clear: 'Сброс', now: 'Сейчас' }
+};
+```
+
+```html
+<!-- 直接传入俄语词典 -->
+<input [laydate]="{ lang: ruI18n }">
+
+<!-- 配合英文语言覆盖单个确认按钮 -->
+<input [laydate]="{ lang: 'en', i18n: { tools: { confirm: 'Submit' } } }">
+```
+
+### 3. 表单支持 (双向绑定)
 
 组件完整实现了 `ControlValueAccessor` 接口，可以像使用原生 `input` 一样配合 `ngModel` 或 `formControlName` 使用。
 
@@ -106,7 +131,7 @@ export class MyComponent {}
 </form>
 ```
 
-### 3. 组件直接使用
+### 4. 组件直接使用
 
 如果您需要静态展示或嵌入式选择器，可以直接使用组件。
 
@@ -125,7 +150,7 @@ export class MyComponent {}
 | `type` | `'year'\|'month'\|'date'\|'time'\|'datetime'` | `'date'` | 选择器类型。支持年、月、日、时分秒以及日期时间。 |
 | `range` | `boolean\|string` | `false` | 开启范围选择。可指定 `true`（分隔符 `-`）或自定义字符串。 |
 | `rangeLinked` | `boolean` | `false` | 是否开启面板联动（左右面板月份连续）。 |
-| `format` | `string` | `'yyyy-MM-dd'` | 日期输出格式（如 `yyyy-MM-dd HH:mm:ss`）。 |
+| `format` | `string` | `'yyyy-MM-dd'` | 日期输出格式（如 `yyyy-MM-dd HH:mm:ss`, `yyyy年MM月dd日`）。 |
 | `value` | `string \| Date` | - | 初始值。可以传入符合格式的字符串或 Date 对象。 |
 | `isInitValue` | `boolean` | `true` | 是否自动向元素填充初始值。 |
 | `min` / `max` | `string \| Date \| number` | - | 最小/最大可选日期。支持字符串、Date 对象或数值偏移。 |
@@ -134,7 +159,9 @@ export class MyComponent {}
 | `shortcuts` | `Array` | - | 高级快捷选项 (如 `[{text: '今天', value: new Date()}]`)。 |
 | `shorthand` | `Record<string, string>` | - | 简单快捷键 (如 `{'yesterday': '2024-01-01'}`)。 |
 | `btns` | `string[]` | `['clear', 'now', 'confirm']` | 页脚显示的按钮及其顺序。 |
-| `lang` | `SupportedLang \| (() => SupportedLang)` | 自动 / `'cn'` | 语言切换（支持 `cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr` 8 种语言）。支持传入动态 Getter 函数及浏览器语言自动感知。 |
+| `lang` | `SupportedLang \| LaydateI18n \| (() => SupportedLang \| LaydateI18n)` | 自动 / `'cn'` | 语言代码（支持 `cn`, `en`, `tw`, `ja`, `ko`, `es`, `de`, `fr` 8 种语言）或自定义 `LaydateI18n` 词典对象。 |
+| `i18n` | `LaydateI18n` | - | 自定义词典重写（局部或全量，所有字段均为可选）。 |
+| `hintFormatter` | `LaydateHintFormatter` | - | 提示消息拦截器回调，可定制格式或返回 `false` 隐去提示框。 |
 | `weekStart` | `number` | `0` | 星期起始日（0-6，0 代表周日）。 |
 | `darkMode` | `boolean \| 'system' \| 'auto' \| (() => boolean \| 'system' \| 'auto')` | `false` | 深色模式配置。支持 `true`, `false`, `'system'`/`'auto'`（自动跟随系统 OS 主题），以及传入动态 Reactive Getter 函数。 |
 | `show` | `boolean` | `false` | 是否在初始化完成后立即显示选择器。 |
