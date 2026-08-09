@@ -464,7 +464,7 @@ ng-laydate.layui-laydate {
         background-color: transparent !important;
 
         > div {
-            background-color: var(--laydate-theme-color) !important;
+            background-color: var(--laydate-theme-color, #16b777) !important;
             color: #fff !important;
         }
     }
