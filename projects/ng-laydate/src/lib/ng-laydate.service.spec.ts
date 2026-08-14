@@ -230,5 +230,22 @@ describe('NgLaydateService', () => {
             expect(d.getMonth()).toBe(7);
             expect(d.getDate()).toBe(21);
         });
+
+        it('should programmatically open, getActivePanel, and unbind element', () => {
+            const input = document.createElement('input');
+            document.body.appendChild(input);
+
+            const panelRef = service.open(input, { value: '2026-08-21' });
+            expect(panelRef).toBeTruthy();
+            expect(service.getActivePanel(input)).toBe(panelRef);
+
+            // unbind should clean up panel and listeners
+            service.unbind(input);
+            expect(service.getActivePanel(input)).toBeNull();
+
+            if (input.parentNode) {
+                input.parentNode.removeChild(input);
+            }
+        });
     });
 });

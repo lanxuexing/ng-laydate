@@ -20,12 +20,13 @@ export class NgLaydateService {
 
     // Instance Registry
     private instances = new Map<string, NgLaydateComponent>();
-    // Track active panel refs by element
-    private activePanels = new Map<HTMLElement, ComponentRef<NgLaydateComponent>>();
+    // Track active panel refs by element using WeakMap to prevent DOM leaks
+    private activePanels = new WeakMap<HTMLElement, ComponentRef<NgLaydateComponent>>();
+    private panelElements = new WeakMap<ComponentRef<any>, HTMLElement>();
     // Track latest configs by element
-    private elementConfigs = new Map<HTMLElement, LaydateConfig>();
-    // Track elements that already have event listeners attached
-    private boundElements = new WeakSet<HTMLElement>();
+    private elementConfigs = new WeakMap<HTMLElement, LaydateConfig>();
+    // Track element event listeners for unbind/cleanup
+    private elementListeners = new WeakMap<HTMLElement, { click: () => void; focus: () => void }>();
     // Track event listeners and timers for cleanup
     private documentClickListeners = new Map<ComponentRef<any>, any>();
     private documentClickTimers = new Map<ComponentRef<any>, any>();
@@ -110,6 +111,49 @@ export class NgLaydateService {
     }
 
     /**
+     * Retrieves the active picker panel ComponentRef for the given HTML element, if any.
+     */
+    getActivePanel(elem: HTMLElement): ComponentRef<NgLaydateComponent> | null {
+        return elem ? (this.activePanels.get(elem) || null) : null;
+    }
+
+    /**
+     * Programmatically opens and attaches a date/time picker panel to the given HTML element.
+     */
+    open(elem: HTMLElement, config?: LaydateConfig): ComponentRef<NgLaydateComponent> | null {
+        if (!isPlatformBrowser(this.platformId) || !elem) return null;
+        const existingPanel = this.activePanels.get(elem);
+        if (existingPanel) return existingPanel;
+
+        if (config) {
+            this.updateConfig(elem, config);
+        }
+        const storedConfig = this.elementConfigs.get(elem) || config || { elem };
+        const elemVal = (elem instanceof HTMLInputElement || elem instanceof HTMLTextAreaElement) ? elem.value?.trim() : undefined;
+        const val = (elemVal !== undefined && elemVal !== '') ? elemVal : storedConfig.value;
+        const latestConfig = { ...storedConfig, value: val };
+        return this.openPanel(latestConfig, elem);
+    }
+
+    /**
+     * Unbinds event listeners and cleans up associated picker instances for the given element.
+     */
+    unbind(elem: HTMLElement) {
+        if (!elem) return;
+        const listeners = this.elementListeners.get(elem);
+        if (listeners) {
+            elem.removeEventListener('click', listeners.click);
+            elem.removeEventListener('focus', listeners.focus);
+            this.elementListeners.delete(elem);
+        }
+        const activeRef = this.activePanels.get(elem);
+        if (activeRef) {
+            this.destroy(activeRef);
+        }
+        this.elementConfigs.delete(elem);
+    }
+
+    /**
      * Programmatically renders and attaches a Laydate picker panel onto the specified target element.
      * @param config Full LaydateConfig object (must include target elem or selector string)
      * @returns Created ComponentRef handle, or null in SSR environments
@@ -138,9 +182,7 @@ export class NgLaydateService {
         }
 
         // Bind click & focus listeners to target element if not already bound
-        if (!this.boundElements.has(elem)) {
-            this.boundElements.add(elem);
-
+        if (!this.elementListeners.has(elem)) {
             const triggerHandler = () => {
                 if (!this.activePanels.get(elem)) {
                     const storedConfig = this.elementConfigs.get(elem) || config;
@@ -153,6 +195,7 @@ export class NgLaydateService {
 
             elem.addEventListener('click', triggerHandler);
             elem.addEventListener('focus', triggerHandler);
+            this.elementListeners.set(elem, { click: triggerHandler, focus: triggerHandler });
         }
 
         // Only open panel immediately on render if explicitly set in config.show === true
@@ -176,6 +219,7 @@ export class NgLaydateService {
 
         if (config.position !== 'static') {
             this.activePanels.set(elem, componentRef);
+            this.panelElements.set(componentRef, elem);
         }
 
         // Set inputs correctly
@@ -336,12 +380,11 @@ export class NgLaydateService {
     }
 
     private destroy(ref: ComponentRef<NgLaydateComponent>, shadeEl?: HTMLElement | null) {
-        // Remove from activePanels map
-        for (const [elem, activeRef] of this.activePanels.entries()) {
-            if (activeRef === ref) {
-                this.activePanels.delete(elem);
-                break;
-            }
+        // Remove from activePanels WeakMap
+        const elem = this.panelElements.get(ref);
+        if (elem) {
+            this.activePanels.delete(elem);
+            this.panelElements.delete(ref);
         }
 
         // Clear pending timers
