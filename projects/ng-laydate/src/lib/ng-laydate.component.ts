@@ -501,14 +501,24 @@ export class NgLaydateComponent {
   private hintTimer: any = null;
 
   constructor() {
-    this.destroyRef.onDestroy(() => this.clearScrollTimers());
+    this.destroyRef.onDestroy(() => {
+      this.clearScrollTimers();
+      if (this.hintTimer) {
+        clearTimeout(this.hintTimer);
+        this.hintTimer = null;
+      }
+    });
 
     if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       if (mediaQuery) {
         this.systemDarkMode.set(mediaQuery.matches);
-        mediaQuery.addEventListener?.('change', (e) => {
+        const mediaListener = (e: MediaQueryListEvent) => {
           this.systemDarkMode.set(e.matches);
+        };
+        mediaQuery.addEventListener?.('change', mediaListener);
+        this.destroyRef.onDestroy(() => {
+          mediaQuery.removeEventListener?.('change', mediaListener);
         });
       }
     }

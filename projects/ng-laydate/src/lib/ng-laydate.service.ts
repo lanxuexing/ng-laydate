@@ -508,7 +508,7 @@ export class NgLaydateService {
      * Parses string, Date, or numeric relative day offsets into a standard DateObject structure.
      */
     parse(value: any): DateObject {
-        if (!value) {
+        if (value === null || value === undefined || value === '') {
             return this.systemDate();
         }
         if (Array.isArray(value)) {
@@ -526,7 +526,7 @@ export class NgLaydateService {
                     return this.systemDate(d);
                 }
             }
-            // Relative day offset (e.g. -1, 1, 7)
+            // Relative day offset (e.g. -1, 0, 1, 7)
             const d = new Date();
             d.setDate(d.getDate() + value);
             return this.systemDate(d);
@@ -544,8 +544,8 @@ export class NgLaydateService {
             targetStr = '1970-01-01 ' + targetStr;
         }
 
-        // Match yyyy-MM-dd HH:mm:ss, yyyy/MM/dd, yyyy.MM.dd, yyyy年MM月dd日
-        const match = targetStr ? targetStr.match(/^(\d{4})[-/\.年](\d{1,2})[-/\.月](\d{1,2})日?(?:\s+(\d{1,2})[:时](\d{1,2})(?:[:分](\d{1,2})秒?)?)?/) : null;
+        // Match yyyy-MM-dd HH:mm:ss, yyyy-MM-ddTHH:mm:ss, yyyy/MM/dd, yyyy.MM.dd, yyyy年MM月dd日
+        const match = targetStr ? targetStr.match(/^(\d{4})[-/\.年](\d{1,2})[-/\.月](\d{1,2})日?(?:[\sT]+(\d{1,2})[:时](\d{1,2})(?:[:分](\d{1,2})秒?)?)?/) : null;
         if (match) {
             return {
                 year: parseInt(match[1], 10),

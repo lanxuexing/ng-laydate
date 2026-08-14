@@ -28,7 +28,7 @@ describe('NgLaydateService', () => {
             expect(res.seconds).toBe(0);
         });
 
-        it('should parse ISO datetime string (yyyy-MM-dd HH:mm:ss)', () => {
+        it('should parse ISO datetime string (yyyy-MM-dd HH:mm:ss and yyyy-MM-ddTHH:mm:ss)', () => {
             const res = service.parse('2026-08-21 14:30:45');
             expect(res.year).toBe(2026);
             expect(res.month).toBe(7);
@@ -36,6 +36,14 @@ describe('NgLaydateService', () => {
             expect(res.hours).toBe(14);
             expect(res.minutes).toBe(30);
             expect(res.seconds).toBe(45);
+
+            const resT = service.parse('2026-08-21T14:30:45');
+            expect(resT.year).toBe(2026);
+            expect(resT.month).toBe(7);
+            expect(resT.date).toBe(21);
+            expect(resT.hours).toBe(14);
+            expect(resT.minutes).toBe(30);
+            expect(resT.seconds).toBe(45);
         });
 
         it('should parse slash formatted date string (yyyy/MM/dd)', () => {
