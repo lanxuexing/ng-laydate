@@ -1337,6 +1337,35 @@ export class NgLaydateComponent {
         this.initYearList(end.year, 'right');
       }
 
+      if (cfg.rangeLinked) {
+        this.syncRightDateFromLeft();
+      }
+
+      this.autoScrollTime();
+      this.confirmRange();
+    } else if (cfg.range) {
+      // Single Value in Range Mode -> set both start & end to the same parsed date
+      let singleVal = value;
+      if (Array.isArray(singleVal)) {
+        singleVal = singleVal.length > 0 ? singleVal[0] : '';
+      }
+      const resolved = resolve(singleVal);
+      const parsed = this.service.parse(resolved);
+
+      this.startDate.set({ ...parsed });
+      this.endDate.set({ ...parsed });
+      this.leftDate.set({ ...parsed });
+      this.rightDate.set({ ...parsed });
+
+      if (cfg.type === 'year') {
+        this.initYearList(parsed.year, 'left');
+        this.initYearList(parsed.year, 'right');
+      }
+
+      if (cfg.rangeLinked) {
+        this.syncRightDateFromLeft();
+      }
+
       this.autoScrollTime();
       this.confirmRange();
     } else {

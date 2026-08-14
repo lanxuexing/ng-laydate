@@ -299,6 +299,24 @@ describe('NgLaydateComponent', () => {
     expect(component.endDate().date).toBe(15);
   });
 
+  it('should handle single date shortcut in range mode without corrupting range output', async () => {
+    let emitted = '';
+    fixture.componentRef.setInput('config', {
+      range: true,
+      done: (val: string) => { emitted = val; }
+    });
+    fixture.detectChanges();
+
+    const todayShortcut = { text: 'Today', value: '2026-08-21' };
+    component.handleShortcut(todayShortcut);
+
+    expect(component.startDate().year).toBe(2026);
+    expect(component.startDate().month).toBe(7);
+    expect(component.startDate().date).toBe(21);
+    expect(component.endDate().date).toBe(21);
+    expect(emitted).toBe('2026-08-21 - 2026-08-21');
+  });
+
   it('should sanitize XSS payloads in custom html inputs while preserving safe tags', async () => {
     const xssPayload = '<img src=x onerror=alert(1)><span style="color: red">Safe</span>';
     const pipe = new SafeHtmlPipe(TestBed.inject(DomSanitizer));
