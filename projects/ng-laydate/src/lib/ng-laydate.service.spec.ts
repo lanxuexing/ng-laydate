@@ -255,5 +255,31 @@ describe('NgLaydateService', () => {
                 input.parentNode.removeChild(input);
             }
         });
+
+        it('should reposition panel dynamically on window resize and scroll events', () => {
+            const input = document.createElement('input');
+            input.style.position = 'absolute';
+            input.style.top = '100px';
+            input.style.left = '50px';
+            document.body.appendChild(input);
+
+            const panelRef = service.open(input, { value: '2026-08-21' });
+            expect(panelRef).toBeTruthy();
+
+            const panelEl = panelRef!.location.nativeElement as HTMLElement;
+            expect(panelEl).toBeTruthy();
+
+            // Trigger window scroll & resize events
+            window.dispatchEvent(new Event('scroll'));
+            window.dispatchEvent(new Event('resize'));
+
+            // Verify clean unbind
+            service.unbind(input);
+            expect(service.getActivePanel(input)).toBeNull();
+
+            if (input.parentNode) {
+                input.parentNode.removeChild(input);
+            }
+        });
     });
 });

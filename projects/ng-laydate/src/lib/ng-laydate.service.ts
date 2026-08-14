@@ -32,6 +32,7 @@ export class NgLaydateService {
     private documentClickTimers = new Map<ComponentRef<any>, any>();
     private shadeClickTimers = new Map<ComponentRef<any>, any>();
     private subscriptionsMap = new Map<ComponentRef<any>, { unsubscribe: () => void }[]>();
+    private repositionListeners = new Map<ComponentRef<any>, () => void>();
 
     /**
      * Converts a Hex color code string into an RGBA string with the given opacity.
@@ -336,47 +337,65 @@ export class NgLaydateService {
             this.documentClickTimers.set(componentRef, timer);
         }
 
+        // Dynamic Anchor Repositioning: Track window resize and container scroll
+        if (config.position !== 'static') {
+            let rafId: number | null = null;
+            const repositionHandler = () => {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    this.setAbsolutePosition(elem, componentEl);
+                });
+            };
+
+            window.addEventListener('resize', repositionHandler, { passive: true });
+            window.addEventListener('scroll', repositionHandler, { passive: true, capture: true });
+
+            this.repositionListeners.set(componentRef, () => {
+                if (rafId) cancelAnimationFrame(rafId);
+                window.removeEventListener('resize', repositionHandler);
+                window.removeEventListener('scroll', repositionHandler, true);
+            });
+        }
+
         return componentRef;
     }
 
     private setAbsolutePosition(elem: HTMLElement, componentEl: HTMLElement) {
-        if (!isPlatformBrowser(this.platformId)) return;
+        if (!isPlatformBrowser(this.platformId) || !elem || !componentEl) return;
 
-        requestAnimationFrame(() => {
-            const rect = elem.getBoundingClientRect();
-            const scrollT = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollL = window.pageXOffset || document.documentElement.scrollLeft;
+        const rect = elem.getBoundingClientRect();
+        const scrollT = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollL = window.pageXOffset || document.documentElement.scrollLeft;
 
-            const panelW = componentEl.offsetWidth;
-            const panelH = componentEl.offsetHeight;
+        const panelW = componentEl.offsetWidth;
+        const panelH = componentEl.offsetHeight;
 
-            let top = rect.bottom + scrollT;
-            let left = rect.left + scrollL;
+        let top = rect.bottom + scrollT;
+        let left = rect.left + scrollL;
 
-            // Smart Alignment: check if it overflows the bottom
-            if (top + panelH > scrollT + window.innerHeight && rect.top > panelH) {
-                top = rect.top + scrollT - panelH - 2; // flip up
+        // Smart Alignment: check if it overflows the bottom
+        if (top + panelH > scrollT + window.innerHeight && rect.top > panelH) {
+            top = rect.top + scrollT - panelH - 2; // flip up
+        }
+
+        // Horizontal Alignment & Mobile Responsive Clamp
+        const isMobile = window.innerWidth <= 640;
+        if (isMobile) {
+            const maxMobileWidth = window.innerWidth - 24;
+            componentEl.style.maxWidth = `${maxMobileWidth}px`;
+            componentEl.style.boxSizing = 'border-box';
+            const actualWidth = Math.min(panelW || maxMobileWidth, maxMobileWidth);
+            left = Math.max(12, scrollL + (window.innerWidth - actualWidth) / 2);
+        } else {
+            if (left + panelW > scrollL + window.innerWidth) {
+                left = scrollL + window.innerWidth - panelW - 5;
             }
+            if (left < scrollL) left = scrollL;
+        }
 
-            // Horizontal Alignment & Mobile Responsive Clamp
-            const isMobile = window.innerWidth <= 640;
-            if (isMobile) {
-                const maxMobileWidth = window.innerWidth - 24;
-                componentEl.style.maxWidth = `${maxMobileWidth}px`;
-                componentEl.style.boxSizing = 'border-box';
-                const actualWidth = Math.min(panelW || maxMobileWidth, maxMobileWidth);
-                left = Math.max(12, scrollL + (window.innerWidth - actualWidth) / 2);
-            } else {
-                if (left + panelW > scrollL + window.innerWidth) {
-                    left = scrollL + window.innerWidth - panelW - 5;
-                }
-                if (left < scrollL) left = scrollL;
-            }
-
-            componentEl.style.top = top + 'px';
-            componentEl.style.left = left + 'px';
-            componentEl.style.margin = '0'; // Clear default margin
-        });
+        componentEl.style.top = top + 'px';
+        componentEl.style.left = left + 'px';
+        componentEl.style.margin = '0'; // Clear default margin
     }
 
     private destroy(ref: ComponentRef<NgLaydateComponent>, shadeEl?: HTMLElement | null) {
@@ -385,6 +404,13 @@ export class NgLaydateService {
         if (elem) {
             this.activePanels.delete(elem);
             this.panelElements.delete(ref);
+        }
+
+        // Cleanup reposition listeners
+        const cleanReposition = this.repositionListeners.get(ref);
+        if (cleanReposition) {
+            cleanReposition();
+            this.repositionListeners.delete(ref);
         }
 
         // Clear pending timers
