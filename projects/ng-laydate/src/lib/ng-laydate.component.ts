@@ -27,7 +27,11 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     '[class.laydate-time-show]': '!finalConfig().range && view() === "time"',
     '[style.--laydate-theme-color]': 'parsedTheme().color',
     '[style.--laydate-theme-color-light]': 'themeColorLight()',
-    '[style.--laydate-border-color]': 'themeColorBorder()'
+    '[style.--laydate-border-color]': 'themeColorBorder()',
+    'tabindex': '-1',
+    'role': 'application',
+    '[attr.aria-label]': 'i18n().dateTips',
+    '(keydown)': 'handleKeydown($event)'
   }
 })
 export class NgLaydateComponent {
@@ -1503,5 +1507,130 @@ export class NgLaydateComponent {
         }
       });
     }, 0);
+  }
+
+  handleKeydown(e: KeyboardEvent) {
+    const key = e.key;
+    const cfg = this.finalConfig();
+    const isRange = !!cfg.range;
+    const currView = isRange ? this.leftView() : this.view();
+
+    if (key === 'Escape') {
+      if (cfg.position !== 'static') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.clearOutput.emit();
+      }
+      return;
+    }
+
+    if (currView === 'date') {
+      const cur = isRange ? this.startDate() : this.currentDate();
+      let delta = 0;
+
+      if (key === 'ArrowLeft') delta = -1;
+      else if (key === 'ArrowRight') delta = 1;
+      else if (key === 'ArrowUp') delta = -7;
+      else if (key === 'ArrowDown') delta = 7;
+      else if (key === 'PageUp') {
+        e.preventDefault();
+        if (e.shiftKey) this.prevYear();
+        else this.prevMonth();
+        return;
+      } else if (key === 'PageDown') {
+        e.preventDefault();
+        if (e.shiftKey) this.nextYear();
+        else this.nextMonth();
+        return;
+      } else if (key === 'Home') {
+        e.preventDefault();
+        const d: DateObject = { ...cur, date: 1 };
+        this.currentDate.set(d);
+        this.leftDate.set({ ...d });
+        if (isRange) this.startDate.set({ ...d });
+        return;
+      } else if (key === 'End') {
+        e.preventDefault();
+        const max = this.service.totalDay(cur.year, cur.month);
+        const d: DateObject = { ...cur, date: max };
+        this.currentDate.set(d);
+        this.leftDate.set({ ...d });
+        if (isRange) this.startDate.set({ ...d });
+        return;
+      } else if (key === 'Enter') {
+        e.preventDefault();
+        if (isRange) this.confirmRange();
+        else this.confirm();
+        return;
+      }
+
+      if (delta !== 0) {
+        e.preventDefault();
+        const dt = new Date(cur.year, cur.month, cur.date + delta, cur.hours, cur.minutes, cur.seconds);
+        const newObj: DateObject = {
+          year: dt.getFullYear(),
+          month: dt.getMonth(),
+          date: dt.getDate(),
+          hours: cur.hours,
+          minutes: cur.minutes,
+          seconds: cur.seconds
+        };
+        this.currentDate.set(newObj);
+        this.leftDate.set({ ...newObj });
+        if (isRange) this.startDate.set({ ...newObj });
+      }
+    } else if (currView === 'year') {
+      const cur = isRange ? this.leftDate() : this.currentDate();
+      let delta = 0;
+      if (key === 'ArrowLeft') delta = -1;
+      else if (key === 'ArrowRight') delta = 1;
+      else if (key === 'ArrowUp') delta = -3;
+      else if (key === 'ArrowDown') delta = 3;
+      else if (key === 'Enter') {
+        e.preventDefault();
+        this.selectYear(cur.year);
+        return;
+      }
+
+      if (delta !== 0) {
+        e.preventDefault();
+        const newYear = cur.year + delta;
+        const d: DateObject = { ...cur, year: newYear };
+        this.clampDay(d);
+        this.currentDate.set(d);
+        this.leftDate.set({ ...d });
+        this.initYearList(newYear, 'single');
+        this.initYearList(newYear, 'left');
+      }
+    } else if (currView === 'month') {
+      const cur = isRange ? this.leftDate() : this.currentDate();
+      let delta = 0;
+      if (key === 'ArrowLeft') delta = -1;
+      else if (key === 'ArrowRight') delta = 1;
+      else if (key === 'ArrowUp') delta = -3;
+      else if (key === 'ArrowDown') delta = 3;
+      else if (key === 'Enter') {
+        e.preventDefault();
+        this.selectMonth(cur.month);
+        return;
+      }
+
+      if (delta !== 0) {
+        e.preventDefault();
+        let newMonth = cur.month + delta;
+        let newYear = cur.year;
+        if (newMonth < 0) {
+          newMonth = (newMonth % 12 + 12) % 12;
+          newYear--;
+        } else if (newMonth > 11) {
+          newMonth = newMonth % 12;
+          newYear++;
+        }
+        const d: DateObject = { ...cur, year: newYear, month: newMonth };
+        this.clampDay(d);
+        this.currentDate.set(d);
+        this.leftDate.set({ ...d });
+      }
+    }
   }
 }

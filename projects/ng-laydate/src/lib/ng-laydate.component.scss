@@ -44,6 +44,16 @@ ng-laydate.layui-laydate {
     border: 1px solid #d2d2d2;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
 
+    /* Keyboard accessibility focus outline */
+    &:focus {
+        outline: none;
+    }
+
+    [tabindex="0"]:focus-visible {
+        outline: 2px solid var(--laydate-theme-color, #16b777);
+        outline-offset: -1px;
+    }
+
     &.layui-laydate-static {
         position: relative;
         z-index: 0;

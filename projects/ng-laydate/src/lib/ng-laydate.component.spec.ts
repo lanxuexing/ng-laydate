@@ -345,4 +345,63 @@ describe('NgLaydateComponent', () => {
     expect(component.currentDate().month).toBe(2); // March
     expect(component.currentDate().date).toBe(28);
   });
+
+  it('should render WAI-ARIA roles, attributes and accessible labels on grid cells and headers', async () => {
+    fixture.componentRef.setInput('config', { value: '2026-08-21' });
+    fixture.detectChanges();
+
+    const table = fixture.nativeElement.querySelector('table');
+    expect(table?.getAttribute('role')).toBe('grid');
+
+    const selectedCell = fixture.nativeElement.querySelector('td.layui-this');
+    expect(selectedCell).toBeTruthy();
+    expect(selectedCell?.getAttribute('role')).toBe('gridcell');
+    expect(selectedCell?.getAttribute('aria-selected')).toBe('true');
+    expect(selectedCell?.getAttribute('aria-label')).toContain('2026-08-21');
+
+    const prevYearBtn = fixture.nativeElement.querySelector('.laydate-prev-y');
+    expect(prevYearBtn?.getAttribute('role')).toBe('button');
+    expect(prevYearBtn?.getAttribute('aria-label')).toBeTruthy();
+  });
+
+  it('should support keyboard navigation via Arrow keys, PageUp/Down, Home, End, and Enter', async () => {
+    let confirmedValue = '';
+    fixture.componentRef.setInput('config', {
+      value: '2026-08-15',
+      done: (val: string) => { confirmedValue = val; }
+    });
+    fixture.detectChanges();
+
+    // ArrowRight -> 2026-08-16
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    expect(component.currentDate().date).toBe(16);
+
+    // ArrowLeft -> 2026-08-15
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+    expect(component.currentDate().date).toBe(15);
+
+    // ArrowDown -> 2026-08-22 (+7 days)
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    expect(component.currentDate().date).toBe(22);
+
+    // ArrowUp -> 2026-08-15 (-7 days)
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    expect(component.currentDate().date).toBe(15);
+
+    // Home -> 2026-08-01 (first day)
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'Home' }));
+    expect(component.currentDate().date).toBe(1);
+
+    // End -> 2026-08-31 (last day of Aug)
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'End' }));
+    expect(component.currentDate().date).toBe(31);
+
+    // PageUp -> July 31
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'PageUp' }));
+    expect(component.currentDate().month).toBe(6); // July
+
+    // Enter -> confirm
+    component.handleKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(confirmedValue).toBe('2026-07-31');
+  });
 });

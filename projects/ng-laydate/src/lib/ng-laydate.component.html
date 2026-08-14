@@ -1,7 +1,8 @@
 @if (finalConfig().shortcuts) {
-<ul class="layui-laydate-shortcut">
+<ul class="layui-laydate-shortcut" role="toolbar" [attr.aria-label]="i18n().hint">
     @for (item of finalConfig().shortcuts; track $index) {
-    <li (click)="handleShortcut(item)" [innerHTML]="item.text | safeHtml"></li>
+    <li role="button" tabindex="0" (click)="handleShortcut(item)" (keydown.enter)="handleShortcut(item)"
+        (keydown.space)="handleShortcut(item)" [innerHTML]="item.text | safeHtml"></li>
     }
 </ul>
 }
@@ -39,7 +40,8 @@
 @if (finalConfig().showBottom) {
 <div class="layui-laydate-footer">
     @if (finalConfig().type === 'datetime' && finalConfig().theme !== 'fullpanel') {
-    <span class="laydate-btns-time" (click)="toggleTime()">{{ (finalConfig().range ? leftView() : view()) === 'time'
+    <span class="laydate-btns-time" role="button" tabindex="0" (click)="toggleTime()" (keydown.enter)="toggleTime()"
+        (keydown.space)="toggleTime()">{{ (finalConfig().range ? leftView() : view()) === 'time'
         ?
         i18n().backToDate : i18n().timeTips }}</span>
     }
@@ -50,7 +52,9 @@
 
     <div class="laydate-footer-btns">
         @for (btn of footerBtns(); track btn.type) {
-        <span [attr.lay-type]="btn.type" (click)="handleBtnClick(btn.type)"
+        <span [attr.lay-type]="btn.type" role="button" tabindex="0" (click)="handleBtnClick(btn.type)"
+            (keydown.enter)="handleBtnClick(btn.type)" (keydown.space)="handleBtnClick(btn.type)"
+            [attr.aria-disabled]="btn.type === 'confirm' && isConfirmDisabled()"
             [class.laydate-disabled]="btn.type === 'confirm' && isConfirmDisabled()">{{ btn.label }}</span>
         }
     </div>
@@ -58,7 +62,7 @@
 }
 
 @if (hintState().visible) {
-<div class="layui-laydate-hint" [innerHTML]="hintState().content | safeHtml"></div>
+<div class="layui-laydate-hint" role="alert" aria-live="assertive" [innerHTML]="hintState().content | safeHtml"></div>
 }
 
 <!-- Reusable Calendar Panel Template -->
@@ -66,30 +70,43 @@
     let-yearList="yearList">
     <div class="layui-laydate-header">
         @if (currView !== 'time' && (!isLinked() || !isRight)) {
-        <i class="layui-icon laydate-icon laydate-prev-y" (click)="prevYear(isRight)">&#xe65a;</i>
+        <i class="layui-icon laydate-icon laydate-prev-y" role="button" tabindex="0"
+            [attr.aria-label]="i18n().yearTips + ' ' + (isRight ? 'Right' : 'Left') + ' Prev'"
+            (click)="prevYear(isRight)" (keydown.enter)="prevYear(isRight)"
+            (keydown.space)="prevYear(isRight)">&#xe65a;</i>
         }
         @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || !isRight)) {
-        <i class="layui-icon laydate-icon laydate-prev-m" (click)="prevMonth(isRight)">&#xe603;</i>
+        <i class="layui-icon laydate-icon laydate-prev-m" role="button" tabindex="0"
+            [attr.aria-label]="i18n().monthTips + ' Prev'" (click)="prevMonth(isRight)"
+            (keydown.enter)="prevMonth(isRight)" (keydown.space)="prevMonth(isRight)">&#xe603;</i>
         }
         <div class="laydate-set-ym">
             @if (currView === 'time' && finalConfig().theme !== 'fullpanel') {
             <span>{{ i18n().timeTips }}</span>
             } @else {
-            <span lay-type="year" (click)="switchView('year', isRight)">
+            <span lay-type="year" role="button" tabindex="0" (click)="switchView('year', isRight)"
+                (keydown.enter)="switchView('year', isRight)" (keydown.space)="switchView('year', isRight)">
                 {{ (currView === 'year' || (finalConfig().theme === 'fullpanel' && currView === 'year')) ?
                 getYearRangeLabel(isRight) : i18n().formatYear(date.year) }}
             </span>
             @if (currView !== 'year' && currView !== 'month') {
-            <span lay-type="month" (click)="switchView('month', isRight)">{{ i18n().formatMonth(date.month)
+            <span lay-type="month" role="button" tabindex="0" (click)="switchView('month', isRight)"
+                (keydown.enter)="switchView('month', isRight)" (keydown.space)="switchView('month', isRight)">{{
+                i18n().formatMonth(date.month)
                 }}</span>
             }
             }
         </div>
         @if ((currView === 'date' || finalConfig().theme === 'fullpanel') && (!isLinked() || isRight)) {
-        <i class="layui-icon laydate-icon laydate-next-m" (click)="nextMonth(isRight)">&#xe602;</i>
+        <i class="layui-icon laydate-icon laydate-next-m" role="button" tabindex="0"
+            [attr.aria-label]="i18n().monthTips + ' Next'" (click)="nextMonth(isRight)"
+            (keydown.enter)="nextMonth(isRight)" (keydown.space)="nextMonth(isRight)">&#xe602;</i>
         }
         @if (currView !== 'time' && (!isLinked() || isRight)) {
-        <i class="layui-icon laydate-icon laydate-next-y" (click)="nextYear(isRight)">&#xe65b;</i>
+        <i class="layui-icon laydate-icon laydate-next-y" role="button" tabindex="0"
+            [attr.aria-label]="i18n().yearTips + ' ' + (isRight ? 'Right' : 'Left') + ' Next'"
+            (click)="nextYear(isRight)" (keydown.enter)="nextYear(isRight)"
+            (keydown.space)="nextYear(isRight)">&#xe65b;</i>
         }
     </div>
 
@@ -130,20 +147,26 @@
 <!-- Sub-templates for grid content -->
 <ng-template #dateGrid let-data="data" let-isRight="isRight">
     <div class="layui-laydate-content">
-        <table>
+        <table role="grid" [attr.aria-label]="i18n().dateTips">
             <thead>
-                <tr>
+                <tr role="row">
                     @for (w of weekHeaders(); track $index) {
-                    <th>{{ w }}</th>
+                    <th role="columnheader">{{ w }}</th>
                     }
                 </tr>
             </thead>
             <tbody>
                 @for (row of getRows(data); track $index) {
-                <tr>
+                <tr role="row">
                     @for (day of row; track day.year + '-' + day.month + '-' + day.day) {
-                    <td (mouseenter)="hoverValue({year: day.year, month: day.month, date: day.day})"
-                        (click)="selectDay(day, isRight)" [attr.lay-ymd]="day.year + '-' + day.month + '-' + day.day"
+                    <td role="gridcell" [attr.aria-selected]="isThisDay(day.year, day.month, day.day, isRight) || isInRange(day.year, day.month, day.day)"
+                        [attr.aria-disabled]="day.disabled"
+                        [attr.aria-label]="day.year + '-' + digit(day.month + 1) + '-' + digit(day.day) + (day.holiday ? ' (' + day.holiday + ')' : '') + (day.mark ? ' ' + day.mark : '')"
+                        [attr.tabindex]="day.disabled ? -1 : (isThisDay(day.year, day.month, day.day, isRight) ? 0 : -1)"
+                        (mouseenter)="hoverValue({year: day.year, month: day.month, date: day.day})"
+                        (click)="selectDay(day, isRight)" (keydown.enter)="selectDay(day, isRight)"
+                        (keydown.space)="selectDay(day, isRight)"
+                        [attr.lay-ymd]="day.year + '-' + day.month + '-' + day.day"
                         [class.laydate-day-prev]="day.type === 'prev'" [class.laydate-day-next]="day.type === 'next'"
                         [class.laydate-day-now]="isToday(day.year, day.month, day.day)"
                         [class.layui-this]="!day.disabled && isThisDay(day.year, day.month, day.day, isRight)"
@@ -173,9 +196,11 @@
 </ng-template>
 
 <ng-template #yearGrid let-yearList="yearList" let-isRight="isRight">
-    <ul class="layui-laydate-list laydate-year-list">
+    <ul class="layui-laydate-list laydate-year-list" role="listbox" [attr.aria-label]="i18n().yearTips">
         @for (y of yearList; track y) {
-        <li (click)="selectYear(y, isRight)" (mouseenter)="hoverValue({year: y, month: 0, date: 1})"
+        <li role="option" [attr.tabindex]="isThisYear(y, isRight) ? 0 : -1" [attr.aria-selected]="isThisYear(y, isRight)"
+            (click)="selectYear(y, isRight)" (keydown.enter)="selectYear(y, isRight)" (keydown.space)="selectYear(y, isRight)"
+            (mouseenter)="hoverValue({year: y, month: 0, date: 1})"
             [class.laydate-selected]="isInRange(y, 0, 1)"
             [class.layui-this]="isThisYear(y, isRight)">
             {{ i18n().formatYear(y) }}</li>
@@ -184,9 +209,12 @@
 </ng-template>
 
 <ng-template #monthGrid let-date="date" let-isRight="isRight">
-    <ul class="layui-laydate-list laydate-month-list">
+    <ul class="layui-laydate-list laydate-month-list" role="listbox" [attr.aria-label]="i18n().monthTips">
         @for (m of i18n().months; track i; let i = $index) {
-        <li (click)="selectMonth(i, isRight)" (mouseenter)="hoverValue({year: date.year, month: i, date: 1})"
+        <li role="option" [attr.tabindex]="isThisMonth(i, date.year, isRight) ? 0 : -1"
+            [attr.aria-selected]="isThisMonth(i, date.year, isRight)" (click)="selectMonth(i, isRight)"
+            (keydown.enter)="selectMonth(i, isRight)" (keydown.space)="selectMonth(i, isRight)"
+            (mouseenter)="hoverValue({year: date.year, month: i, date: 1})"
             [class.laydate-selected]="isInRange(date.year, i, 1)"
             [class.layui-this]="isThisMonth(i, date.year, isRight)">
             {{ m }}</li>
@@ -195,13 +223,15 @@
 </ng-template>
 
 <ng-template #timePanel let-date="date" let-isRight="isRight">
-    <ul class="layui-laydate-list laydate-time-list">
+    <ul class="layui-laydate-list laydate-time-list" role="region" [attr.aria-label]="i18n().timeTips">
         @if (timeColumnVisibility().h) {
         <li>
             <p>{{ i18n().time[0] }}</p>
-            <ol #timeOl_hours>
+            <ol #timeOl_hours role="listbox" [attr.aria-label]="i18n().time[0]">
                 @for (h of timeList.hours; track h) {
-                <li (click)="selectTime('hours', h, isRight)" [class.layui-this]="date.hours === h"
+                <li role="option" [attr.tabindex]="date.hours === h ? 0 : -1" [attr.aria-selected]="date.hours === h"
+                    (click)="selectTime('hours', h, isRight)" (keydown.enter)="selectTime('hours', h, isRight)"
+                    (keydown.space)="selectTime('hours', h, isRight)" [class.layui-this]="date.hours === h"
                     [class.laydate-disabled]="isDisabledTime('hours', h, isRight)">{{ digit(h) }}
                 </li>
                 }
@@ -211,9 +241,11 @@
         @if (timeColumnVisibility().m) {
         <li>
             <p>{{ i18n().time[1] }}</p>
-            <ol #timeOl_minutes>
+            <ol #timeOl_minutes role="listbox" [attr.aria-label]="i18n().time[1]">
                 @for (m of timeList.minutes; track m) {
-                <li (click)="selectTime('minutes', m, isRight)" [class.layui-this]="date.minutes === m"
+                <li role="option" [attr.tabindex]="date.minutes === m ? 0 : -1" [attr.aria-selected]="date.minutes === m"
+                    (click)="selectTime('minutes', m, isRight)" (keydown.enter)="selectTime('minutes', m, isRight)"
+                    (keydown.space)="selectTime('minutes', m, isRight)" [class.layui-this]="date.minutes === m"
                     [class.laydate-disabled]="isDisabledTime('minutes', m, isRight)">{{ digit(m)
                     }}
                 </li>
@@ -224,9 +256,11 @@
         @if (timeColumnVisibility().s) {
         <li>
             <p>{{ i18n().time[2] }}</p>
-            <ol #timeOl_seconds>
+            <ol #timeOl_seconds role="listbox" [attr.aria-label]="i18n().time[2]">
                 @for (s of timeList.seconds; track s) {
-                <li (click)="selectTime('seconds', s, isRight)" [class.layui-this]="date.seconds === s"
+                <li role="option" [attr.tabindex]="date.seconds === s ? 0 : -1" [attr.aria-selected]="date.seconds === s"
+                    (click)="selectTime('seconds', s, isRight)" (keydown.enter)="selectTime('seconds', s, isRight)"
+                    (keydown.space)="selectTime('seconds', s, isRight)" [class.layui-this]="date.seconds === s"
                     [class.laydate-disabled]="isDisabledTime('seconds', s, isRight)">{{ digit(s)
                     }}
                 </li>
