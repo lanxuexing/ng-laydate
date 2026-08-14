@@ -186,6 +186,16 @@ describe('NgLaydateService', () => {
         it('should format to HH:mm', () => {
             expect(service.format(sampleDate, 'HH:mm')).toBe('14:30');
         });
+
+        it('should format single-digit tokens (y-M-d H:m:s)', () => {
+            const date: DateObject = { year: 2026, month: 3, date: 5, hours: 8, minutes: 9, seconds: 7 };
+            expect(service.format(date, 'y-M-d H:m:s')).toBe('2026-4-5 8:9:7');
+        });
+
+        it('should support literal text escaping via brackets [...] without collision', () => {
+            expect(service.format(sampleDate, 'yyyy-MM-dd [Day: yyyy]')).toBe('2026-08-21 Day: yyyy');
+            expect(service.format(sampleDate, 'yyyy-MM-dd [(Monday)]')).toBe('2026-08-21 (Monday)');
+        });
     });
 
     describe('helper methods', () => {

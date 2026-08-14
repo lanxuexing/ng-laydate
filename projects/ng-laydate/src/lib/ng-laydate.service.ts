@@ -401,36 +401,33 @@ export class NgLaydateService {
 
     /**
      * Formats a DateObject into a date string according to the format template.
+     * Uses a single-pass tokenizer to avoid token replacement collisions.
+     * Supports bracket escaping like `[yyyy]` for literal text.
      * @param date Source DateObject
      * @param formatStr Format template string (defaults to 'yyyy-MM-dd')
      */
     format(date: DateObject, formatStr: string = 'yyyy-MM-dd'): string {
-        const yyyy = this.digit(date.year, 4);
-        const y = String(date.year);
-        const MM = this.digit(date.month + 1);
-        const M = String(date.month + 1);
-        const dd = this.digit(date.date);
-        const d = String(date.date);
-        const HH = this.digit(date.hours);
-        const H = String(date.hours);
-        const mm = this.digit(date.minutes);
-        const m = String(date.minutes);
-        const ss = this.digit(date.seconds);
-        const s = String(date.seconds);
+        const map: Record<string, string> = {
+            yyyy: this.digit(date.year, 4),
+            y: String(date.year),
+            MM: this.digit(date.month + 1),
+            M: String(date.month + 1),
+            dd: this.digit(date.date),
+            d: String(date.date),
+            HH: this.digit(date.hours),
+            H: String(date.hours),
+            mm: this.digit(date.minutes),
+            m: String(date.minutes),
+            ss: this.digit(date.seconds),
+            s: String(date.seconds)
+        };
 
-        return formatStr
-            .replace(/yyyy/g, yyyy)
-            .replace(/y/g, y)
-            .replace(/MM/g, MM)
-            .replace(/M/g, M)
-            .replace(/dd/g, dd)
-            .replace(/d/g, d)
-            .replace(/HH/g, HH)
-            .replace(/H/g, H)
-            .replace(/mm/g, mm)
-            .replace(/m/g, m)
-            .replace(/ss/g, ss)
-            .replace(/s/g, s);
+        return formatStr.replace(/\[([^\]]*)\]|yyyy|y|MM|M|dd|d|HH|H|mm|m|ss|s/g, (match, escaped) => {
+            if (escaped !== undefined) {
+                return escaped;
+            }
+            return map[match] ?? match;
+        });
     }
 
     /**
