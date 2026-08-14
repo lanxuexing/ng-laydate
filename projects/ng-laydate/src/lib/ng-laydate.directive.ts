@@ -23,6 +23,7 @@ import { NgLaydateService } from './ng-laydate.service';
  */
 @Directive({
     selector: '[laydate]',
+    exportAs: 'laydate',
     standalone: true,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
@@ -206,7 +207,7 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
             if (origClose) origClose();
         };
 
-        this.componentRef = this.laydateService.render(config);
+        this.componentRef = this.laydateService.open(this.el.nativeElement, config);
 
         if (this.componentRef) {
             this.componentRef.onDestroy(() => {
@@ -219,13 +220,18 @@ export class NgLaydateDirective implements OnDestroy, ControlValueAccessor {
      * Programmatically closes the date/time picker panel.
      */
     close() {
-        if (this.componentRef) {
-            this.componentRef.destroy();
+        const elem = this.el?.nativeElement;
+        const ref = this.componentRef || (elem ? this.laydateService.getActivePanel(elem) : null);
+        if (ref) {
+            ref.destroy();
             this.componentRef = null;
         }
     }
 
     ngOnDestroy() {
         this.close();
+        if (this.el?.nativeElement) {
+            this.laydateService.unbind(this.el.nativeElement);
+        }
     }
 }

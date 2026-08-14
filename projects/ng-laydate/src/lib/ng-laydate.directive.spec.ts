@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NgLaydateDirective } from './ng-laydate.directive';
@@ -9,10 +9,11 @@ import { LaydateConfig } from './ng-laydate.types';
     standalone: true,
     imports: [NgLaydateDirective],
     template: `
-    <input id="test-input" type="text" [laydate]="config" (laydateChange)="onDateChange($event)">
+    <input #dir="laydate" id="test-input" type="text" [laydate]="config" (laydateChange)="onDateChange($event)">
   `
 })
 class TestHostComponent {
+    @ViewChild(NgLaydateDirective) directive!: NgLaydateDirective;
     config: LaydateConfig = {
         value: '2026-08-21'
     };
@@ -61,5 +62,18 @@ describe('NgLaydateDirective', () => {
         await fixture.whenStable();
 
         expect(inputEl.value).toBe('2026年08月21日');
+    });
+
+    it('should support programmatic open() and close() methods', () => {
+        const dir = hostComponent.directive;
+        expect(dir).toBeTruthy();
+
+        dir.open();
+        const popup = document.querySelector('ng-laydate');
+        expect(popup).toBeTruthy();
+
+        dir.close();
+        const popupAfterClose = document.querySelector('ng-laydate');
+        expect(popupAfterClose).toBeNull();
     });
 });
