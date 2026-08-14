@@ -707,6 +707,14 @@ export class NgLaydateComponent {
     else this.yearList.set(list);
   }
 
+  private clampDay(d: DateObject): DateObject {
+    const maxDay = this.service.totalDay(d.year, d.month);
+    if (d.date > maxDay) {
+      d.date = maxDay;
+    }
+    return d;
+  }
+
   // Navigation Logic
   prevYear(isRight: boolean = false) {
     const cfg = this.finalConfig();
@@ -727,6 +735,7 @@ export class NgLaydateComponent {
       const targetSignal = useLeft ? (cfg.range ? this.leftDate : this.currentDate) : this.rightDate;
       const d = { ...targetSignal() };
       d.year--;
+      this.clampDay(d);
       targetSignal.set(d);
       if (!cfg.range) this.leftDate.set(d);
     }
@@ -755,6 +764,7 @@ export class NgLaydateComponent {
       const targetSignal = useLeft ? (cfg.range ? this.leftDate : this.currentDate) : this.rightDate;
       const d = { ...targetSignal() };
       d.year++;
+      this.clampDay(d);
       targetSignal.set(d);
       if (!cfg.range) this.leftDate.set(d);
     }
@@ -772,6 +782,7 @@ export class NgLaydateComponent {
     const d = { ...targetSignal() };
     d.month--;
     if (d.month < 0) { d.month = 11; d.year--; }
+    this.clampDay(d);
     targetSignal.set(d);
     if (!cfg.range) this.leftDate.set(d);
 
@@ -788,6 +799,7 @@ export class NgLaydateComponent {
     const d = { ...targetSignal() };
     d.month++;
     if (d.month > 11) { d.month = 0; d.year++; }
+    this.clampDay(d);
     targetSignal.set(d);
     if (!cfg.range) this.leftDate.set(d);
 
@@ -812,6 +824,7 @@ export class NgLaydateComponent {
         right.year++;
       }
     }
+    this.clampDay(right);
 
     this.rightDate.set(right);
 
@@ -1044,16 +1057,19 @@ export class NgLaydateComponent {
     if (isRight) {
       const d = { ...this.rightDate() };
       d.year = y;
+      this.clampDay(d);
       this.rightDate.set(d);
       this.rightView.set(cfg.type === 'year' ? 'year' : 'month');
     } else {
       const d = { ...this.currentDate() };
       d.year = y;
+      this.clampDay(d);
       this.currentDate.set(d);
 
       if (cfg.range) {
         const ld = { ...this.leftDate() };
         ld.year = y;
+        this.clampDay(ld);
         this.leftDate.set(ld);
       }
 
@@ -1081,16 +1097,19 @@ export class NgLaydateComponent {
     if (isRight) {
       const d = { ...this.rightDate() };
       d.month = m;
+      this.clampDay(d);
       this.rightDate.set(d);
       this.rightView.set(cfg.type === 'month' ? 'month' : 'date');
     } else {
       const d = { ...this.currentDate() };
       d.month = m;
+      this.clampDay(d);
       this.currentDate.set(d);
 
       if (cfg.range) {
         const ld = { ...this.leftDate() };
         ld.month = m;
+        this.clampDay(ld);
         this.leftDate.set(ld);
       }
 

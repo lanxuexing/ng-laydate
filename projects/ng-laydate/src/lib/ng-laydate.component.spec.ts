@@ -308,4 +308,23 @@ describe('NgLaydateComponent', () => {
     expect(sanitized).not.toContain('alert');
     expect(sanitized).toContain('Safe');
   });
+
+  it('should clamp day when navigating from 31st to a month with fewer days (e.g. Jan 31 -> Feb)', async () => {
+    // Set to 2026-03-31
+    fixture.componentRef.setInput('config', { value: '2026-03-31' });
+    fixture.detectChanges();
+
+    expect(component.currentDate().month).toBe(2); // March
+    expect(component.currentDate().date).toBe(31);
+
+    // Prev month -> Feb 2026 (28 days)
+    component.prevMonth();
+    expect(component.currentDate().month).toBe(1); // Feb
+    expect(component.currentDate().date).toBe(28);
+
+    // Next month -> March 2026 (stays 28)
+    component.nextMonth();
+    expect(component.currentDate().month).toBe(2); // March
+    expect(component.currentDate().date).toBe(28);
+  });
 });
